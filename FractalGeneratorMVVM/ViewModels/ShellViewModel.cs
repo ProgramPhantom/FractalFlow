@@ -15,8 +15,13 @@ namespace FractalGeneratorMVVM.ViewModels
     public class ShellViewModel : Conductor<object>
     {
         private Fractal ?_currentFractal;
+        private FractalImage? _currentImage;
+        private IPainter? _currentPainter;
 
-        public Fractal CurrentFractal
+        private List<IPainter> _painters;
+        private List<Fractal> _fractalList;
+
+        public Fractal ?CurrentFractal
         {
             get
             {
@@ -29,17 +34,7 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-        private List<Fractal> ?_fractalList;
-
-        public List<Fractal> FractalList
-        {
-            get { return _fractalList; }
-            set { _fractalList = value; }
-        }
-
-        private FractalImage ?_currentImage;
-
-        public FractalImage CurrentImage
+        public FractalImage ?CurrentImage
         {
             get { return _currentImage; }
             set 
@@ -49,33 +44,63 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-        private BasicPainter ?_testPainter;
-
-        public BasicPainter TestPainter
+        public IPainter ?CurrentPainter
         {
-            get { return _testPainter; }
-            set { _testPainter = value; }
+            get { return _currentPainter; }
+            set 
+            { 
+                _currentPainter = value;
+                NotifyOfPropertyChange(() => CurrentPainter);
+            }
         }
+
+
+        public List<Fractal> FractalList
+        {
+            get { return _fractalList; }
+            set { _fractalList = value; }
+        }
+
+        public List<IPainter> Painters
+        {
+            get { return _painters; }
+            set { _painters = value; }
+        }
+
+        private BindableCollection<Fractal> _fractalCollection = new BindableCollection<Fractal>();
+
+        public BindableCollection<Fractal> FractalCollection
+        {
+            get { return _fractalCollection; }
+            set 
+            { 
+                _fractalCollection = value;
+            }
+        }
+
 
 
 
         public ShellViewModel()
         {
-            _testPainter = new BasicPainter(255, 0, 255);
+            Painters = new List<IPainter>();  // This will be where the fractals must be loaded from the database into the application
+            FractalList = new List<Fractal>();
+
+
+            Painters.Add(new BasicPainter(0, 255, 255));
+            CurrentPainter = new BasicPainter(255, 140, 40);
         }
 
-        public void Render()
+        public void Render(Fractal currentFractal, IPainter currentPainter)
         {
-            CurrentFractal = new Fractal(2000, 2000);
+            Fractal newFractal = new Fractal(1000, 1000);
 
-            // System.Diagnostics.Trace.WriteLine(CurrentFractal.IterationsArray[0, 0]);
+            FractalCollection.Add(newFractal);
 
-            // CurrentFractal.WriteToFile("C:\\Users\\henry\\OneDrive - Xaverian College\\Computer Science\\NEA\\projects\\FractalGeneratorMVVM");
-
-            CurrentImage = new FractalImage(ref _currentFractal, _testPainter);
-        
-            // CurrentImage.SaveImage("C:\\Users\\henry\\OneDrive - Xaverian College\\Computer Science\\NEA\\projects\\FractalGeneratorMVVM\\FractalGeneratorMVVM\\img\\output.png");
-            // NotifyOfPropertyChange(() => CurrentImage);
+            CurrentImage = new FractalImage(ref newFractal, Painters[0]);
+       
         }
+
+        public bool CanRender(Fractal currentFractal, IPainter currentPainter) => (CurrentPainter != null);
     }
 }

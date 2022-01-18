@@ -27,6 +27,7 @@ namespace FractalCore
         private const int ITERATIONS = 64;
         private const string NAME = "Untitled";
         private const int BAIL = 2;
+        private const string FORMULA = "z^2 + c";
 
         private int _width;
         private int _height;
@@ -35,6 +36,9 @@ namespace FractalCore
         private float _leftBound;
         private float _rightBound;
         private string _name;
+
+        private string _formulaString;
+
 
         private int _iterationCap;
 
@@ -81,6 +85,14 @@ namespace FractalCore
             set { _name = value; }
         }
 
+
+        public string FormulaString
+        {
+            get { return _formulaString; }
+            set { _formulaString = value; }
+        }
+
+
         public UInt16[,] IterationsArray { get { return _iterationsArray; } }
 
         
@@ -101,7 +113,7 @@ namespace FractalCore
         /// <param name="left">Left (ix)f</param>
         /// <param name="iterations">Iterations (x)</param>
         public Fractal(int width=WIDTH, int height=HEIGHT, float top=TOP, float bottom=BOTTOM, float left=LEFT, float right=RIGHT, int iterations=ITERATIONS, 
-            string name=NAME) 
+            string name=NAME, string formula=FORMULA) 
         {
             _width = width;
             _height = height;
@@ -111,6 +123,7 @@ namespace FractalCore
             _leftBound = left;
             _iterationCap = iterations;
             _name = name;
+            _formulaString = formula;
             
             _planeWidth = Math.Abs(_rightBound) + Math.Abs(_leftBound);
             _planeHeight = Math.Abs(_bottomBound) + Math.Abs(_topBound);
@@ -131,6 +144,7 @@ namespace FractalCore
             _leftBound = LEFT;
             _iterationCap = ITERATIONS;
             _name = NAME;
+            _formulaString = FORMULA;
 
             _planeWidth = Math.Abs(_rightBound) + Math.Abs(_leftBound);
             _planeHeight = Math.Abs(_bottomBound) + Math.Abs(_topBound);
