@@ -1,0 +1,87 @@
+﻿<Window x:Class="FractalGeneratorMVVM.Views.ShellView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+      mc:Ignorable="d" Background="AliceBlue"
+      MinHeight="500" MinWidth="800"
+      Title="ShellView">
+
+    <Window.Resources>
+
+        <Style TargetType="Button" x:Key="RenderButton">
+            <Setter Property="Background" Value="#3d00e0"></Setter>
+        </Style>
+    </Window.Resources>
+
+
+    <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!--Top Bar-->
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Background="#212121"
+                    Name="TopBar">
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="1"
+                    
+                    Grid.RowSpan="1"
+                    Background="#424242">
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Background="#472d81">
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="2"
+                    Grid.Column="1">
+            <Button x:Name="Render" Style="{StaticResource RenderButton}"
+                    Margin="10, 10, 10, 10">
+                Render!
+            </Button>
+        </StackPanel>
+
+        <!--
+        <Frame Grid.Column="1" Grid.Row="1" Background="#BDBDBD"></Frame>
+        <Image Grid.Column="1"
+               Source="{Binding Path=CurrentImage.FractalBitmap}"
+               Grid.Row="1"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Stretch"/> -->
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      Grid.Column="1"
+                      Grid.Row="1">
+            <Canvas Width="{Binding ActualWidth, ElementName=DisplayedImage}" Height="{Binding ActualHeight, ElementName=DisplayedImage}" >
+                <Canvas.Background>
+                    <VisualBrush  >
+                        <VisualBrush.Visual>
+                            <Image x:Name="DisplayedImage" Source="{Binding Path=CurrentImage.FractalBitmap}" />
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Canvas.Background>
+            </Canvas>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
