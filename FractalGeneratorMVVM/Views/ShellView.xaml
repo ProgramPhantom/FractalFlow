@@ -11,7 +11,7 @@
     <Window.Resources>
 
         <Style TargetType="Button" x:Key="RenderButton">
-            <Setter Property="Background" Value="#3d00e0"></Setter>
+            <Setter Property="Background" Value="#b794f6"></Setter>
         </Style>
     </Window.Resources>
 
