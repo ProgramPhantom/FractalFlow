@@ -18,8 +18,10 @@ namespace FractalGeneratorMVVM.ViewModels
         private FractalImage? _currentImage;
         private IPainter? _currentPainter;
 
-        private List<IPainter> _painters;
-        private List<Fractal> _fractalList;
+        
+        private PainterRowViewModel _painterRow;
+        private FormulaStackViewModel _formulaStack;
+
 
         public Fractal ?CurrentFractal
         {
@@ -54,19 +56,6 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-        public List<Fractal> FractalList
-        {
-            get { return _fractalList; }
-            set { _fractalList = value; }
-        }
-
-        public List<IPainter> Painters
-        {
-            get { return _painters; }
-            set { _painters = value; }
-        }
-
-        private FormulaStackViewModel _formulaStack;
 
         public FormulaStackViewModel FormulaStack
         {
@@ -74,16 +63,20 @@ namespace FractalGeneratorMVVM.ViewModels
             set { _formulaStack = value; }
         }
 
+        public PainterRowViewModel PainterRow
+        {
+            get { return _painterRow; }
+            set { _painterRow = value; }
+        }
+
+
         public ShellViewModel()
         {
-            Painters = new List<IPainter>();  // This will be where the fractals must be loaded from the database into the application
-            FractalList = new List<Fractal>();
-
-
-            Painters.Add(new BasicPainter(0, 255, 255));
-            CurrentPainter = new BasicPainter(255, 140, 40);
-
             FormulaStack = new FormulaStackViewModel();
+            PainterRow = new PainterRowViewModel();
+
+
+            CurrentPainter = PainterRow.PainterCollection[0];
         }
 
         public void Render(Fractal currentFractal, IPainter currentPainter)
@@ -92,7 +85,7 @@ namespace FractalGeneratorMVVM.ViewModels
 
             FormulaStack.FractalCollection.Add(newFractal);
 
-            CurrentImage = new FractalImage(ref newFractal, Painters[0]);
+            CurrentImage = new FractalImage(ref newFractal, PainterRow.SelectedPainter);
 
 
        

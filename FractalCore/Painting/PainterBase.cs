@@ -10,6 +10,17 @@ namespace FractalCore
 {
     public class PainterBase
     {
+
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+
+
         /// <summary>
         /// Writes a 2d array of pixels each with 4 bytes to hold R, G, B, A values, to a WriteableBitmap
         /// </summary>
@@ -39,6 +50,11 @@ namespace FractalCore
 
             pixel1d = null;  // Make sure this is removed from memory.
 
+        }
+
+        public PainterBase(string name)
+        {
+            _name = name;
         }
     }
 }

@@ -34,12 +34,16 @@ namespace FractalCore
             set { _blue = value; }
         }
 
-        public BasicPainter(byte red, byte green, byte blue)
+        public BasicPainter(string name, byte red, byte green, byte blue) : base(name)
         {
             _red = red;
             _green = green;
             _blue = blue;
+
+            Name = name;
         }
+
+
 
         public void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)
         {

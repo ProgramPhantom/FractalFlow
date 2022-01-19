@@ -9,6 +9,7 @@
       xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
       mc:Ignorable="d" Background="AliceBlue"
       MinHeight="500" MinWidth="800"
+      Width="1900" Height="1000"
       Title="Fractal Flow">
 
     <Window.Resources>
@@ -55,6 +56,8 @@
         </StackPanel>
 
 		<ContentControl Grid.Row="1" x:Name="FormulaStack"></ContentControl>
+
+        <ContentControl Grid.Column="1" x:Name="PainterRow"></ContentControl>
 
 		<TextBox Name="FormulaBox" 
 				 Grid.Row="2" 
