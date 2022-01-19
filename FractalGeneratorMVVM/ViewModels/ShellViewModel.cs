@@ -54,7 +54,6 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-
         public List<Fractal> FractalList
         {
             get { return _fractalList; }
@@ -67,19 +66,13 @@ namespace FractalGeneratorMVVM.ViewModels
             set { _painters = value; }
         }
 
-        private BindableCollection<Fractal> _fractalCollection = new BindableCollection<Fractal>();
+        private FormulaStackViewModel _formulaStack;
 
-        public BindableCollection<Fractal> FractalCollection
+        public FormulaStackViewModel FormulaStack
         {
-            get { return _fractalCollection; }
-            set 
-            { 
-                _fractalCollection = value;
-            }
+            get { return _formulaStack; }
+            set { _formulaStack = value; }
         }
-
-
-
 
         public ShellViewModel()
         {
@@ -89,15 +82,19 @@ namespace FractalGeneratorMVVM.ViewModels
 
             Painters.Add(new BasicPainter(0, 255, 255));
             CurrentPainter = new BasicPainter(255, 140, 40);
+
+            FormulaStack = new FormulaStackViewModel();
         }
 
         public void Render(Fractal currentFractal, IPainter currentPainter)
         {
-            Fractal newFractal = new Fractal(1000, 1000);
+            Fractal newFractal = new Fractal(200, 200);
 
-            FractalCollection.Add(newFractal);
+            FormulaStack.FractalCollection.Add(newFractal);
 
             CurrentImage = new FractalImage(ref newFractal, Painters[0]);
+
+
        
         }
 

@@ -22,7 +22,7 @@
     <Grid>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="500"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -54,23 +54,14 @@
 
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1">
-            <ListBox x:Name="FractalCollection"  Background="#424242">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20"></RowDefinition>
-                                <RowDefinition Height="50"></RowDefinition>
-                            </Grid.RowDefinitions>
+		<ContentControl Grid.Row="1" x:Name="FormulaStack"></ContentControl>
 
-                            <TextBlock x:Name="Name" Text="{Binding Path=Name}" Grid.Row="0" Grid.Column="0"></TextBlock>
-                            <TextBlock x:Name="FormulaString" Text="{Binding Path=FormulaString}" Grid.Row="1"></TextBlock>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+		<TextBox Name="FormulaBox" 
+				 Grid.Row="2" 
+				 Grid.Column="0" 
+				 Grid.ColumnSpan="1"
+				 Margin="10"
+				 ></TextBox>
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"

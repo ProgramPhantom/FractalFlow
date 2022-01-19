@@ -10,12 +10,12 @@ namespace FractalGeneratorMVVM.ViewModels
 {
     public class FormulaStackViewModel : Screen
     {
-        public List<Fractal> FormulaStackList;
+        public BindableCollection<Fractal> FractalCollection { get; set; }
+
         public FormulaStackViewModel()
         {
-            FormulaStackList = new List<Fractal>();
+            FractalCollection = new BindableCollection<Fractal>();
 
-            FormulaStackList.Add(new Fractal(1000, 1000));
         }
     }
 }
