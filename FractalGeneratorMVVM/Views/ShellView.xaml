@@ -24,7 +24,8 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -36,7 +37,7 @@
         <StackPanel Orientation="Vertical"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     Background="#212121"
                     Name="TopBar">
         </StackPanel>
@@ -50,7 +51,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2"
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     Background="#472d81">
 
         </StackPanel>
@@ -58,6 +59,10 @@
 		<ContentControl Grid.Row="1" x:Name="FormulaStack"></ContentControl>
 
         <ContentControl Grid.Column="1" x:Name="PainterRow"></ContentControl>
+
+        <Button x:Name="NewPainter"
+                Grid.Column="2"
+                Margin="5" FontSize="40">+</Button>
 
 		<TextBox Name="FormulaBox" 
 				 Grid.Row="2" 

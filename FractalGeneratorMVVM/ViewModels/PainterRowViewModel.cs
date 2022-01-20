@@ -15,7 +15,11 @@ namespace FractalGeneratorMVVM.ViewModels
         public BindableCollection<IPainter> PainterCollection
         {
             get { return _painterCollection; }
-            set { _painterCollection = value; }
+            set 
+            { 
+                _painterCollection = value;
+                NotifyOfPropertyChange(() => PainterCollection);
+            }
         }
 
         private IPainter _selectedPainter;
@@ -38,10 +42,8 @@ namespace FractalGeneratorMVVM.ViewModels
 
             PainterCollection.Add(new BasicPainter("Red", 255, 0, 0));
             PainterCollection.Add(new BasicPainter("Green", 0, 255, 0));
-            PainterCollection.Add(new BasicPainter("Bloo", 123, 0, 0));
-            PainterCollection.Add(new BasicPainter("Bloo", 222, 0, 0));
-            PainterCollection.Add(new BasicPainter("Bloo", 0, 123, 0));
-            PainterCollection.Add(new BasicPainter("Bloo", 255, 123, 123));
+            PainterCollection.Add(new BasicPainter("Blue", 0, 0, 255));
+
 
             _selectedPainter = _painterCollection[0];
 

@@ -74,9 +74,9 @@ namespace FractalCore
                     }
                     else
                     {
-                        pixels[y, x, 0] = Convert.ToByte(iterationRatio * _red);
+                        pixels[y, x, 0] = Convert.ToByte(iterationRatio * _blue);
                         pixels[y, x, 1] = Convert.ToByte(iterationRatio * _green);
-                        pixels[y, x, 2] = Convert.ToByte(iterationRatio * _blue);
+                        pixels[y, x, 2] = Convert.ToByte(iterationRatio * _red);
                     }
                 }
             }

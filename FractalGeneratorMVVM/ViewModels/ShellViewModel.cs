@@ -86,9 +86,11 @@ namespace FractalGeneratorMVVM.ViewModels
             FormulaStack.FractalCollection.Add(newFractal);
 
             CurrentImage = new FractalImage(ref newFractal, PainterRow.SelectedPainter);
+        }
 
-
-       
+        public void NewPainter()
+        {
+            PainterRow.PainterCollection.Add(new BasicPainter("Test", 255, 255, 255));
         }
 
         public bool CanRender(Fractal currentFractal, IPainter currentPainter) => (CurrentPainter != null);
