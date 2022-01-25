@@ -17,8 +17,10 @@ namespace FractalGeneratorMVVM.ViewModels
         private Fractal ?_currentFractal;
         private FractalImage? _currentImage;
         private IPainter? _currentPainter;
+        private IWindowManager _windowManager;
 
-        
+
+
         private PainterRowViewModel _painterRow;
         private FormulaStackViewModel _formulaStack;
 
@@ -56,7 +58,6 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-
         public FormulaStackViewModel FormulaStack
         {
             get { return _formulaStack; }
@@ -69,11 +70,31 @@ namespace FractalGeneratorMVVM.ViewModels
             set { _painterRow = value; }
         }
 
+        public IWindowManager WindowManager
+        {
+            get { return _windowManager; }
+            set { _windowManager = value; }
+        }
+
+        private AddPainterWindowViewModel _addPainterWindow;    
+
+        public AddPainterWindowViewModel AddPainterWindow
+        {
+            get { return _addPainterWindow; }
+            set { _addPainterWindow = value; }
+        }
+
+        public BindableCollection<IPainter> PainterCollection { get { return _painterRow.PainterCollection; } }
+
+
+
 
         public ShellViewModel()
         {
-            FormulaStack = new FormulaStackViewModel();
-            PainterRow = new PainterRowViewModel();
+            _windowManager = new WindowManager();
+            _formulaStack = new FormulaStackViewModel();
+            _painterRow = new PainterRowViewModel();
+            _addPainterWindow = new AddPainterWindowViewModel(PainterCollection);
 
 
             CurrentPainter = PainterRow.PainterCollection[0];
@@ -90,7 +111,12 @@ namespace FractalGeneratorMVVM.ViewModels
 
         public void NewPainter()
         {
-            PainterRow.PainterCollection.Add(new BasicPainter("Test", 255, 255, 255));
+            //PainterRow.PainterCollection.Add(new BasicPainter("Test", 255, 255, 255));
+
+            //AddPainterWindowViewModel newPaint = new AddPainterWindowViewModel();
+            //newPaint.Show();
+
+            _windowManager.ShowWindowAsync(_addPainterWindow, null, null);
         }
 
         public bool CanRender(Fractal currentFractal, IPainter currentPainter) => (CurrentPainter != null);
