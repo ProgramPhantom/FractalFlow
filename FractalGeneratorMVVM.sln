@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FractalGeneratorMVVM", "FractalGeneratorMVVM\FractalGeneratorMVVM.csproj", "{0B943C3A-53B9-4417-8052-EF1D42DBC564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FractalGeneratorMVVM", "FractalGeneratorMVVM\FractalGeneratorMVVM.csproj", "{0B943C3A-53B9-4417-8052-EF1D42DBC564}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AF420D34-19CB-46D7-B5B6-A963A1803256} = {AF420D34-19CB-46D7-B5B6-A963A1803256}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FractalCore", "FractalCore\FractalCore.csproj", "{AF420D34-19CB-46D7-B5B6-A963A1803256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FractalCore", "FractalCore\FractalCore.csproj", "{AF420D34-19CB-46D7-B5B6-A963A1803256}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaParser", "FormulaParser\FormulaParser.csproj", "{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{AF420D34-19CB-46D7-B5B6-A963A1803256}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF420D34-19CB-46D7-B5B6-A963A1803256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF420D34-19CB-46D7-B5B6-A963A1803256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
