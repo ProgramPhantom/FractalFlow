@@ -6,8 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
-
-#nullable enable
+using System.Numerics;
 
 
 namespace FormulaParser
@@ -114,15 +113,43 @@ namespace FormulaParser
 		#endregion
 
 		#region Properties
-		public List<Token> InfixTokens { get => _infixTokens; set => _infixTokens = value; }
+		public List<Token> InfixTokens
+		{
+			get
+			{
+				return _infixTokens;
+			}
+			set
+			{
+				_infixTokens = value;
+			}
+		}
 
-		public List<Token> RPNTokens { get => _RPNTokens; set => _RPNTokens = value; }
+		public List<Token> RPNTokens
+		{
+			get
+			{
+				return _RPNTokens;
+			}
+			set
+            {
+				_RPNTokens = value;
+            }
+		}
 
-		public string InfixString
+        public string InfixString
 		{
 			get { return _infixString; }
 			set { _infixString = value; }
 		}
+
+		public string RPNString
+        {
+			get
+            {
+				return string.Join(" ", RPNTokens.Select(t => t.Value));
+            }
+        }
 		#endregion
 
 		// Constructor
@@ -396,7 +423,7 @@ namespace FormulaParser
 						//   Any elements in opstack?    Top token is an operator?             Is the current token's precedeance less than the token on top?
 						while (operatorStack.Any() && operatorStack.Peek().Type == TokenType.Operator && CompareOperators(Operators[tok.Value], Operators[operatorStack.Peek().Value]))
 						{
-							_RPNTokens.Add(operatorStack.Pop()); // Then put that on the output!
+							outputList.Add(operatorStack.Pop()); // Then put that on the output!
 						}
 						operatorStack.Push(tok);  // Then put the operator on top
 						break;
@@ -431,12 +458,12 @@ namespace FormulaParser
 			return outputList;
 		}
 
-		public double Compute(Dictionary<string, double> variableContext)
+		public Complex ComputeComplex(Dictionary<string, Complex> variableContext)
 		{
 
 
-			double tempNumber;  // Needed.
-			Stack<double> valueStack = new Stack<double>();
+			Complex tempNumber;  // Needed.
+			Stack<Complex> valueStack = new Stack<Complex>();
 
 			foreach (Token tok in RPNTokens)
 			{
@@ -450,7 +477,7 @@ namespace FormulaParser
 					try
 					{
 						valueStack.Push((double)RPN.Constants[tok.Value]);
-					}
+					} 
 					catch (KeyNotFoundException)
 					{
 						Console.WriteLine($"Uknown variable: {tok.Value}");
@@ -461,15 +488,16 @@ namespace FormulaParser
 				}
 				else if (tok.Type == TokenType.Variable)
 				{
-					try
-					{
-						valueStack.Push((double)variableContext[tok.Value]);
-					}
-					catch (KeyNotFoundException)
-					{
-						Console.WriteLine($"Uknown variable: {tok.Value}");
-						break;
-					}
+					if (variableContext.ContainsKey(tok.Value))
+                    {
+						valueStack.Push(variableContext[tok.Value]);
+                    } 
+					else
+                    {
+						throw new Exception($"No variable: {tok.Value} found!");
+                    }
+
+
 				}
 				else if (tok.Type == TokenType.Function)
 				{
@@ -477,32 +505,32 @@ namespace FormulaParser
 					{
 						case "sin":
 							{
-								valueStack.Push((double)Math.Sin(valueStack.Pop()));
+								valueStack.Push(Complex.Sin(valueStack.Pop()));
 								break;
 							}
 						case "cos":
 							{
-								valueStack.Push((double)Math.Cos(valueStack.Pop()));
+								valueStack.Push(Complex.Cos(valueStack.Pop()));
 								break;
 							}
 						case "tan":
 							{
-								valueStack.Push((double)Math.Tan((double)valueStack.Pop()));
+								valueStack.Push(Complex.Tan(valueStack.Pop()));
 								break;
 							}
 						case "sqrt":
 							{
-								valueStack.Push((double)Math.Sqrt(valueStack.Pop()));
+								valueStack.Push(Complex.Sqrt(valueStack.Pop()));
 								break;
 							}
 						case "ln":
 							{
-								valueStack.Push((double)Math.Log(valueStack.Pop(), Math.E));
+								valueStack.Push(Complex.Log(valueStack.Pop()));
 								break;
 							}
 						case "log":
 							{
-								valueStack.Push((double)Math.Log10(valueStack.Pop()));
+								valueStack.Push(Complex.Log10(valueStack.Pop()));
 								break;
 							}
 
@@ -515,7 +543,7 @@ namespace FormulaParser
 						case "^":
 							{
 								tempNumber = valueStack.Pop();
-								valueStack.Push(Math.Pow(valueStack.Pop(), tempNumber));
+								valueStack.Push(Complex.Pow(valueStack.Pop(), tempNumber));
 								break;
 							}
 						case "*":
@@ -548,12 +576,13 @@ namespace FormulaParser
 			{
 				return valueStack.Pop();
 
+			} catch
+            {
+				throw new Exception("Problem parsing");
+
 			}
-			catch (InvalidOperationException)
-			{
-				Console.WriteLine("Problem parsing");
-				return -1;
-			}
+
+
 		}
 
 	}

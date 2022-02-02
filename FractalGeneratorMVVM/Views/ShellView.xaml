@@ -9,7 +9,7 @@
       xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
       mc:Ignorable="d" Background="AliceBlue"
       MinHeight="500" MinWidth="800"
-      Width="1900" Height="1000"
+      Width="1000" Height="600"
       Title="Fractal Flow">
 
     <Window.Resources>
@@ -56,7 +56,7 @@
 
         </StackPanel>
 
-		<ContentControl Grid.Row="1" x:Name="FormulaStack"></ContentControl>
+		<ContentControl Grid.Row="1" x:Name="IteratorStack"></ContentControl>
 
         <ContentControl Grid.Column="1" x:Name="PainterRow"></ContentControl>
 
@@ -69,6 +69,8 @@
 				 Grid.Column="0" 
 				 Grid.ColumnSpan="1"
 				 Margin="10"
+                 Text="z^2+c"
+                 FontSize="20"
 				 ></TextBox>
 
         <StackPanel Orientation="Horizontal"
@@ -91,7 +93,8 @@
         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto"
                       Grid.Column="1"
-                      Grid.Row="1">
+                      Grid.Row="1"
+                      Grid.ColumnSpan="2">
             <Canvas Width="{Binding ActualWidth, ElementName=DisplayedImage}" Height="{Binding ActualHeight, ElementName=DisplayedImage}" >
                 <Canvas.Background>
                     <VisualBrush  >

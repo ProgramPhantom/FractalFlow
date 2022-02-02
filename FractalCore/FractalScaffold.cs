@@ -62,7 +62,6 @@ namespace FractalCore
             set { _bail = value; }
         }
 
-
         public float RealWidth { get { return Math.Abs(_left) + Math.Abs(_right); } }
 
         public float ImaginaryHeight { get { return Math.Abs(_bottom) + Math.Abs(_top); } }

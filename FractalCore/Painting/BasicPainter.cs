@@ -50,7 +50,7 @@ namespace FractalCore
             byte[,,] pixels = new byte[fractal.Height, fractal.Width , 4];
 
             float iterations;
-            float iterationCap = (float)fractal.IterationCap;
+            float iterationCap = (float)fractal.Iterations;
             float iterationRatio;
 
             #region Write to the array

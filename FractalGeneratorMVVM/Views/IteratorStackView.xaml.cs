@@ -18,9 +18,9 @@ namespace FractalGeneratorMVVM.Views
     /// <summary>
     /// Interaction logic for FormulaStack.xaml
     /// </summary>
-    public partial class FormulaStackView : UserControl
+    public partial class IteratorStackView : UserControl
     {
-        public FormulaStackView()
+        public IteratorStackView()
         {
             InitializeComponent();
         }

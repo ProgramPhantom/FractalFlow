@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using FormulaParser;
 
 namespace FractalCore
 {
@@ -14,6 +15,7 @@ namespace FractalCore
     {
         private string _formulaString;
         private string _name;
+        private RPN _formulaObject;
 
         public string FormulaString
         {
@@ -27,15 +29,48 @@ namespace FractalCore
             set { _name = value; }
         }
 
-        public BasicIterator(string name, string formulaString)
+
+        public RPN FormulaObject
         {
-            _formulaString = FormulaString;
-            _name = name;
+            get { return _formulaObject; }
+            set { _formulaObject = value; }
         }
 
-        public int Iterate(Complex c, int maxIterations, int bail)
+
+        public BasicIterator(string name, string formulaString)
         {
-            throw new NotImplementedException();
+            _formulaString = formulaString;
+            _name = name;
+
+            _formulaObject = new RPN(_formulaString);
+        }
+
+        public uint Iterate(Complex c, int maxIterations, int bail)
+        {
+            uint currentIterations = 0;
+            Complex z = Complex.Zero;
+            Dictionary<string, Complex> variables = new Dictionary<string, Complex>()
+            {
+                ["z"] = z,
+                ["c"] = c
+            };
+
+            for (int i = 0; i < maxIterations; i++)
+            {
+                if (Complex.Abs(z) > bail)
+                {
+                    break;
+                } else
+                {
+                    currentIterations++; // Increment current iterations!
+                }
+
+                variables["z"] = z;
+
+                z = _formulaObject.ComputeComplex(variables);  // Calculate the next z value!!!
+            }
+
+            return currentIterations;
         }
     }
 }

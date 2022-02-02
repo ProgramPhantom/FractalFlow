@@ -8,14 +8,14 @@ namespace FractalCore
 {
 
     /// <summary>
-    /// Soved a few default values in here
+    /// Holds the default value for the Fractal Scaffold class
     /// </summary>
     public class BaseScaffold
     {
-        private static float _leftDefault = -1.1f;
+        private static float _leftDefault = -3.1f;
         private static float _rightDefault = 1.1f;
-        private static float _bottomDefault = -1.1f;
-        private static float _topDefault = 1.1f;
+        private static float _bottomDefault = -2.1f;
+        private static float _topDefault = 2.1f;
         private static string _nameDefault = "Untitled";
         private static int _iterationsDefault = 100;
         private static int _bailDefault = 2;
@@ -55,7 +55,6 @@ namespace FractalCore
             get { return _iterationsDefault; }
             set { _iterationsDefault = value; }
         }
-
 
         public static int BailDefault
         {

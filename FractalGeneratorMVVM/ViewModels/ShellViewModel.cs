@@ -9,6 +9,8 @@ using Caliburn.Micro;
 using FractalGeneratorMVVM.ViewModels;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
+using FormulaParser;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
@@ -18,11 +20,12 @@ namespace FractalGeneratorMVVM.ViewModels
         private FractalImage? _currentImage;
         private IPainter? _currentPainter;
         private IWindowManager _windowManager;
-
-
+        private string _formulaBox;
+        private IIterator _currentIterator;
+        private AddPainterWindowViewModel _addPainterWindow;
 
         private PainterRowViewModel _painterRow;
-        private FormulaStackViewModel _formulaStack;
+        private IteratorStackViewModel _formulaStack;
 
 
         public Fractal ?CurrentFractal
@@ -50,7 +53,7 @@ namespace FractalGeneratorMVVM.ViewModels
 
         public IPainter ?CurrentPainter
         {
-            get { return _currentPainter; }
+            get { return PainterRow.SelectedPainter; }
             set 
             { 
                 _currentPainter = value;
@@ -58,7 +61,7 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-        public FormulaStackViewModel FormulaStack
+        public IteratorStackViewModel IteratorStack
         {
             get { return _formulaStack; }
             set { _formulaStack = value; }
@@ -76,7 +79,6 @@ namespace FractalGeneratorMVVM.ViewModels
             set { _windowManager = value; }
         }
 
-        private AddPainterWindowViewModel _addPainterWindow;    
 
         public AddPainterWindowViewModel AddPainterWindow
         {
@@ -87,26 +89,49 @@ namespace FractalGeneratorMVVM.ViewModels
         public BindableCollection<IPainter> PainterCollection { get { return _painterRow.PainterCollection; } }
 
 
+        public string FormulaBox
+        {
+            get { return _formulaBox; }
+            set { 
+                _formulaBox = value;
+                NotifyOfPropertyChange(() => CurrentFractal);
+            }
+        }
+
+
+        public IIterator CurrentIterator
+        {
+            get { return _currentIterator; }
+            set { 
+                _currentIterator = value;
+                NotifyOfPropertyChange(() => CurrentIterator);
+            }
+        }
 
 
         public ShellViewModel()
         {
             _windowManager = new WindowManager();
-            _formulaStack = new FormulaStackViewModel();
+            _formulaStack = new IteratorStackViewModel();
             _painterRow = new PainterRowViewModel();
             _addPainterWindow = new AddPainterWindowViewModel(PainterCollection);
 
 
             CurrentPainter = PainterRow.PainterCollection[0];
+            FormulaBox = "z^2+c";
         }
 
         public void Render(Fractal currentFractal, IPainter currentPainter)
         {
-            Fractal newFractal = new Fractal(200, 200);
+            // Create a new formula based on 
 
-            FormulaStack.FractalCollection.Add(newFractal);
+            BasicIterator newIterator = new BasicIterator("Untitled", FormulaBox);
+            IteratorStack.IteratorCollection.Add(newIterator);
 
-            CurrentImage = new FractalImage(ref newFractal, PainterRow.SelectedPainter);
+            Fractal fractal = new Fractal(1000, 1000, newIterator);
+
+            CurrentImage = new FractalImage(ref fractal, CurrentPainter);
+
         }
 
         public void NewPainter()
@@ -119,6 +144,6 @@ namespace FractalGeneratorMVVM.ViewModels
             _windowManager.ShowWindowAsync(_addPainterWindow, null, null);
         }
 
-        public bool CanRender(Fractal currentFractal, IPainter currentPainter) => (CurrentPainter != null);
+        // public bool CanRender(Fractal currentFractal, IPainter currentPainter) => (CurrentPainter != null);
     }
 }
