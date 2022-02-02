@@ -125,6 +125,7 @@ namespace FormulaParser
 		}
 		#endregion
 
+		// Constructor
 		public RPN(string infix)
 		{
 			if (CheckBrackets(infix))
@@ -139,9 +140,9 @@ namespace FormulaParser
 			}
 
 
-			InfixTokens = Tokenize(infix);
-			_RPNTokens = new List<Token>();
-			ShuntingYard();
+			_infixTokens = Tokenize(infix);
+			_RPNTokens = ShuntingYard();
+
 
 		}
 
@@ -243,16 +244,17 @@ namespace FormulaParser
 
 			TextReader textReader = new StringReader(infix);
 
-			TokenType currType;
 			TokenType nextType;
 			int curr;
 			char ch;
 			int next;
 			char nextCh;
 			bool parenthesis;
+			int operation;
 
 			string readCharacters = "";
 			#endregion
+
 
 			#region FIRST PASS
 			// FIRST ITERATION: split the infix expression crudely up into it's seconctions
@@ -299,6 +301,7 @@ namespace FormulaParser
 			}
 			#endregion
 
+
 			#region SECOND PASS
 			// SECOND ITERATION: Combine and add in operators where needed
 			for (int i = 0; i < tokens.Count() - 1; i++)
@@ -307,7 +310,7 @@ namespace FormulaParser
 				Token nextToken = tokens[i + 1];
 
 				// DECIMAL POINT WAS NOT IN DICTIONARY ERROR
-				int operation = RPN.OrderRules[currentToken.Type][nextToken.Type];
+				operation = RPN.OrderRules[currentToken.Type][nextToken.Type];
 
 				Console.WriteLine($"{currentToken.Value} to {nextToken.Value}: {operation}");
 
@@ -373,8 +376,9 @@ namespace FormulaParser
 			return tokens;
 		}
 
-		public void ShuntingYard()
+		public List<Token> ShuntingYard()
 		{
+			List<Token> outputList = new List<Token>();
 			Stack<Token> operatorStack = new Stack<Token>();
 			foreach (var tok in InfixTokens)  // Iterate throught the tokens
 			{
@@ -383,7 +387,7 @@ namespace FormulaParser
 					case TokenType.Constant:
 					case TokenType.Variable: // If number or varible put straight into the output
 					case TokenType.Number:
-						_RPNTokens.Add(tok);
+						outputList.Add(tok);
 						break;
 					case TokenType.Function:  // If function, put on the op stack
 						operatorStack.Push(tok);
@@ -400,14 +404,14 @@ namespace FormulaParser
 						operatorStack.Push(tok);
 						break;
 					case TokenType.CloseParenthesis:
-						while (operatorStack.Peek().Type != TokenType.OpenParenthesis) { _RPNTokens.Add(operatorStack.Pop()); }   // Pop off the opstack until the open bracket is found
+						while (operatorStack.Peek().Type != TokenType.OpenParenthesis) { outputList.Add(operatorStack.Pop()); }   // Pop off the opstack until the open bracket is found
 
 						operatorStack.Pop();  // Then pop off the open bracket
 
 						if (operatorStack.Count() != 0) // If not empty
 						{
 							if (operatorStack.Peek().Type == TokenType.Function)
-								_RPNTokens.Add(operatorStack.Pop());  // If it was a function before that, add it to the output
+								outputList.Add(operatorStack.Pop());  // If it was a function before that, add it to the output
 						}
 
 
@@ -421,15 +425,17 @@ namespace FormulaParser
 				var tok = operatorStack.Pop();
 				if (tok.Type == TokenType.OpenParenthesis || tok.Type == TokenType.CloseParenthesis)
 					throw new Exception("Mismatched parentheses");  // Invalid infix! ):
-				_RPNTokens.Add(tok);
+				outputList.Add(tok);
 			}
+
+			return outputList;
 		}
 
 		public double Compute(Dictionary<string, double> variableContext)
 		{
 
 
-			double tempNumber;
+			double tempNumber;  // Needed.
 			Stack<double> valueStack = new Stack<double>();
 
 			foreach (Token tok in RPNTokens)
@@ -445,7 +451,7 @@ namespace FormulaParser
 					{
 						valueStack.Push((double)RPN.Constants[tok.Value]);
 					}
-					catch (KeyNotFoundException e)
+					catch (KeyNotFoundException)
 					{
 						Console.WriteLine($"Uknown variable: {tok.Value}");
 						break;
@@ -459,7 +465,7 @@ namespace FormulaParser
 					{
 						valueStack.Push((double)variableContext[tok.Value]);
 					}
-					catch (KeyNotFoundException e)
+					catch (KeyNotFoundException)
 					{
 						Console.WriteLine($"Uknown variable: {tok.Value}");
 						break;
@@ -543,7 +549,7 @@ namespace FormulaParser
 				return valueStack.Pop();
 
 			}
-			catch (InvalidOperationException e)
+			catch (InvalidOperationException)
 			{
 				Console.WriteLine("Problem parsing");
 				return -1;
