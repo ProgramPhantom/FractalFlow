@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<ScrollViewer>
-        <ListBox x:Name="IteratorCollection" Background="#424242">
+        <ListBox x:Name="IteratorCollection" Background="#424242"
+                 SelectedItem="{Binding Path=SelectedIterator, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

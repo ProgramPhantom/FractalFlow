@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace FractalCore
 {
-    public class Fractal : FractalScaffold
+    public class Fractal : FractalFrame
     {
         private IIterator _iterator;
         private uint[,] _iterationsArray;
@@ -50,6 +50,26 @@ namespace FractalCore
             _height = height;
 
             IterateComplexPlane();  // RENDER
+        }
+
+        public Fractal(int width, int height, FractalFrame fractalFrame, IIterator iterator) : base()
+        {
+
+            _width = width;
+            _height = height;
+            _iterator = iterator;
+            _iterationsArray = new uint[height, width];
+
+            Name = fractalFrame.Name;
+            Left = fractalFrame.Left;
+            Right = fractalFrame.Right;
+            Bottom = fractalFrame.Bottom;
+            Top = fractalFrame.Top;
+            Iterations = fractalFrame.Iterations;
+            Iterations = fractalFrame.Iterations;
+            Bail = fractalFrame.Bail;
+
+            IterateComplexPlane();  // FILL IN THE ITERATIONS ARRAY WITH NUMBERS
         }
 
         private void IterateComplexPlane()

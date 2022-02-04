@@ -45,7 +45,7 @@ namespace FractalCore
             _formulaObject = new RPN(_formulaString);
         }
 
-        public uint Iterate(Complex c, int maxIterations, int bail)
+        public uint Iterate(Complex c, uint maxIterations, int bail)
         {
             uint currentIterations = 0;
             Complex z = Complex.Zero;

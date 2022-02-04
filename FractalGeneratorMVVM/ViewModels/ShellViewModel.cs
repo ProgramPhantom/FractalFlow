@@ -16,31 +16,29 @@ namespace FractalGeneratorMVVM.ViewModels
 {
     public class ShellViewModel : Conductor<object>
     {
-        private Fractal ?_currentFractal;
-        private FractalImage? _currentImage;
-        private IPainter? _currentPainter;
+        #region Fields
+        // MISC
         private IWindowManager _windowManager;
+        private FractalImage? _currentImage;
         private string _formulaBox;
-        private IIterator _currentIterator;
-        private AddPainterWindowViewModel _addPainterWindow;
 
+        // WINDOWS 
+        private AddPainterWindowViewModel _addPainterWindow;
+        private AddFractalFrameWindowViewModel _addFractalFrameWindow;
+
+        // USER CONTROLS
         private PainterRowViewModel _painterRow;
         private IteratorStackViewModel _formulaStack;
+        private FractalFrameRowViewModel _fractalFrameRow;
+        #endregion
 
-
-        public Fractal ?CurrentFractal
+        #region Properties
+        // MISC
+        public IWindowManager WindowManager
         {
-            get
-            {
-                return _currentFractal;
-            }
-            set
-            {
-                _currentFractal = value;
-                NotifyOfPropertyChange(() => CurrentFractal);
-            }
+            get { return _windowManager; }
+            set { _windowManager = value; }
         }
-
         public FractalImage ?CurrentImage
         {
             get { return _currentImage; }
@@ -50,100 +48,89 @@ namespace FractalGeneratorMVVM.ViewModels
                 NotifyOfPropertyChange(() => CurrentImage);
             }
         }
-
-        public IPainter ?CurrentPainter
+        public string FormulaBox
         {
-            get { return PainterRow.SelectedPainter; }
-            set 
-            { 
-                _currentPainter = value;
-                NotifyOfPropertyChange(() => CurrentPainter);
+            get { return _formulaBox; }
+            set
+            {
+                _formulaBox = value;
+                NotifyOfPropertyChange(() => FormulaBox);
             }
         }
 
-        public IteratorStackViewModel IteratorStack
-        {
-            get { return _formulaStack; }
-            set { _formulaStack = value; }
-        }
-
-        public PainterRowViewModel PainterRow
-        {
-            get { return _painterRow; }
-            set { _painterRow = value; }
-        }
-
-        public IWindowManager WindowManager
-        {
-            get { return _windowManager; }
-            set { _windowManager = value; }
-        }
-
-
+        // WINDOWS
         public AddPainterWindowViewModel AddPainterWindow
         {
             get { return _addPainterWindow; }
             set { _addPainterWindow = value; }
         }
-
-        public BindableCollection<IPainter> PainterCollection { get { return _painterRow.PainterCollection; } }
-
-
-        public string FormulaBox
+        public AddFractalFrameWindowViewModel AddFractalFrameWindow
         {
-            get { return _formulaBox; }
-            set { 
-                _formulaBox = value;
-                NotifyOfPropertyChange(() => CurrentFractal);
-            }
+            get { return _addFractalFrameWindow; }
+            set { _addFractalFrameWindow = value; }
         }
 
-
-        public IIterator CurrentIterator
+        // USER CONTROLS
+        public IteratorStackViewModel IteratorStack
         {
-            get { return _currentIterator; }
-            set { 
-                _currentIterator = value;
-                NotifyOfPropertyChange(() => CurrentIterator);
-            }
+            get { return _formulaStack; }
+            set { _formulaStack = value; }
         }
+        public PainterRowViewModel PainterRow
+        {
+            get { return _painterRow; }
+            set { _painterRow = value; }
+        }
+        public FractalFrameRowViewModel FractalFrameRow
+        {
+            get { return _fractalFrameRow; }
+            set { _fractalFrameRow = value; }
+        }
+
+        // EXTRAS
+        public BindableCollection<IPainter> PainterCollection { get { return PainterRow.PainterCollection; } }
+        public BindableCollection<FractalFrame> FractalFrameCollection { get { return _fractalFrameRow.FractalFrameCollection; } }
+        #endregion
 
 
         public ShellViewModel()
         {
-            _windowManager = new WindowManager();
+            // USER CONTROLS
             _formulaStack = new IteratorStackViewModel();
             _painterRow = new PainterRowViewModel();
+            _fractalFrameRow = new FractalFrameRowViewModel();
+
+            // WINDOWS
+            _windowManager = new WindowManager();
             _addPainterWindow = new AddPainterWindowViewModel(PainterCollection);
+            _addFractalFrameWindow = new AddFractalFrameWindowViewModel(FractalFrameCollection);
 
+            // MISC
+            _formulaBox = "z^2 + c";
 
-            CurrentPainter = PainterRow.PainterCollection[0];
-            FormulaBox = "z^2+c";
         }
 
-        public void Render(Fractal currentFractal, IPainter currentPainter)
+        public void Render()
         {
-            // Create a new formula based on 
-
+            // Create a new formula based on the string in the FormulaBox
             BasicIterator newIterator = new BasicIterator("Untitled", FormulaBox);
+            // Add it to the Iterator Collection
             IteratorStack.IteratorCollection.Add(newIterator);
 
-            Fractal fractal = new Fractal(1000, 1000, newIterator);
+            Fractal fractal = new Fractal(1000, 1000, FractalFrameRow.SelectedFractalFrame, newIterator);
 
-            CurrentImage = new FractalImage(ref fractal, CurrentPainter);
-
+            CurrentImage = new FractalImage(ref fractal, PainterRow.SelectedPainter);
         }
+
 
         public void NewPainter()
         {
-            //PainterRow.PainterCollection.Add(new BasicPainter("Test", 255, 255, 255));
-
-            //AddPainterWindowViewModel newPaint = new AddPainterWindowViewModel();
-            //newPaint.Show();
-
             _windowManager.ShowWindowAsync(_addPainterWindow, null, null);
         }
 
-        // public bool CanRender(Fractal currentFractal, IPainter currentPainter) => (CurrentPainter != null);
+        public void NewFractalFrame()
+        {
+            _windowManager.ShowWindowAsync(_addFractalFrameWindow, null, null);
+        }
     }
 }

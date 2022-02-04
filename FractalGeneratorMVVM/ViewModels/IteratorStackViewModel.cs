@@ -25,9 +25,21 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
+        private IIterator _selectedIterator;
+
+        public IIterator SelectedIterator
+        {
+            get { return _selectedIterator; }
+            set { _selectedIterator = value; }
+        }
+
+
         public IteratorStackViewModel()
         {
             _iteratorCollection = new BindableCollection<BasicIterator>();
+
+            _iteratorCollection.Add(new BasicIterator("Mandelbrot Set", "z^2 + c"));
+            _selectedIterator = _iteratorCollection[0];
         }
     }
 }

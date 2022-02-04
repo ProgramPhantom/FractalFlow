@@ -25,7 +25,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -56,14 +55,44 @@
 
         </StackPanel>
 
+        
 		<ContentControl Grid.Row="1" x:Name="IteratorStack"></ContentControl>
 
-        <ContentControl Grid.Column="1" x:Name="PainterRow"></ContentControl>
+        <!-- -->
 
-        <Button x:Name="NewPainter"
+
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="50"/>
+
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="50"/>
+
+            </Grid.ColumnDefinitions>
+
+            <!--FRACTAL FRAMES-->
+            <ContentControl Grid.Column="1" x:Name="FractalFrameRow"></ContentControl>
+
+            <!--PAINTERS-->
+            <ContentControl Grid.Column="3" x:Name="PainterRow"></ContentControl>
+
+            <!---NEW FRACTAL FRAME BUTTON-->
+            <Button x:Name="NewFractalFrame"
                 Grid.Column="2"
                 Margin="5" FontSize="40">+</Button>
 
+            <!---NEW PAINTER BUTTON-->
+            <Button x:Name="NewPainter"
+                Grid.Column="4"
+                Margin="5" FontSize="40">+</Button>
+        </Grid>
+
+
+
+        
+        <!--RENDER BOX-->
 		<TextBox Name="FormulaBox" 
 				 Grid.Row="2" 
 				 Grid.Column="0" 
@@ -73,6 +102,7 @@
                  FontSize="20"
 				 ></TextBox>
 
+        <!--RENDER BUTTON-->
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
                     Grid.Column="1">
@@ -82,14 +112,7 @@
             </Button>
         </StackPanel>
 
-        <!--
-        <Frame Grid.Column="1" Grid.Row="1" Background="#BDBDBD"></Frame>
-        <Image Grid.Column="1"
-               Source="{Binding Path=CurrentImage.FractalBitmap}"
-               Grid.Row="1"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Stretch"/> -->
-
+        <!--CANVAS-->
         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto"
                       Grid.Column="1"

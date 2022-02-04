@@ -17,7 +17,7 @@ namespace FractalCore
         private static float _bottomDefault = -2.1f;
         private static float _topDefault = 2.1f;
         private static string _nameDefault = "Untitled";
-        private static int _iterationsDefault = 100;
+        private static uint _iterationsDefault = 100;
         private static int _bailDefault = 2;
 
         public static float LeftDefault
@@ -50,7 +50,7 @@ namespace FractalCore
             set { _nameDefault = value; }
         }
 
-        public static int IterationsDefault
+        public static uint IterationsDefault
         {
             get { return _iterationsDefault; }
             set { _iterationsDefault = value; }

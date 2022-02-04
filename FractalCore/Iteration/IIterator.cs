@@ -10,7 +10,7 @@ namespace FractalCore
 {
     public interface IIterator
     {
-        public uint Iterate(Complex c, int maxIterations, int bail);
+        public uint Iterate(Complex c, uint maxIterations, int bail);
 
         RPN FormulaObject { get; set; }
 

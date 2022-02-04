@@ -80,7 +80,7 @@
                 <Button x:Name="AddBasic" 
                         Grid.Column="2" 
                         Grid.Row="4" Height="20"
-                        IsCancel="True" Click="CloseWindow">Add</Button>
+                        Click="CloseWindow">Add</Button>
             </Grid>
             
         </TabItem>

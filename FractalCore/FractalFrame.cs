@@ -9,14 +9,14 @@ namespace FractalCore
     /// <summary>
     /// This class presents a boundary and information on iterations for making a iterations array.
     /// </summary>
-    public class FractalScaffold : BaseScaffold
+    public class FractalFrame : BaseScaffold
     {
         private float _left;
         private float _right;
         private float _bottom;
         private float _top;
         private string _name;
-        private int _iterations;
+        private uint _iterations;
         private int _bail;
 
 
@@ -50,7 +50,7 @@ namespace FractalCore
             set { _name = value; }
         }
 
-        public int Iterations
+        public uint Iterations
         {
             get { return _iterations; }
             set { _iterations = value; }
@@ -67,7 +67,7 @@ namespace FractalCore
         public float ImaginaryHeight { get { return Math.Abs(_bottom) + Math.Abs(_top); } }
 
 
-        public FractalScaffold()
+        public FractalFrame()
         {
             _left = LeftDefault;
             _right = RightDefault;
@@ -78,7 +78,7 @@ namespace FractalCore
             _name = NameDefault;
         }
 
-        public FractalScaffold(float left, float right, float top, float bottom, string name, int iterations, int bail)
+        public FractalFrame(float left, float right, float top, float bottom, string name, uint iterations, int bail)
         {
             _left = left;
             _right = right;

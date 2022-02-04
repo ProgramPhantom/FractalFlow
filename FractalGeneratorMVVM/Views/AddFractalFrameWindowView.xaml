@@ -1,0 +1,58 @@
+﻿<Window x:Class="FractalGeneratorMVVM.Views.AddFractalFrameWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+        mc:Ignorable="d"
+        Title="AddFractalFrameWindowView" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Name: "></TextBlock>
+                <TextBox Width="100" Name="Name"></TextBox >
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Top: "></TextBlock>
+                <TextBox Width="100" Name="Top"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bottom: "></TextBlock>
+                <TextBox Width="100" Name="Bottom"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Left: "></TextBlock>
+                <TextBox Width="100" Name="Left"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Right: "></TextBlock>
+                <TextBox Width="100" Name="Right"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Iterations: "></TextBlock>
+                <TextBox Width="100" Name="Iterations"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bail: "></TextBlock>
+                <TextBox Width="100" Name="Bail"></TextBox>
+            </StackPanel>
+
+            <Button x:Name="AddFractalFrame" 
+                    Height="60" 
+                    Click="CloseWindow">Add Fractal Frame</Button>
+
+        </StackPanel>
+    </Grid>
+</Window>
