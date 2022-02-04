@@ -22,6 +22,9 @@ namespace FractalGeneratorMVVM.ViewModels
         private FractalImage? _currentImage;
         private string _formulaBox;
 
+        private int _width = 1000;
+        private int _height = 1000;
+
         // WINDOWS 
         private AddPainterWindowViewModel _addPainterWindow;
         private AddFractalFrameWindowViewModel _addFractalFrameWindow;
@@ -90,6 +93,16 @@ namespace FractalGeneratorMVVM.ViewModels
         // EXTRAS
         public BindableCollection<IPainter> PainterCollection { get { return PainterRow.PainterCollection; } }
         public BindableCollection<FractalFrame> FractalFrameCollection { get { return _fractalFrameRow.FractalFrameCollection; } }
+        public int Height
+        {
+            get { return _height; }
+            set { _height = value; }
+        }
+        public int Width
+        {
+            get { return _width; }
+            set { _width = value; }
+        }
         #endregion
 
 
@@ -117,7 +130,7 @@ namespace FractalGeneratorMVVM.ViewModels
             // Add it to the Iterator Collection
             IteratorStack.IteratorCollection.Add(newIterator);
 
-            Fractal fractal = new Fractal(1000, 1000, FractalFrameRow.SelectedFractalFrame, newIterator);
+            Fractal fractal = new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, newIterator);
 
             CurrentImage = new FractalImage(ref fractal, PainterRow.SelectedPainter);
         }
