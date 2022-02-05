@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace FractalCore
 {
-    public class PainterBase
+    public abstract class PainterBase
     {
 
         private string _name;
@@ -19,6 +19,9 @@ namespace FractalCore
             set { _name = value; }
         }
 
+
+        public static FractalFrame ThumbnailPosition = new FractalFrame(-0.788596f, -0.5953322f, 0.479f, 0.315f, "Painter Thumbnail", 500, 2);
+        public static Fractal ThumbnailFractal = new Fractal(40, 40, ThumbnailPosition, new BasicIterator("Painter Thumbnail", "z^2 + c"));
 
 
         /// <summary>
@@ -38,7 +41,7 @@ namespace FractalCore
             {
                 for (int x = 0; x < arrayX; x++)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 4; i++)  // Iterate the 4 values at each pixel
                         pixel1d[index++] = arr[y, x, i];
                 }
             }

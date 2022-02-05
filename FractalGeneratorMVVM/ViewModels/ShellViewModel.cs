@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using FractalCore;
 using Caliburn.Micro;
-// using FractalGeneratorMVVM.Models;
 using FractalGeneratorMVVM.ViewModels;
 using System.Diagnostics;
 using System.IO;
@@ -105,7 +104,6 @@ namespace FractalGeneratorMVVM.ViewModels
         }
         #endregion
 
-
         public ShellViewModel()
         {
             // USER CONTROLS
@@ -123,6 +121,10 @@ namespace FractalGeneratorMVVM.ViewModels
 
         }
 
+        #region Methods
+        /// <summary>
+        /// Don't use it.
+        /// </summary>
         public void Render()
         {
             // Create a new formula based on the string in the FormulaBox
@@ -149,16 +151,21 @@ namespace FractalGeneratorMVVM.ViewModels
         }
 
 
-
-
+        /// <summary>
+        /// Opens the new painter window
+        /// </summary>
         public void NewPainter()
         {
             _windowManager.ShowWindowAsync(_addPainterWindow, null, null);
         }
 
+        /// <summary>
+        /// Opens the new fractal frame window
+        /// </summary>
         public void NewFractalFrame()
         {
             _windowManager.ShowWindowAsync(_addFractalFrameWindow, null, null);
         }
+        #endregion
     }
 }

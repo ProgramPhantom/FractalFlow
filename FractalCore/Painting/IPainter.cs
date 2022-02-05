@@ -16,5 +16,7 @@ namespace FractalCore
     public interface IPainter
     {
         void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal);
+
+        public FractalImage Thumbnail { get; set; }
     }
 }

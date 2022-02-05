@@ -16,6 +16,8 @@ namespace FractalCore
         private byte _green;
         private byte _blue;
 
+        private FractalImage _thumbnail;
+
         public byte Red
         {
             get { return _red; }
@@ -34,6 +36,20 @@ namespace FractalCore
             set { _blue = value; }
         }
 
+        public FractalImage Thumbnail 
+        { 
+            get
+            {
+                return _thumbnail;
+            }
+            set
+            {
+                _thumbnail = value;
+            }
+        }
+
+
+
         public BasicPainter(string name, byte red, byte green, byte blue) : base(name)
         {
             _red = red;
@@ -41,8 +57,9 @@ namespace FractalCore
             _blue = blue;
 
             Name = name;
-        }
 
+            _thumbnail = new FractalImage(ref ThumbnailFractal, this);
+        }
 
 
         public void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)

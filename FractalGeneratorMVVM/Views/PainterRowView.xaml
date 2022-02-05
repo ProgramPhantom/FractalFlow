@@ -62,6 +62,10 @@
 									   Grid.Column="0"
 									   Foreground="White"></TextBlock>
 
+                    <Image Grid.Row="1" 
+                           x:Name="Thumbnail"
+                           Source="{Binding Path=Thumbnail.FractalBitmap}"></Image>
+
                 </Grid>
             </DataTemplate>
         </ListBox.ItemTemplate>

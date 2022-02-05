@@ -72,6 +72,9 @@ namespace FractalCore
             IterateComplexPlane();  // FILL IN THE ITERATIONS ARRAY WITH NUMBERS
         }
 
+        /// <summary>
+        /// This method is responsible for creating a bunch of compelx numbers to check if they are in the mandelbrot set or not
+        /// </summary>
         private void IterateComplexPlane()
         {
             float realStep = (RealWidth / _width);
