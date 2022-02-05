@@ -23,7 +23,7 @@
     <Grid>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -102,11 +102,12 @@
                  FontSize="20"
 				 ></TextBox>
 
-        <!--RENDER BUTTON-->
+        
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2"
                     Grid.Column="1">
-            <Button x:Name="Render"
+            <!--RENDER BUTTON-->
+            <Button x:Name="RenderAsync"
                     Margin="10, 10, 10, 10">
                 Render!
             </Button>
@@ -140,8 +141,10 @@
                       VerticalScrollBarVisibility="Auto"
                       Grid.Column="1"
                       Grid.Row="1"
-                      Grid.ColumnSpan="2">
-            <Canvas Width="{Binding ActualWidth, ElementName=DisplayedImage}" Height="{Binding ActualHeight, ElementName=DisplayedImage}" >
+                      Grid.ColumnSpan="2"
+                      Background="Black">
+            <Canvas Width="{Binding ActualWidth, ElementName=DisplayedImage}" 
+                    Height="{Binding ActualHeight, ElementName=DisplayedImage}">
                 <Canvas.Background>
                     <VisualBrush  >
                         <VisualBrush.Visual>

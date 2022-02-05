@@ -20,6 +20,9 @@ namespace FormulaParser
 		#endregion
 
 		#region Important Data
+		/// <summary>
+		/// A dictionary containing the primary single-character operators, realating to an instance of the Operator struct 
+		/// </summary>
 		public static Dictionary<string, Operator> Operators = new Dictionary<string, Operator>()
 		{
 			["+"] = new Operator("+", 1),
@@ -29,14 +32,26 @@ namespace FormulaParser
 			["^"] = new Operator("^", 3, true),
 		};
 
+		/// <summary>
+		/// A list of strings containing the names of functions that can be used in the infix string
+		/// </summary>
 		public static string[] Functions = new string[] { "sin", "cos", "tan", "sqrt", "ln", "log" };
 
+		/// <summary>
+		/// A dictionary containing names of mathematical constants that can be used in 
+		/// the infix string relating to the actual numerical value (double)
+		/// </summary>
 		public static readonly Dictionary<string, double> Constants = new Dictionary<string, double>()
 		{
 			["pi"] = Math.PI,
 			["e"] = Math.E,
 		};
 
+		/// <summary>
+		/// A grid of integers, where the Keys represent different types of characters in the infix string,
+		/// and the integer representing the behaviour expected from those two characters paired one after the other
+		/// </summary>
+		/// <remarks>The first key is the first token, the second key is the second token in the token pair</remarks>
 		public static readonly Dictionary<TokenType, Dictionary<TokenType, int>> OrderRules = new Dictionary<TokenType, Dictionary<TokenType, int>>()
 		{
 			[TokenType.CloseParenthesis] = new Dictionary<TokenType, int>
@@ -113,6 +128,9 @@ namespace FormulaParser
 		#endregion
 
 		#region Properties
+		/// <summary>
+		/// The list holding the tokens representing the non-shunted formula
+		/// </summary>
 		public List<Token> InfixTokens
 		{
 			get
@@ -125,6 +143,9 @@ namespace FormulaParser
 			}
 		}
 
+		/// <summary>
+		/// The list holding the tokens representing the reverse polish notation formula
+		/// </summary>
 		public List<Token> RPNTokens
 		{
 			get
@@ -137,12 +158,18 @@ namespace FormulaParser
             }
 		}
 
+		/// <summary>
+		/// The infix formula in string form
+		/// </summary>
         public string InfixString
 		{
 			get { return _infixString; }
 			set { _infixString = value; }
 		}
 
+		/// <summary>
+		/// A helpful Property for quickly printing out the Shunted formula
+		/// </summary>
 		public string RPNString
         {
 			get
@@ -152,7 +179,11 @@ namespace FormulaParser
         }
 		#endregion
 
-		// Constructor
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="infix">The input string.</param>
+		/// <exception cref="Exception">Problem parsing string</exception>
 		public RPN(string infix)
 		{
 			if (CheckBrackets(infix))
@@ -173,6 +204,11 @@ namespace FormulaParser
 
 		}
 
+		/// <summary>
+		/// A quick check right at the start if the brackets match
+		/// </summary>
+		/// <param name="formula"></param>
+		/// <returns>True if there is an equal number of open "(" and close ")" brackets, false if not</returns>
 		private bool CheckBrackets(string formula)
 		{
 			int open = formula.Count(c => (c == '('));
@@ -189,6 +225,12 @@ namespace FormulaParser
 
 		}
 
+		/// <summary>
+		/// Compare precedence of operators
+		/// </summary>
+		/// <param name="op1">The first operator</param>
+		/// <param name="op2">The second operator</param>
+		/// <returns>True or false</returns>
 		private bool CompareOperators(Operator op1, Operator op2) => op1.RightAssociative ? op1.Precedence < op2.Precedence : op1.Precedence <= op2.Precedence;
 
 		#region Type Determiners

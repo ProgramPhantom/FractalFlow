@@ -135,6 +135,21 @@ namespace FractalGeneratorMVVM.ViewModels
             CurrentImage = new FractalImage(ref fractal, PainterRow.SelectedPainter);
         }
 
+        public async Task RenderAsync()
+        {
+            // Create a new formula based on the string in the FormulaBox
+            BasicIterator newIterator = new BasicIterator("Untitled", FormulaBox);
+            // Add it to the Iterator Collection
+            IteratorStack.IteratorCollection.Add(newIterator);
+
+            Fractal fractal = await Task.Run(() => new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, newIterator));
+
+            CurrentImage = new FractalImage(ref fractal, PainterRow.SelectedPainter);
+
+        }
+
+
+
 
         public void NewPainter()
         {
