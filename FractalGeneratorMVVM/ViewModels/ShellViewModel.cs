@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using FormulaParser;
+using System.Threading;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
@@ -71,6 +72,8 @@ namespace FractalGeneratorMVVM.ViewModels
                 NotifyOfPropertyChange(() => ProgressBar);
             }
         }
+
+        CancellationTokenSource cts = new CancellationTokenSource();
 
 
         // WINDOWS
@@ -152,6 +155,7 @@ namespace FractalGeneratorMVVM.ViewModels
 
         public async Task RenderAsync()
         {
+            cts = new CancellationTokenSource();  // Set up the cancel thing
             // Create a new formula based on the string in the FormulaBox
             BasicIterator newIterator = new BasicIterator("Untitled", FormulaBox);
             // Add it to the Iterator Collection
@@ -160,13 +164,28 @@ namespace FractalGeneratorMVVM.ViewModels
             Fractal fractal = new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, newIterator);
 
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();
-            progress.ProgressChanged += ReportProgress;
+            progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
-            await fractal.GenerateProgressAsync(progress);
+            try
+            {
+                await fractal.GenerateProgressAsync(progress, cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+
+            }
 
 
             CurrentImage = new FractalImage(ref fractal, PainterRow.SelectedPainter);
 
+        }
+
+        public void CancelRender()
+        {
+            cts.Cancel();
+            
+            ProgressBar = 0;
+            cts.Dispose();
         }
 
         private void ReportProgress(object? sender, RenderProgressModel e)

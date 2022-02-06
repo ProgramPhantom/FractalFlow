@@ -135,6 +135,8 @@
                      Name="Height"></TextBox>
 
             <ProgressBar Name="ProgressBar" Width="300" Margin="10, 10, 0, 10"></ProgressBar>
+
+            <Button Name="CancelRender" Margin="10, 10, 10, 10" Width="50"> Cancel</Button>
         </StackPanel>
 
 

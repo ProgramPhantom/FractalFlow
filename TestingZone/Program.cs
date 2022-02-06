@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using FormulaParser;
+using System.Numerics;
 
 namespace TestingZone
 {
@@ -6,7 +9,16 @@ namespace TestingZone
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            RPN test = new RPN("(x+2)+5");
+
+            Dictionary<string, Complex> variables = new Dictionary<string, Complex> { ["x"] = 3 };
+
+            Console.WriteLine(test.RPNString);
+
+            Console.WriteLine(test.ComputeComplex(variables));
+
+
         }
     }
 }

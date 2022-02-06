@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Threading;
 
 namespace FractalCore
 {
@@ -99,7 +100,7 @@ namespace FractalCore
         /// <summary>
         /// This method is responsible for creating a bunch of complex numbers to check if they are in the mandelbrot set or not
         /// </summary>
-        public async Task GenerateProgressAsync(IProgress<RenderProgressModel> progress)
+        public async Task GenerateProgressAsync(IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
             float realStep = (RealWidth / _width);
             float iStep = (ImaginaryHeight / _height);
@@ -113,6 +114,8 @@ namespace FractalCore
             {
                 for (int x = 0; x < _width; x++)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();  // CANCEL HERE IF TOKEN ACTIVATED
+
                     float realCoord = (realStep * x) + Left;
                     float imaginaryCoord = (iStep * y) + Bottom;
 
@@ -129,7 +132,7 @@ namespace FractalCore
             }
         }
 
-        public async void GenerateAsync()
+        public async Task GenerateAsync()
         {
             float realStep = (RealWidth / _width);
             float iStep = (ImaginaryHeight / _height);
