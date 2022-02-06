@@ -58,6 +58,7 @@ namespace FractalCore
 
             Name = name;
 
+            ThumbnailFractal.Generate();
             _thumbnail = new FractalImage(ref ThumbnailFractal, this);
         }
 

@@ -48,8 +48,6 @@ namespace FractalCore
 
             _width = width;
             _height = height;
-
-            IterateComplexPlane();  // RENDER
         }
 
         public Fractal(int width, int height, FractalFrame fractalFrame, IIterator iterator) : base()
@@ -68,14 +66,12 @@ namespace FractalCore
             Iterations = fractalFrame.Iterations;
             Iterations = fractalFrame.Iterations;
             Bail = fractalFrame.Bail;
-
-            IterateComplexPlane();  // FILL IN THE ITERATIONS ARRAY WITH NUMBERS
         }
 
         /// <summary>
-        /// This method is responsible for creating a bunch of compelx numbers to check if they are in the mandelbrot set or not
+        /// Only use for really small fractals
         /// </summary>
-        private void IterateComplexPlane()
+        public void Generate()
         {
             float realStep = (RealWidth / _width);
             float iStep = (ImaginaryHeight / _height);
@@ -92,11 +88,70 @@ namespace FractalCore
 
                     point = new Complex(realCoord, imaginaryCoord);
 
-                    _iterationsArray[y, x] = IteratePoint(point);  // This will be replaced with whatever recursive formula the fractal is using
-                }
-            }
+                    uint iterations = IteratePoint(point);
 
-            System.Diagnostics.Trace.WriteLine("Done!");
+                    _iterationsArray[y, x] = iterations;
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// This method is responsible for creating a bunch of complex numbers to check if they are in the mandelbrot set or not
+        /// </summary>
+        public async Task GenerateProgressAsync(IProgress<RenderProgressModel> progress)
+        {
+            float realStep = (RealWidth / _width);
+            float iStep = (ImaginaryHeight / _height);
+
+            RenderProgressModel report = new RenderProgressModel();
+
+            Complex point;
+
+            // Iterate through every pixel on the complex plane
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    float realCoord = (realStep * x) + Left;
+                    float imaginaryCoord = (iStep * y) + Bottom;
+
+                    point = new Complex(realCoord, imaginaryCoord);
+
+                    uint iterations = await Task.Run(() => IteratePoint(point));
+
+                    _iterationsArray[y, x] = iterations;
+                }
+
+                // Add one as y starts at 0
+                report.PercentageComplete = ((y+1) * 100) / _height;
+                progress.Report(report);
+            }
+        }
+
+        public async void GenerateAsync()
+        {
+            float realStep = (RealWidth / _width);
+            float iStep = (ImaginaryHeight / _height);
+
+            Complex point;
+
+            // Iterate through every pixel on the complex plane
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    float realCoord = (realStep * x) + Left;
+                    float imaginaryCoord = (iStep * y) + Bottom;
+
+                    point = new Complex(realCoord, imaginaryCoord);
+
+                    uint iterations = await Task.Run(() => IteratePoint(point));
+
+                    _iterationsArray[y, x] = iterations;
+                }
+
+            }
         }
 
         public uint IteratePoint(Complex p)

@@ -133,6 +133,8 @@
                      Height="30"
                      FontSize="17"
                      Name="Height"></TextBox>
+
+            <ProgressBar Name="ProgressBar" Width="300" Margin="10, 10, 0, 10"></ProgressBar>
         </StackPanel>
 
 

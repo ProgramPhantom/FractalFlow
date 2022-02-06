@@ -20,6 +20,8 @@ namespace FractalGeneratorMVVM.ViewModels
         private IWindowManager _windowManager;
         private FractalImage? _currentImage;
         private string _formulaBox;
+        private int _progressBar;
+
 
         private int _width = 1000;
         private int _height = 1000;
@@ -59,6 +61,17 @@ namespace FractalGeneratorMVVM.ViewModels
                 NotifyOfPropertyChange(() => FormulaBox);
             }
         }
+
+        public int ProgressBar
+        {
+            get { return _progressBar; }
+            set 
+            { 
+                _progressBar = value;
+                NotifyOfPropertyChange(() => ProgressBar);
+            }
+        }
+
 
         // WINDOWS
         public AddPainterWindowViewModel AddPainterWindow
@@ -144,10 +157,22 @@ namespace FractalGeneratorMVVM.ViewModels
             // Add it to the Iterator Collection
             IteratorStack.IteratorCollection.Add(newIterator);
 
-            Fractal fractal = await Task.Run(() => new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, newIterator));
+            Fractal fractal = new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, newIterator);
+
+            Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();
+            progress.ProgressChanged += ReportProgress;
+
+            await fractal.GenerateProgressAsync(progress);
+
 
             CurrentImage = new FractalImage(ref fractal, PainterRow.SelectedPainter);
 
+        }
+
+        private void ReportProgress(object? sender, RenderProgressModel e)
+        {
+            ProgressBar = e.PercentageComplete;
+            
         }
 
 
