@@ -30,8 +30,13 @@ namespace FractalGeneratorMVVM.ViewModels
         public IIterator SelectedIterator
         {
             get { return _selectedIterator; }
-            set { _selectedIterator = value; }
+            set 
+            { 
+                _selectedIterator = value;
+                NotifyOfPropertyChange(() => SelectedIterator);
+            }
         }
+
 
 
         public IteratorStackViewModel()
@@ -40,6 +45,11 @@ namespace FractalGeneratorMVVM.ViewModels
 
             _iteratorCollection.Add(new BasicIterator("Mandelbrot Set", "z^2 + c"));
             _selectedIterator = _iteratorCollection[0];
+        }
+
+        public void UpdateSelected()
+        {
+            SelectedIterator = IteratorCollection.Last();
         }
     }
 }

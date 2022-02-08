@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows;
 using FormulaParser;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
@@ -44,10 +45,10 @@ namespace FractalGeneratorMVVM.ViewModels
             get { return _windowManager; }
             set { _windowManager = value; }
         }
-        public FractalImage ?CurrentImage
+        public FractalImage? CurrentImage
         {
             get { return _currentImage; }
-            set 
+            set
             {
                 _currentImage = value;
                 NotifyOfPropertyChange(() => CurrentImage);
@@ -66,8 +67,8 @@ namespace FractalGeneratorMVVM.ViewModels
         public int ProgressBar
         {
             get { return _progressBar; }
-            set 
-            { 
+            set
+            {
                 _progressBar = value;
                 NotifyOfPropertyChange(() => ProgressBar);
             }
@@ -157,11 +158,12 @@ namespace FractalGeneratorMVVM.ViewModels
         {
             cts = new CancellationTokenSource();  // Set up the cancel thing
             // Create a new formula based on the string in the FormulaBox
-            BasicIterator newIterator = new BasicIterator("Untitled", FormulaBox);
-            // Add it to the Iterator Collection
-            IteratorStack.IteratorCollection.Add(newIterator);
 
-            Fractal fractal = new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, newIterator);
+
+            NewIterator(FormulaBox);
+
+
+            Fractal fractal = new Fractal(_width, _height, FractalFrameRow.SelectedFractalFrame, IteratorStack.IteratorCollection.Last());
 
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
@@ -183,17 +185,38 @@ namespace FractalGeneratorMVVM.ViewModels
         public void CancelRender()
         {
             cts.Cancel();
-            
+
             ProgressBar = 0;
-            cts.Dispose();
+
         }
 
         private void ReportProgress(object? sender, RenderProgressModel e)
         {
             ProgressBar = e.PercentageComplete;
-            
+
         }
 
+        public void NewIterator(string formula)
+        {
+            // Remove the whitespace in the formula:
+            formula = Regex.Replace(formula, @"\s+", "");
+
+            // Search through the iterators already there
+            foreach (IIterator iterator in IteratorStack.IteratorCollection)
+            {
+                if (iterator.FormulaString == formula)
+                {
+                    IteratorStack.SelectedIterator = iterator;  // Select that iterator (:
+                    return;  // Iterator already used before, so return
+                }
+            }
+
+            BasicIterator newIterator = new BasicIterator("Untitled", formula);
+            // Add it to the Iterator Collection
+            IteratorStack.IteratorCollection.Add(newIterator);
+
+            IteratorStack.UpdateSelected();  // Set the selected iterator to the most recently made one
+        }
 
         /// <summary>
         /// Opens the new painter window

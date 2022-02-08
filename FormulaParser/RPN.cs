@@ -189,7 +189,6 @@ namespace FormulaParser
 			if (CheckBrackets(infix))
 			{
 				_infixString = infix;
-
 			}
 			else
 			{
@@ -200,8 +199,6 @@ namespace FormulaParser
 
 			_infixTokens = Tokenize(infix);
 			_RPNTokens = ShuntingYard();
-
-
 		}
 
 		/// <summary>
