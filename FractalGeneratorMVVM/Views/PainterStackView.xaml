@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="FractalGeneratorMVVM.Views.PainterStackView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="80">
+    <Grid Background="#424242">
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition MinWidth="70"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Fractal Frame title-->
+        <TextBlock Grid.Column="0" 
+                   VerticalAlignment="Top" 
+                   FontSize="11" 
+                   Background="#424242" 
+                   Grid.ColumnSpan="2" 
+                   FontFamily="Bahnschrift" 
+                   Height="18"
+                   HorizontalAlignment="Center"
+                   Foreground="White">
+            Painters
+        </TextBlock>
+
+
+
+        <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ListBox x:Name="PainterCollection" Background="#424242"
+                 SelectedItem="{Binding Path=SelectedPainter, Mode=TwoWay}"
+                     HorizontalAlignment="Center"
+                     Margin="0, 0, 0, 0"
+                     BorderThickness="0" IsSynchronizedWithCurrentItem="True"
+                     Width="Auto" Height="Auto">
+
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Margin" Value="0, 5, 0, 5"></Setter>
+                        <Setter Property="Background" Value="Purple"></Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="Control.IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="AliceBlue"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                
+                
+
+
+
+                <!--The template for the buttons-->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Button Width="40" Height="40"
+                            BorderThickness="0"
+                            HorizontalAlignment="Center"
+                            Margin="5, 5, 5, 5" VerticalAlignment="Stretch" 
+                            HorizontalContentAlignment="Stretch" 
+                            Padding="0,0,0,0">
+                            <Button.Template>
+
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Ellipse Margin="0">
+                                            <Ellipse.Effect>
+                                                <DropShadowEffect 
+                                                Color="Black"
+                                                BlurRadius="7"
+                                                ShadowDepth="4"
+                                                Direction="-45" 
+                                                Opacity="0.4">
+
+                                                </DropShadowEffect>
+
+
+                                            </Ellipse.Effect>
+
+                                            <Ellipse.Fill>
+                                                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1">
+                                                    <GradientStop Color="#694966" Offset="0.0"/>
+                                                    <GradientStop Color="#5C415D" Offset="1.1"/>
+
+                                                </LinearGradientBrush>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Foreground="White"
+                                               FontSize="30" 
+                                               FontFamily="Quicksand SemiBold" FontWeight="Normal"
+                                               >1
+                                            <TextBlock.Effect>
+                                                <DropShadowEffect 
+                                                Direction="-45" ShadowDepth="1">
+
+                                                </DropShadowEffect>
+                                            </TextBlock.Effect>
+                                        </TextBlock>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </DataTemplate>
+
+
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </ScrollViewer>
+
+        <Button x:Name="AddPainter" 
+                HorizontalAlignment="Center"
+                Grid.Row="2"
+                Width="40" 
+                Height="40"
+                Margin="0,0,0,20">
+            <Button.Template>
+
+                <ControlTemplate>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" Height="40"
+                          >
+                        <Ellipse Fill="LightGray">
+
+                        </Ellipse>
+                        <TextBlock HorizontalAlignment="Center" 
+                                   VerticalAlignment="Top" 
+                                   FontSize="25" Margin="0,1,0,0">+</TextBlock>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</UserControl>

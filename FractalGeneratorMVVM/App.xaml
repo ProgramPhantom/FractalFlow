@@ -4,12 +4,25 @@
              xmlns:local="clr-namespace:FractalGeneratorMVVM">
     <Application.Resources>
         <ResourceDictionary>
+
+
             <ResourceDictionary.MergedDictionaries>
+                <!--- Styles -->
+                <!-- The order matters! -->
+                <ResourceDictionary Source="Styles/Colours.xaml"/>
+                <ResourceDictionary Source="Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Styles/Texts.xaml"/>
+                <ResourceDictionary Source="Styles/Windows.xaml"/>
+
+
+
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
 
 
     </Application.Resources>

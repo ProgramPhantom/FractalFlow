@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FractalGeneratorMVVM">
+
+    <!-- When adding a new font, make sure to open the ttf file and copy the "Name: " and put a hashtag before it -->
+    
+    <!-- Lato -->
+    <FontFamily x:Key="Lato">pack://application:,,,/Fonts/Lato/#Lato</FontFamily>
+    <FontFamily x:Key="LatoLight">pack://application:,,,/Fonts/Lato/#Lato Light</FontFamily>
+
+    <!-- Wave -->
+    <FontFamily x:Key="Wave">pack://application:,,,/Fonts/Wave/#LT Wave</FontFamily>
+    <FontFamily x:Key="WaveLight">pack://application:,,,/Fonts/Wave/#LT Wave Light</FontFamily>
+    <FontFamily x:Key="WaveMono">pack://application:,,,/Fonts/Wave/#LT Wave Mono</FontFamily>
+
+    <!-- Chaning the font here will not work until VS is restarted, because VS is garbage. -->
+    <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+        <Setter Property="FontFamily" Value="{StaticResource WaveLight}"></Setter>
+    </Style>
+
+    
+    <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">  <!-- Do a different one for TextBlock for... reasons. -->
+        <Setter Property="FontFamily" Value="{StaticResource Wave}"></Setter>
+    </Style>
+
+    <!-- Set the default font for the following controls -->
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"></Style>
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseStyle}"></Style>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"></Style>
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}"></Style>
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}"></Style>
+
+</ResourceDictionary>

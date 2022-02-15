@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FractalGeneratorMVVM.Views
+namespace FractalGeneratorMVVM.Controls
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for FractalFrameItem.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class FractalFrameItem : UserControl
     {
-        public ShellView()
+        public FractalFrameItem()
         {
             InitializeComponent();
         }

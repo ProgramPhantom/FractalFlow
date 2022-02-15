@@ -8,6 +8,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Lato\Lato-Black.ttf" />
+    <None Remove="Fonts\Lato\Lato-BlackItalic.ttf" />
+    <None Remove="Fonts\Lato\Lato-Bold.ttf" />
+    <None Remove="Fonts\Lato\Lato-BoldItalic.ttf" />
+    <None Remove="Fonts\Lato\Lato-Italic.ttf" />
+    <None Remove="Fonts\Lato\Lato-Light.ttf" />
+    <None Remove="Fonts\Lato\Lato-LightItalic.ttf" />
+    <None Remove="Fonts\Lato\Lato-Regular.ttf" />
+    <None Remove="Fonts\Lato\Lato-Thin.ttf" />
+    <None Remove="Fonts\Lato\Lato-ThinItalic.ttf" />
+    <None Remove="Fonts\Wave\LTWave-Bold.ttf" />
+    <None Remove="Fonts\Wave\LTWave-BoldItalic.ttf" />
+    <None Remove="Fonts\Wave\LTWave-Italic.ttf" />
+    <None Remove="Fonts\Wave\LTWave-Light.ttf" />
+    <None Remove="Fonts\Wave\LTWave-LightItalic.ttf" />
+    <None Remove="Fonts\Wave\LTWave-Mono.ttf" />
+    <None Remove="Fonts\Wave\LTWave-Regular.ttf" />
+    <None Remove="Fonts\Wave\LTWaveUI.ttf" />
+    <None Remove="Images\temp\simulide.png" />
+  </ItemGroup>
+  
+
+  <ItemGroup>
     <ProjectReference Include="..\FormulaParser\FormulaParser.csproj" />
     <ProjectReference Include="..\FractalCore\FractalCore.csproj" />
   </ItemGroup>
@@ -23,6 +46,66 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\Lato\Lato-Black.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-BlackItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-LightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-Thin.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Lato\Lato-ThinItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-LightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-Mono.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWave-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Wave\LTWaveUI.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\temp\simulide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
