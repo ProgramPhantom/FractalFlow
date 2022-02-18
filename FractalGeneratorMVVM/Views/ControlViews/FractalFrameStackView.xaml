@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="FractalGeneratorMVVM.Views.FractalFrameStackView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="80">
+    <Grid Background="#424242" d:DataContext="{x:Static local:FractalFrameStackDESIGN.Instance}">
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition MinWidth="70"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Fractal Frame title-->
+        <TextBlock Grid.Column="0" 
+                   VerticalAlignment="Top" 
+                   FontSize="11" 
+                   Background="#424242" 
+                   Foreground="White" 
+                   Grid.ColumnSpan="2"
+                   Height="18"
+                   HorizontalAlignment="Center">
+            Fractal Frames
+        </TextBlock>
+
+        <ScrollViewer 
+            Grid.Row="1" 
+            HorizontalAlignment="Center" 
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl  Width="auto" ItemsSource="{Binding FractalFrameViewModels}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:FractalFrameView/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+
+    </Grid>
+</UserControl>

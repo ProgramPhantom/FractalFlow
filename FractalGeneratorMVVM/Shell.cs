@@ -6,37 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using FractalGeneratorMVVM.Views;
+using FractalGeneratorMVVM.ViewModels;
 
 
-namespace FractalGeneratorMVVM.ViewModels
+namespace FractalGeneratorMVVM
 {
     /// <summary>
     /// View model for the custom flat window
     /// </summary>
-    public class ShellViewModel : PropertyChangedBase
+    public class Shell : PropertyChangedBase
     {
         private readonly IWindowManager _windowManager;
 
         private MainWindowViewModel _mainWindow;
 
-        public ShellViewModel()
+        public Shell()
         {
-            /*
             _windowManager = new WindowManager();
 
-            MainWindowView mainWindowView = new MainWindowView();
-            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(ref mainWindowView);
 
-            ViewModelBinder.Bind(mainWindowViewModel, mainWindowView, null);
-            
-
-            _windowManager.ShowWindowAsync(mainWindowViewModel);
-            */
-
-            _windowManager = new WindowManager();
             _mainWindow = new MainWindowViewModel();
-
             _windowManager.ShowWindowAsync(_mainWindow);
+
+
         }
 
 

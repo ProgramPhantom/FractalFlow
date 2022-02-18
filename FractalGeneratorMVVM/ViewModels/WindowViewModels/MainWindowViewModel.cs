@@ -10,25 +10,33 @@ using System.Windows.Input;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
-    public class MainWindowViewModel : Screen
+    public class MainWindowViewModel : Conductor<object>
     {
         #region Fields
 
         /// <summary>
         /// The margin around the window to allow for a drop shadow
         /// </summary>
-        private int _outerMarginSize = 10;
+        private int _outerMarginSize = 5;
 
         private int _resizeBorderSize = 6;
 
         private int _titleHeight = 25;
 
+        private int _windowMinWidth = 800;
+
+        private int _windowMinHeight = 450;
+
         /// <summary>
         /// The radius of the edges of the window
         /// </summary>
-        private int _windowRadius = 10;
+        private int _windowRadius = 4;
 
         private bool _maximised = false;
+
+
+
+        private DefaultPageViewModel _currentPage;
 
         #endregion
 
@@ -104,22 +112,55 @@ namespace FractalGeneratorMVVM.ViewModels
 
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + ResizeBorder); } }
 
-        #endregion
 
-        #region Commands
+        public int WindowMinHeight
+        {
+            get { return _windowMinHeight; }
+            set { _windowMinHeight = value; }
+        }
+
+
+        public int WindowMinWidth
+        {
+            get { return _windowMinWidth; }
+            set { _windowMinWidth = value; }
+        }
+
+
+        public DefaultPageViewModel CurrentPage
+        {
+            get
+            {
+                return _currentPage;
+            }
+            set
+            {
+                _currentPage = value;
+                NotifyOfPropertyChange(() => CurrentPage);
+            }
+        }
+
+
 
         #endregion
 
         #region Constructor
         public MainWindowViewModel()
         {
-            
-
+            _currentPage = new DefaultPageViewModel();
+            LoadPage();
             
         }
         #endregion
 
+
+
         #region Methods
+        public void LoadPage()
+        {
+            ActivateItemAsync(CurrentPage);
+        }
+
         /// <summary>
         /// Connected up with the window's StateChanged event, fires when the window state is changed to update the
         /// window radius and margin
@@ -183,9 +224,19 @@ namespace FractalGeneratorMVVM.ViewModels
         {
             Point position = Mouse.GetPosition(window);
 
+            if (window.WindowState == WindowState.Maximized)
+            {
+                SystemCommands.ShowSystemMenu(window, new Point(position.X , position.Y));
+            }
+            else
+            {
+                SystemCommands.ShowSystemMenu(window, new Point(position.X + window.Left, position.Y + window.Top));
+            }
+
+
             System.Diagnostics.Trace.WriteLine($"X: {position.X}, Y: {position.Y}");
 
-            SystemCommands.ShowSystemMenu(window, new Point(position.X + window.Left, position.Y + window.Top));
+            
         }
         #endregion
         #endregion

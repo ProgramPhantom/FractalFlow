@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Old\ShellViewModelOld.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Fonts\Lato\Lato-Black.ttf" />
     <None Remove="Fonts\Lato\Lato-BlackItalic.ttf" />
     <None Remove="Fonts\Lato\Lato-Bold.ttf" />

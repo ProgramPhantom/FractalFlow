@@ -10,6 +10,6 @@
 
     <Color x:Key="Accent">#4C2C69</Color>
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"></SolidColorBrush>
-
+    
 
 </ResourceDictionary>
