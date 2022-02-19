@@ -71,4 +71,27 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="{x:Type Button}" x:Key="AddNewButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Ellipse Width="40" Height="40" Margin="{TemplateBinding Margin}"> 
+                            <Ellipse.Fill>
+                                <SolidColorBrush Color="Gray"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <TextBlock Text="+" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"> </TextBlock>
+
+                       
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

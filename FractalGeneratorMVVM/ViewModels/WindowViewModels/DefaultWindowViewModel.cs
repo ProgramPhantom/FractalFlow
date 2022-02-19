@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
-    public class MainWindowViewModel : Conductor<object>
+    public class DefaultWindowViewModel : Conductor<object>
     {
         #region Fields
 
@@ -36,7 +36,7 @@ namespace FractalGeneratorMVVM.ViewModels
 
 
 
-        private DefaultPageViewModel _currentPage;
+        private Screen _currentPage;
 
         #endregion
 
@@ -127,7 +127,7 @@ namespace FractalGeneratorMVVM.ViewModels
         }
 
 
-        public DefaultPageViewModel CurrentPage
+        public Screen CurrentPage
         {
             get
             {
@@ -145,9 +145,9 @@ namespace FractalGeneratorMVVM.ViewModels
         #endregion
 
         #region Constructor
-        public MainWindowViewModel()
+        public DefaultWindowViewModel(Screen page)
         {
-            _currentPage = new DefaultPageViewModel();
+            _currentPage = page;
             LoadPage();
             
         }
@@ -166,7 +166,7 @@ namespace FractalGeneratorMVVM.ViewModels
         /// window radius and margin
         /// </summary>
         /// <param name="view"></param>
-        public void UpdateProperties(MainWindowView view)
+        public void UpdateProperties(DefaultWindowView view)
         {
 
             if (view.WindowState == WindowState.Maximized)
@@ -192,6 +192,7 @@ namespace FractalGeneratorMVVM.ViewModels
         public void CloseWindow(Window window)
         {
             window.Close();
+            
         }
 
         /// <summary>

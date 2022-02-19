@@ -33,7 +33,7 @@
 
         <ContentControl Grid.Column="1" Grid.Row="2" x:Name="IteratorStack"/>
 
-        <ContentControl Grid.Column="3" Grid.Row="2" x:Name="PainterStack"/>1
+        <ContentControl Grid.Column="3" Grid.Row="2" x:Name="PainterStack"/>
 
 
         <!--<StackPanel Orientation="Horizontal" 

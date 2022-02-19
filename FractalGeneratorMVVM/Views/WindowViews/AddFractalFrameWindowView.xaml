@@ -1,11 +1,12 @@
-﻿<Window x:Class="FractalGeneratorMVVM.Views.AddFractalFrameWindowView"
+﻿<UserControl x:Class="FractalGeneratorMVVM.Views.AddFractalFrameWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="AddFractalFrameWindowView" Height="450" Width="800">
+        Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -51,8 +52,8 @@
 
             <Button x:Name="AddFractalFrame" 
                     Height="60" 
-                    Click="CloseWindow">Add Fractal Frame</Button>
+                    cal:Message.Attach="[Event Click] = [Action AddFractalFrame($view)]">Add Fractal Frame</Button>
 
         </StackPanel>
     </Grid>
-</Window>
+</UserControl>

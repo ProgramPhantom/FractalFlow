@@ -8,6 +8,8 @@ using Caliburn.Micro;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
+    public delegate void Selected(FractalFrameViewModel sender);
+
     public class FractalFrameViewModel : Screen
     {
         #region Fields
@@ -58,6 +60,21 @@ namespace FractalGeneratorMVVM.ViewModels
             _name = name;
         }
 
+        public event Selected ButtonSelected;
+
+        public void SelectButton()
+        {
+            IsSelected = true;
+            System.Diagnostics.Trace.WriteLine("Clicked!");
+
+            SelectedEvent();
+        }
+
+        protected virtual void SelectedEvent()
+        {
+
+            ButtonSelected?.Invoke(this);
+        }
 
     }
 }

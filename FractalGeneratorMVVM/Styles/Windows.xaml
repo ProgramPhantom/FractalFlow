@@ -5,6 +5,12 @@
 
     
     <Style TargetType="{x:Type Window}" x:Key="DefaultChromeWindow">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="Title" Value="Window"/>
+
+
+        
 
         <Setter Property="Template">
             <Setter.Value>

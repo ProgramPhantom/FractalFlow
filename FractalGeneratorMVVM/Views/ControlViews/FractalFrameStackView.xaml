@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             
              d:DesignHeight="450" d:DesignWidth="80">
     <Grid Background="#424242" d:DataContext="{x:Static local:FractalFrameStackDESIGN.Instance}">
         <Grid.ColumnDefinitions>
@@ -29,7 +30,7 @@
                    HorizontalAlignment="Center">
             Fractal Frames
         </TextBlock>
-
+        
         <ScrollViewer 
             Grid.Row="1" 
             HorizontalAlignment="Center" 
@@ -43,6 +44,12 @@
             </ItemsControl>
         </ScrollViewer>
 
+
+        <Button Margin="5" Grid.Row="2" 
+                Style="{StaticResource AddNewButton}" 
+                x:Name="NewFractalFrame">
+            
+        </Button>
 
     </Grid>
 </UserControl>

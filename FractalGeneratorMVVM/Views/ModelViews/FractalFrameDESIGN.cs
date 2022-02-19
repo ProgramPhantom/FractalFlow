@@ -15,10 +15,12 @@ namespace FractalGeneratorMVVM.Views
 
         public FractalFrameDESIGN(int num) : base(num)
         {
-            Number = num;
-            IsSelected = true;
+            
+            IsSelected = false;
 
-            // DependencyProperty prop = new DependencyProperty();
+            DependencyObject obj = new DependencyObject();
         }
+
+
     }
 }

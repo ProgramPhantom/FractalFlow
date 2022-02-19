@@ -17,13 +17,11 @@ namespace FractalGeneratorMVVM.Views
     /// <summary>
     /// Interaction logic for AddFractalFrameWindowView.xaml
     /// </summary>
-    public partial class AddFractalFrameWindowView : Window
+    public partial class AddFractalFrameWindowView : UserControl
     {
         public AddFractalFrameWindowView()
         {
             InitializeComponent();
         }
-
-        private void CloseWindow(object sender, RoutedEventArgs e) => Close();
     }
 }

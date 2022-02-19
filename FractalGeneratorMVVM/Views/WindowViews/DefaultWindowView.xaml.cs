@@ -19,7 +19,7 @@ namespace FractalGeneratorMVVM.Views
     /// <summary>
     /// Interaction logic for MainWindowView.xaml
     /// </summary>
-    public partial class MainWindowView : Window
+    public partial class DefaultWindowView : Window
     {
         #region ⚠SUS CODE, DO NOT TOUCH⚠
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -137,7 +137,7 @@ namespace FractalGeneratorMVVM.Views
         internal static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
         #endregion
 
-        public MainWindowView()
+        public DefaultWindowView()
         {
             InitializeComponent();
 

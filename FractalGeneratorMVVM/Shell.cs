@@ -18,14 +18,14 @@ namespace FractalGeneratorMVVM
     {
         private readonly IWindowManager _windowManager;
 
-        private MainWindowViewModel _mainWindow;
+        private DefaultWindowViewModel _mainWindow;
 
         public Shell()
         {
             _windowManager = new WindowManager();
 
 
-            _mainWindow = new MainWindowViewModel();
+            _mainWindow = new DefaultWindowViewModel(new DefaultPageViewModel());
             _windowManager.ShowWindowAsync(_mainWindow);
 
 

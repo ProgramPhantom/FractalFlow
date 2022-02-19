@@ -10,7 +10,25 @@ namespace FractalGeneratorMVVM.ViewModels
 {
     public class AddFractalFrameWindowViewModel : Screen
     {
-        private BindableCollection<FractalFrame> _fractalFrames;
+        private FractalFrameStackViewModel _fractalFrameStack;
+
+        private WindowManager _windowManager;
+
+        public WindowManager WindowManager
+        {
+            get { return _windowManager; }
+            set { _windowManager = value; }
+        }
+
+
+        private DefaultWindowViewModel _window;
+
+        public DefaultWindowViewModel Window
+        {
+            get { return _window; }
+            set { _window = value; }
+        }
+
 
         public string Name { get; set; } = "Untitled";
         public float Top { get; set; } = BaseScaffold.TopDefault;
@@ -20,14 +38,26 @@ namespace FractalGeneratorMVVM.ViewModels
         public uint Iterations { get; set; } = BaseScaffold.IterationsDefault;
         public int Bail { get; set; } = BaseScaffold.BailDefault;
 
-        public AddFractalFrameWindowViewModel(BindableCollection<FractalFrame> fractalFrames)
+        public AddFractalFrameWindowViewModel(FractalFrameStackViewModel fractalFrameStack)
         {
-            _fractalFrames = fractalFrames;
+            _fractalFrameStack = fractalFrameStack;
+
+            _windowManager = new WindowManager();
+            _window = new DefaultWindowViewModel(this);
         }
 
-        public void AddFractalFrame()
+        public void ShowWindow()
         {
-            _fractalFrames.Add(new FractalFrame(Left, Right, Top, Bottom, Name, Iterations, Bail));
+            _windowManager.ShowWindowAsync(_window);
+        }
+
+        /// <summary>
+        /// When the add button is clicked
+        /// </summary>
+        public void AddFractalFrame(Screen view)
+        {
+            _fractalFrameStack.AddFractalFrame(new FractalFrame(Left, Right, Top, Bottom, Name, Iterations, Bail));
+            _window.TryCloseAsync();
         }
 
     }
