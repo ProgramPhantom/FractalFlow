@@ -4,27 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FractalCore;
+using System.Windows;
 using Caliburn.Micro;
+using System.Windows.Media;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
-    public delegate void FractalFrameSelected(FractalFrameViewModel sender);
+    public delegate void PainterSelected(PainterViewModel sender);
 
-    public class FractalFrameViewModel : Screen
+    public class PainterViewModel : Screen
     {
         #region Fields
-        private FractalFrame _fractalFrameModel;
+        private BasicPainter _painterModel;
         private string _name;
         private int _number;
         private bool _isSelected;
+
+        private SolidColorBrush _buttonColor;
         #endregion
 
-
         #region Properties
-        public FractalFrame FractalFrameModel
+        public BasicPainter PainterModel
         {
-            get { return _fractalFrameModel; }
-            set { _fractalFrameModel = value; }
+            get { return _painterModel; }
+            set { _painterModel = value; }
         }
 
         public int Number
@@ -50,18 +53,28 @@ namespace FractalGeneratorMVVM.ViewModels
                 NotifyOfPropertyChange(() => IsSelected);
             }
         }
+
+        public SolidColorBrush ButtonColor
+        {
+            get { return _buttonColor; }
+            set { _buttonColor = value; }
+        }
         #endregion
 
-        public FractalFrameViewModel(int num, string name="Untitled")
-        {
-            _fractalFrameModel = new FractalFrame();
+        public event PainterSelected PainterSelectedEvent;
 
+        public PainterViewModel(BasicPainter painter, int num, string name = "Untitled")
+        {
+            _painterModel = painter;
             _number = num;
             _name = name;
+
+            _buttonColor = new SolidColorBrush(Color.FromRgb(_painterModel.Red, _painterModel.Green, _painterModel.Blue));
         }
 
-        public event FractalFrameSelected FractalFrameSelectedEvent;
-
+        /// <summary>
+        /// This view model has been clicked!
+        /// </summary>
         public void SelectButton()
         {
             IsSelected = true;
@@ -73,8 +86,9 @@ namespace FractalGeneratorMVVM.ViewModels
         protected virtual void SelectedEvent()
         {
 
-            FractalFrameSelectedEvent?.Invoke(this);
+            PainterSelectedEvent?.Invoke(this);
         }
+
 
     }
 }

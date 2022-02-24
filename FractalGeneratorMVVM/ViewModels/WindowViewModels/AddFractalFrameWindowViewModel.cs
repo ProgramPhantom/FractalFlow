@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using FractalCore;
 
@@ -43,7 +44,7 @@ namespace FractalGeneratorMVVM.ViewModels
             _fractalFrameStack = fractalFrameStack;
 
             _windowManager = new WindowManager();
-            _window = new DefaultWindowViewModel(this);
+            _window = new DefaultWindowViewModel(this, ResizeMode.NoResize);
         }
 
         public void ShowWindow()
@@ -54,7 +55,7 @@ namespace FractalGeneratorMVVM.ViewModels
         /// <summary>
         /// When the add button is clicked
         /// </summary>
-        public void AddFractalFrame(Screen view)
+        public void AddFractalFrame()
         {
             _fractalFrameStack.AddFractalFrame(new FractalFrame(Left, Right, Top, Bottom, Name, Iterations, Bail));
             _window.TryCloseAsync();

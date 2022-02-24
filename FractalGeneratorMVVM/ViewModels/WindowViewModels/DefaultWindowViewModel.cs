@@ -140,20 +140,20 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
-
+        public ResizeMode CanWindowResize { get; set; }
 
         #endregion
 
         #region Constructor
-        public DefaultWindowViewModel(Screen page)
+        public DefaultWindowViewModel(Screen page, ResizeMode resize)
         {
             _currentPage = page;
+            CanWindowResize = resize;
+
             LoadPage();
             
         }
         #endregion
-
-
 
         #region Methods
         public void LoadPage()

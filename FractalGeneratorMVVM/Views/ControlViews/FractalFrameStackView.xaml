@@ -47,7 +47,7 @@
 
         <Button Margin="5" Grid.Row="2" 
                 Style="{StaticResource AddNewButton}" 
-                x:Name="NewFractalFrame">
+                x:Name="NewFractalFrameWindow">
             
         </Button>
 

@@ -17,7 +17,7 @@
         MinHeight="500"
         MinWidth="500"
         Style="{StaticResource DefaultChromeWindow}"
-        ResizeMode="CanResizeWithGrip"
+        ResizeMode="{Binding CanWindowResize}"
         cal:Message.Attach="[Event StateChanged] = [Action UpdateProperties($view)]"
         
         >

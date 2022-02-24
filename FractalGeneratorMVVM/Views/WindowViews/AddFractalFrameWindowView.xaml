@@ -52,7 +52,7 @@
 
             <Button x:Name="AddFractalFrame" 
                     Height="60" 
-                    cal:Message.Attach="[Event Click] = [Action AddFractalFrame($view)]">Add Fractal Frame</Button>
+                    >Add Fractal Frame</Button>
 
         </StackPanel>
     </Grid>

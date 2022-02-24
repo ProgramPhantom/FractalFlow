@@ -113,4 +113,17 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\ModelViews\PainterView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\ModelViews\PainterView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

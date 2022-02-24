@@ -25,7 +25,7 @@ namespace FractalGeneratorMVVM
             _windowManager = new WindowManager();
 
 
-            _mainWindow = new DefaultWindowViewModel(new DefaultPageViewModel());
+            _mainWindow = new DefaultWindowViewModel(new DefaultPageViewModel(), ResizeMode.CanResizeWithGrip);
             _windowManager.ShowWindowAsync(_mainWindow);
 
 

@@ -11,11 +11,28 @@ using System.Text.RegularExpressions;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
-    public class AddPainterWindowViewModel : Window
+    public class AddPainterWindowViewModel : Screen
     {
-        private BindableCollection<IPainter> _painters;
+        private PainterStackViewModel _painterStack;
+
+        #region Window Stuff
+        private WindowManager _windowManager;
+
+        public WindowManager WindowManager
+        {
+            get { return _windowManager; }
+            set { _windowManager = value; }
+        }
 
 
+        private DefaultWindowViewModel _window;
+
+        public DefaultWindowViewModel Window
+        {
+            get { return _window; }
+            set { _window = value; }
+        }
+        #endregion
 
         public byte Red { get; set; } = 0;
 
@@ -26,16 +43,25 @@ namespace FractalGeneratorMVVM.ViewModels
         public string PainterName { get; set; } = "Untitled";
 
 
-        public AddPainterWindowViewModel(BindableCollection<IPainter> painters)
+        public AddPainterWindowViewModel(PainterStackViewModel painterStack)
         {
-            _painters = painters;
+            _painterStack = painterStack;
+
+            _window = new DefaultWindowViewModel(this, ResizeMode.NoResize);
+            _windowManager = new WindowManager();
+
+        }
+
+        public void ShowWindow()
+        {
+            _windowManager.ShowWindowAsync(_window);
         }
 
 
-        public void AddBasic()
+        public void AddBasicPainter()
         {
-            _painters.Add(new BasicPainter(PainterName, Red, Green, Blue));
-            
+            _painterStack.NewPainter(new BasicPainter(PainterName, Red, Green, Blue));
+            _window.TryCloseAsync();
         }
     }
     

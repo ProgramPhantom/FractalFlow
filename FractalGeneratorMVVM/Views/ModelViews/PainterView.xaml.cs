@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,26 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace FractalGeneratorMVVM.Views
 {
     /// <summary>
-    /// Interaction logic for AddPainterWindow.xaml
+    /// Interaction logic for FractalFrameView.xaml
     /// </summary>
-    public partial class AddPainterWindowView : UserControl
+    public partial class PainterView : UserControl
     {
-        public AddPainterWindowView()
+        public PainterView()
         {
             InitializeComponent();
-        }
-
-
-        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");  // MAKE THIS A 0 - 255 RANGE
-
-            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
