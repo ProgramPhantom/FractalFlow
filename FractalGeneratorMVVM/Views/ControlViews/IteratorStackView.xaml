@@ -4,36 +4,71 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-	<ScrollViewer VerticalScrollBarVisibility="Auto">
-        <ListBox x:Name="IteratorCollection" Background="#424242" BorderThickness="0"
-                 
-                 SelectedItem="{Binding Path=SelectedIterator, Mode=TwoWay}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20"></RowDefinition>
-                            <RowDefinition Height="50"></RowDefinition>
-                        </Grid.RowDefinitions>
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="250"
+             Width="250">
+    <Grid Background="#424242">
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition MinWidth="70"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Fractal Frame title-->
+        <TextBlock Grid.Column="0" 
+                   VerticalAlignment="Top" 
+                   FontSize="11" 
+                   Background="#424242" 
+                   Foreground="White" 
+                   Grid.ColumnSpan="2"
+                   Height="18"
+                   HorizontalAlignment="Center">
+            Iterators
+        </TextBlock>
+
+        <ScrollViewer 
+            Grid.Row="1" 
+            HorizontalAlignment="Center" 
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl Padding="5" Width="auto" 
+                          ItemsSource="{Binding IteratorViewModels}"
+                          d:ItemsSource="{Binding IteratorStackDESIGN.INSTANCE.IteratorViewModels}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:IteratorView/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
 
+        <StackPanel Orientation="Horizontal" Grid.Row="2" >
+            <TextBox Background="Gray" 
+                     BorderThickness="4"
+                     BorderBrush="{StaticResource BackgroundBrush}"
+                     Width="200"
+                     x:Name="FormulaBox"
+                     TextAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="25"
+                     Height="40">
 
-                        <TextBlock x:Name="Name" 
-									   Text="{Binding Path=Name}" 
-									   Grid.Row="0" 
-									   Grid.Column="0"
-									   Foreground="White"></TextBlock>
-                        <TextBlock x:Name="FormulaString" 
-									   Text="{Binding Path=FormulaString}" 
-									   Grid.Row="1"
-									   TextAlignment="Center"
-									   FontSize="40"
-									   Foreground="White"></TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </ScrollViewer>
+            </TextBox>
+
+            <Button HorizontalAlignment="Right" Width="50"
+                    Background="{StaticResource AccentBrush}" BorderThickness="0"
+                    Foreground="White"
+                    x:Name="AddIterator"
+                    >
+                add
+            </Button>
+        </StackPanel>
+
+    </Grid>
 </UserControl>

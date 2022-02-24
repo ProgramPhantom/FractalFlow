@@ -19,18 +19,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContentControl}">
 
-
                         <Grid Margin="5" Width="50" Height="50">
-
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="UIElement.MouseDown">
-                                    <cal:ActionMessage MethodName="Select">
-
-                                    </cal:ActionMessage>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-
-
 
                             <Border CornerRadius="5" Background="{StaticResource BackgroundBrush}" x:Name="OuterBorder">
                                 <Border CornerRadius="20" x:Name="Squircle" Width="40" Height="40" 
@@ -165,7 +154,7 @@
 
 
 
-    <ContentControl d:DataContext="{x:Static local:FractalFrameDESIGN.Instance}">
+    <ContentControl>
 
     </ContentControl>
 

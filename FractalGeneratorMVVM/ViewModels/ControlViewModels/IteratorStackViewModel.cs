@@ -10,46 +10,98 @@ namespace FractalGeneratorMVVM.ViewModels
 {
     public class IteratorStackViewModel : Screen
     {
-        private BindableCollection<BasicIterator> _iteratorCollection;
+        #region Fields
+        private BindableCollection<IteratorViewModel> _iteratorViewModels;
 
-        public BindableCollection<BasicIterator> IteratorCollection
+        private IteratorViewModel _selectedIteratorVM;
+
+        private string _formulaBox = "z^2+c";
+        #endregion
+
+        #region Properties
+        public string FormulaBox
+        {
+            get { return _formulaBox; }
+            set
+            {
+                _formulaBox = value;
+                NotifyOfPropertyChange(() => FormulaBox);
+            }
+        }
+
+        public BindableCollection<IteratorViewModel> IteratorViewModels
         {
             get
             {
-                return _iteratorCollection;
+                return _iteratorViewModels;
             }
             set
             {
-                _iteratorCollection = value;
-                NotifyOfPropertyChange(() => IteratorCollection);
+                _iteratorViewModels = value;
+                NotifyOfPropertyChange(() => IteratorViewModels);
             }
         }
 
-        private IIterator _selectedIterator;
-
-        public IIterator SelectedIterator
+        public IteratorViewModel SelectedIteratorVM
         {
-            get { return _selectedIterator; }
-            set 
-            { 
-                _selectedIterator = value;
-                NotifyOfPropertyChange(() => SelectedIterator);
+            get { return _selectedIteratorVM; }
+            set
+            {
+                _selectedIteratorVM = value;
+                NotifyOfPropertyChange(() => SelectedIteratorVM);
             }
         }
 
+        public IIterator SelectedIteratorModel
+        {
+            get
+            {
+                return SelectedIteratorVM.IteratorModel;
+            }
+        }
+        #endregion
 
 
+        #region Constructor
         public IteratorStackViewModel()
         {
-            _iteratorCollection = new BindableCollection<BasicIterator>();
+            _iteratorViewModels = new BindableCollection<IteratorViewModel>();
 
-            _iteratorCollection.Add(new BasicIterator("Mandelbrot Set", "z^2 + c"));
-            _selectedIterator = _iteratorCollection[0];
+            AddIterator();
+            AddIterator();
+            AddIterator();
+
+            _selectedIteratorVM = _iteratorViewModels[0];
         }
+        #endregion
 
-        public void UpdateSelected()
+        #region Methods
+        public void OnIteratorSelected(IteratorViewModel sender)
         {
-            SelectedIterator = IteratorCollection.Last();
+            System.Diagnostics.Trace.WriteLine("Clicked Iterator");
+
+            int index = _iteratorViewModels.IndexOf(sender);
+
+            SelectedIteratorVM = sender;
+
+            foreach (IteratorViewModel vm in _iteratorViewModels)
+            {
+                // Deselect all of the other iterators
+                vm.IsSelected = false;
+            }
+
+            _iteratorViewModels[index].IsSelected = true;
+
         }
+
+        public void AddIterator()
+        {
+            BasicIterator iterator = new BasicIterator(FormulaBox);
+
+            _iteratorViewModels.Add(new IteratorViewModel(iterator, _iteratorViewModels.Count() + 1));
+
+            _iteratorViewModels.Last().IteratorSelecetedEvent += OnIteratorSelected;
+        }
+        #endregion
     }
 }

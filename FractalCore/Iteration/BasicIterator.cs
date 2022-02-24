@@ -38,7 +38,7 @@ namespace FractalCore
         }
 
 
-        public BasicIterator(string name, string formulaString)
+        public BasicIterator(string formulaString, string name="Unitiled")
         {
             _formulaString = Regex.Replace(formulaString, @"\s+", "");
             _name = name;
