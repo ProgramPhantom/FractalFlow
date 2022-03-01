@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              
              d:DesignHeight="450" d:DesignWidth="80">
-    <Grid Background="#424242" d:DataContext="{x:Static local:FractalFrameStackDESIGN.Instance}">
+    <Grid Background="{StaticResource MediumGrayBrush}" d:DataContext="{x:Static local:FractalFrameStackDESIGN.Instance}">
         <Grid.ColumnDefinitions>
 
             <ColumnDefinition MinWidth="70"></ColumnDefinition>
@@ -22,8 +22,7 @@
         <!--Fractal Frame title-->
         <TextBlock Grid.Column="0" 
                    VerticalAlignment="Top" 
-                   FontSize="11" 
-                   Background="#424242" 
+                   FontSize="11"
                    Foreground="White" 
                    Grid.ColumnSpan="2"
                    Height="18"

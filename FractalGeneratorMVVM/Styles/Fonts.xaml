@@ -12,6 +12,9 @@
     <FontFamily x:Key="Wave">pack://application:,,,/Fonts/Wave/#LT Wave</FontFamily>
     <FontFamily x:Key="WaveLight">pack://application:,,,/Fonts/Wave/#LT Wave Light</FontFamily>
     <FontFamily x:Key="WaveMono">pack://application:,,,/Fonts/Wave/#LT Wave Mono</FontFamily>
+    
+    <!-- Swirly -->
+    <FontFamily x:Key="Swirl">Times New Roman</FontFamily>
 
     <!-- Chaning the font here will not work until VS is restarted, because VS is garbage. -->
     <Style TargetType="{x:Type Control}" x:Key="BaseStyle">

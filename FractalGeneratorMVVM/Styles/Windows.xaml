@@ -9,9 +9,6 @@
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="Title" Value="Window"/>
 
-
-        
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">

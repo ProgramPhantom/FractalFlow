@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <StartupObject>FractalGeneratorMVVM.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,6 +47,7 @@
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="DotNetProjects.WpfToolkit.DataVisualization" Version="6.1.94" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,6 +111,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\temp\simulide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Images\mandelbrot_icon.png" />
+    <Resource Include="Images\mandelbrot_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

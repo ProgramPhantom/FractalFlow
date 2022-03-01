@@ -10,6 +10,21 @@
 
     <Color x:Key="Accent">#4C2C69</Color>
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"></SolidColorBrush>
+
+    <Color x:Key="MediumGray">#3D3D3D</Color>
+    <SolidColorBrush x:Key="MediumGrayBrush" Color="{StaticResource MediumGray}"></SolidColorBrush>
+
+    <Color x:Key="DarkGray">#1E1E1E</Color>
+    <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}"></SolidColorBrush>
+
+    <Color x:Key="LightGray">#999999</Color>
+    <SolidColorBrush x:Key="LightGrayBrush" Color="{StaticResource LightGray}"></SolidColorBrush>
     
+    <Color x:Key="TextGray">#878787</Color>
+    <SolidColorBrush x:Key="TextGrayBrush" Color="{StaticResource TextGray}"></SolidColorBrush>
+
+    <Color x:Key="TextBoxColor">#353535</Color>
+    <SolidColorBrush x:Key="TextBoxColorBrush" Color="{StaticResource TextBoxColor}"></SolidColorBrush>
+
 
 </ResourceDictionary>

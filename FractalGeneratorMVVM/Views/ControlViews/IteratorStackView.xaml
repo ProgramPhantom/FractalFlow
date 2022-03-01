@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="250"
              Width="250">
-    <Grid Background="#424242">
+    <Grid Background="{StaticResource DarkGrayBrush}">
         <Grid.ColumnDefinitions>
 
             <ColumnDefinition MinWidth="70"></ColumnDefinition>
@@ -24,9 +24,7 @@
         <TextBlock Grid.Column="0" 
                    VerticalAlignment="Top" 
                    FontSize="11" 
-                   Background="#424242" 
                    Foreground="White" 
-                   Grid.ColumnSpan="2"
                    Height="18"
                    HorizontalAlignment="Center">
             Iterators
@@ -49,17 +47,34 @@
 
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" >
-            <TextBox Background="Gray" 
-                     BorderThickness="4"
-                     BorderBrush="{StaticResource BackgroundBrush}"
-                     Width="200"
-                     x:Name="FormulaBox"
-                     TextAlignment="Center"
-                     VerticalAlignment="Center"
-                     FontSize="25"
-                     Height="40">
 
-            </TextBox>
+            <!---->
+            <Border Background="{StaticResource MediumGrayBrush}" VerticalAlignment="Stretch">
+                <StackPanel Orientation="Vertical">
+
+                    <Border>
+                        <StackPanel Orientation="Horizontal" Height="10">
+                            <TextBlock Foreground="{StaticResource LightGrayBrush}"
+                                   FontSize="11" Text="formula" Margin="3 0 0 0">
+                                
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                    
+                    <TextBox 
+                         BorderThickness="0"
+                         Background="Transparent"
+                         Width="200"
+                         x:Name="FormulaBox"
+                         TextAlignment="Center"
+                         FontSize="25" Height="22"
+                         Foreground="White"/>
+                    
+                    <Separator Margin="5 4 5 0" Background="{StaticResource LightGrayBrush}"></Separator>
+                    
+                </StackPanel>
+            </Border>
+
 
             <Button HorizontalAlignment="Right" Width="50"
                     Background="{StaticResource AccentBrush}" BorderThickness="0"

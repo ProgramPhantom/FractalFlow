@@ -57,6 +57,7 @@ namespace FractalGeneratorMVVM.ViewModels
         /// </summary>
         public void AddFractalFrame()
         {
+            System.Diagnostics.Trace.WriteLine("Add fractal frame!");
             _fractalFrameStack.AddFractalFrame(new FractalFrame(Left, Right, Top, Bottom, Name, Iterations, Bail));
             _window.TryCloseAsync();
         }

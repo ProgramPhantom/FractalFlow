@@ -4,88 +4,257 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         mc:Ignorable="d"
         xmlns:cal="http://www.caliburnproject.org"
-        Height="400" Width="500"
+        Height="450" Width="800"
         >
-    <TabControl Background="Transparent" d:Background="{StaticResource BackgroundBrush}">
-        <TabItem Header="Basic">
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="20"/>
-                </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="90"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+    <Grid Background="{StaticResource MediumGrayBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
 
-                <StackPanel  Grid.Row="2" 
-                             Grid.Column="1" 
-                             HorizontalAlignment="Center"
-                             Orientation="Horizontal">
-                    <TextBlock Margin="0, 0, 10, 0">
-                        Red:
-                    </TextBlock>
-                    <TextBox Width="70" x:Name="Red"
-                             PreviewTextInput="PreviewTextInput"
-                             MaxLength="3" AcceptsTab="False"></TextBox>
-                </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="100"/>
 
-                <StackPanel  Grid.Row="2" 
-                             Grid.Column="2" 
-                             HorizontalAlignment="Center"
-                             Orientation="Horizontal">
-                    <TextBlock Margin="0, 0, 10, 0" >
-                        Green:
-                    </TextBlock>
-                    <TextBox Width="70" x:Name="Green"
-                             PreviewTextInput="PreviewTextInput"
-                             MaxLength="3" AcceptsTab="False"
-                             ></TextBox>
-                </StackPanel>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
 
-                <StackPanel  Grid.Row="2" 
-                             Grid.Column="3" 
-                             HorizontalAlignment="Center"
-                             Orientation="Horizontal">
-                    <TextBlock Margin="0, 0, 10, 0">
-                        Blue:
-                    </TextBlock>
-                    <TextBox Width="70" x:Name="Blue"
-                             PreviewTextInput="PreviewTextInput"
-                             MaxLength="3" AcceptsTab="False"></TextBox>
-                </StackPanel>
+        <!-- Big Title -->
+        <TextBlock Grid.Row="1" Grid.Column="1" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Margin="0,15,0,0"
+                   FontSize="50"
+                   FontFamily="{StaticResource Swirl}"
+                   FontStyle="Italic"
+                   Foreground="{StaticResource DarkGrayBrush}" >
+             painter
 
-                <StackPanel  Grid.Row="1" 
-                             Grid.Column="2" 
-                             HorizontalAlignment="Center"
-                             Orientation="Horizontal">
-                    <TextBlock Margin="0, 0, 10, 0">
-                        Name:
-                    </TextBlock>
-                    <TextBox Width="100" Height="20" x:Name="PainterName"
-                             VerticalAlignment="Top"
-                             ></TextBox>
-                </StackPanel>
+            <TextBlock.Effect>
+                <DropShadowEffect Opacity="0.2"
+                                  BlurRadius="10"
+                                  ></DropShadowEffect>
+            </TextBlock.Effect>
+        </TextBlock>
 
-                <Button x:Name="AddBasicPainter"
-                        Grid.Column="2" 
-                        Grid.Row="4" Height="20"
-                        >Add</Button>
-            </Grid>
+        <!-- Description -->
+        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
+              Margin="20,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Separator 
+                Background="{StaticResource BackgroundBrush}"
+                VerticalAlignment="Top" Margin="0 5 0 0">
+
+                <Separator.RenderTransform>
+                    <ScaleTransform ScaleY="2" />
+                </Separator.RenderTransform>
+            </Separator>
+
+            <TextBlock Grid.Row="0" Text="DESCRIPTION" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Background="{StaticResource MediumGrayBrush}"
+                       Padding="6 0"
+                       Margin="0 0"
+                       Height="12"
+                       Foreground="{StaticResource DarkGrayBrush}">
+
+            </TextBlock>
+
+            <TextBlock Grid.Row="1" Padding="10" 
+                       TextWrapping="WrapWithOverflow"
+                       Foreground="{StaticResource TextGrayBrush}"
+                       FontSize="16">
+                Takes the number of iterations for each point on the complex plane and applies a colour to each.
+                The colour is determined by an algorithm which you can create here.
+            </TextBlock>
+        </Grid>
+
+
+        <TabControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+                    Background="{StaticResource MediumGrayBrush}"
+                    BorderBrush="{StaticResource DarkGrayBrush}"
+                    >
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="{StaticResource DarkGrayBrush}" 
+                                        CornerRadius="4,4,0,0" 
+                                        Margin="2,0"
+                                        Background="{StaticResource MediumGrayBrush}">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource DarkGrayBrush}" />
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
             
-        </TabItem>
-        <TabItem Header="Basic 2">
-            <Grid Background="#FFE5E5E5"/>
-        </TabItem>
-    </TabControl>
+            <TabItem Header="Basic">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+
+                    </Grid.RowDefinitions>
+
+                    <!-- Name -->
+
+                    <TextBlock Margin="0, 0, 10, 0"
+                               Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"
+                               >
+                    Name:
+                    </TextBlock>
+                        
+                    <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch" Height="20" x:Name="PainterName"
+                              Style="{StaticResource DefaultTextBox}"
+                             Text="{Binding Path=PainterName, Mode=TwoWay}"
+                             ></TextBox>
+
+
+                    <!-- Red 
+                    <TextBlock Margin="0, 0, 10, 0"
+                               Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"
+                               >
+                    Red:
+                    </TextBlock>
+
+                    <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch" Height="20" x:Name="Red"
+                              Style="{StaticResource DefaultTextBox}"
+                             ></TextBox>
+
+                    
+                    <TextBlock Margin="0, 0, 10, 0"
+                               Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"
+                               >
+                    Green:
+                    </TextBlock>
+
+                    <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch" Height="20" x:Name="Green"
+                              Style="{StaticResource DefaultTextBox}"
+                             ></TextBox>
+
+                    
+                    <TextBlock Margin="0, 0, 10, 0"
+                               Grid.Column="1" Grid.Row="4" VerticalAlignment="Center"
+                               >
+                    Blue:
+                    </TextBlock>
+
+
+                    <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch" Height="20" x:Name="Blue"
+                              Style="{StaticResource DefaultTextBox}"
+                             ></TextBox>-->
+                    
+                    <xctk:ColorCanvas Foreground="Black" Background="{StaticResource MediumGrayBrush}"
+                                      BorderThickness="0"
+                                      Height="auto"
+                                      R="{Binding Path=Red, Mode=TwoWay}"
+                                      G="{Binding Path=Green, Mode=TwoWay}"
+                                      B="{Binding Path=Blue, Mode=TwoWay}"
+                        Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" Grid.ColumnSpan="2" 
+                                      SelectedColor="#FFB85555" UsingAlphaChannel="False"
+                                      VerticalAlignment="Center"/>
+
+                    <!-- Description -->
+                    <Grid Grid.Row="1" Grid.Column="3"  Grid.RowSpan="2"
+              Margin="20,5,5,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Separator 
+                Background="{StaticResource BackgroundBrush}"
+                VerticalAlignment="Top" Margin="0 5 0 0">
+
+                            <Separator.RenderTransform>
+                                <ScaleTransform ScaleY="2" />
+                            </Separator.RenderTransform>
+                        </Separator>
+
+                        <TextBlock Grid.Row="0" Text="Basic Painter" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Background="{StaticResource MediumGrayBrush}"
+                       Padding="6 0"
+                       Margin="0 0"
+                       Height="12"
+                       Foreground="{StaticResource DarkGrayBrush}">
+
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1" Padding="10" 
+                       TextWrapping="WrapWithOverflow"
+                       Foreground="{StaticResource TextGrayBrush}"
+                       FontSize="12">
+                A very simple way to colour the fractal. Takes a red green and blue value, applying 
+                            that colour to each pixel depending on how many iterations that point
+                            got to. The higher the number, the more colour. Numbers in set are black.
+                        </TextBlock>
+                    </Grid>
+
+
+                    <Button Grid.Row="3" Grid.Column="3" Grid.RowSpan="2" 
+                            Style="{StaticResource AddInPopup}"
+                Width="70" Height="70"
+                Name="AddBasicPainter">
+                        add
+                    </Button>
+
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Basic 2">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
 
 </UserControl>

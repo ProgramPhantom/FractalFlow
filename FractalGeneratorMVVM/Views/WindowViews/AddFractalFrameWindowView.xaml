@@ -6,54 +6,256 @@
         xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Height="450" Width="800">
-    <Grid>
+        Height="450" Width="800" cal:Bind.AtDesignTime="True">
+    
+    
+    <Grid Background="{StaticResource MediumGrayBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
-
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="70"/>
+
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
+        
+        <!-- Big Title -->
+        <TextBlock Grid.Row="1" Grid.Column="1" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Margin="0 15 0 0"
+                   FontSize="48"
+                   FontFamily="{StaticResource Swirl}"
+                   FontStyle="Italic"
+                   Foreground="{StaticResource DarkGrayBrush}">
+            fractal frame
+            
+            <TextBlock.Effect>
+                <DropShadowEffect Opacity="0.2"
+                                  BlurRadius="10"
+                                  ></DropShadowEffect>
+            </TextBlock.Effect>
+        </TextBlock>
+        
+        <!-- Description -->
+        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
+              Margin="20 5 5 5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Separator 
+                Background="{StaticResource BackgroundBrush}"
+                VerticalAlignment="Top" Margin="0 5 0 0">
+                
+                <Separator.RenderTransform>
+                    <ScaleTransform ScaleY="2" />
+                </Separator.RenderTransform>
+            </Separator>
+            
+            <TextBlock Grid.Row="0" Text="DESCRIPTION" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Background="{StaticResource MediumGrayBrush}"
+                       Padding="6 0"
+                       Margin="0 0"
+                       Height="12"
+                       Foreground="{StaticResource DarkGrayBrush}">
+                
+            </TextBlock>
+            
+            <TextBlock Grid.Row="1" Padding="10" 
+                       TextWrapping="WrapWithOverflow"
+                       Foreground="{StaticResource TextGrayBrush}"
+                       FontSize="16">
+                Define the position on the complex plane where the fractal will be 
+                rendered, along with the number of iterations and the bail value.
+            </TextBlock>
+        </Grid>
+        
+        <!-- Name -->
+        <Grid Grid.Row="2" Grid.Column="1"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0"
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center">
+                Name:
+            </TextBlock>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Name: "></TextBlock>
-                <TextBox Width="100" Name="Name"></TextBox >
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Top: "></TextBlock>
-                <TextBox Width="100" Name="Top"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Bottom: "></TextBlock>
-                <TextBox Width="100" Name="Bottom"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Left: "></TextBlock>
-                <TextBox Width="100" Name="Left"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Right: "></TextBlock>
-                <TextBox Width="100" Name="Right"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Iterations: "></TextBlock>
-                <TextBox Width="100" Name="Iterations"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Bail: "></TextBlock>
-                <TextBox Width="100" Name="Bail"></TextBox>
-            </StackPanel>
+            <TextBox x:Name="Name" Text="{Binding Path=Name, Mode=TwoWay}" Grid.Column="1" Style="{StaticResource DefaultTextBox}" Height="40" Width="150"></TextBox>
+        </Grid>
+        
+        <!-- Iterations -->
+        <Grid Grid.Row="2" Grid.Column="2"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-            <Button x:Name="AddFractalFrame" 
-                    Height="60" 
-                    >Add Fractal Frame</Button>
+            <TextBlock Grid.Column="0"
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       Margin="0 0 7 0 ">
+                Iterations:
+            </TextBlock>
 
+            <TextBox x:Name="Iterations" Grid.Column="1" Style="{StaticResource DefaultTextBox}" Height="40" Width="150"></TextBox>
+        </Grid>
+        
+        <!-- Bail -->
+        <Grid Grid.Row="2" Grid.Column="3"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0"
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center">
+                Bail:
+            </TextBlock>
+
+            <TextBox x:Name="Bail" Grid.Column="1" Style="{StaticResource DefaultTextBox}" Height="40" Width="150"></TextBox>
+        </Grid>
+
+        <!-- TOP -->
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+                    VerticalAlignment="Top" Width="Auto" 
+                    HorizontalAlignment="Center" Orientation="Horizontal"
+                    Margin="0 10 0 0 "
+                    Panel.ZIndex="2">
+            <TextBlock 
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       Margin="0 0 8 0 ">
+                Top:
+            </TextBlock>
+            <TextBox x:Name="Top"
+                 Style="{StaticResource DefaultTextBox}" 
+                 Height="20" 
+                 Width="70"
+                 TextAlignment="Right"
+                 ></TextBox>
+
+            <TextBlock FontFamily="{StaticResource Swirl}"
+                       Padding="0 0 30 0"
+                       FontStyle="Italic"
+                       Foreground="White"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       Margin="2 0 0 0 ">
+                i
+            </TextBlock>
         </StackPanel>
+
+        <!-- BOTTOM -->
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+                    VerticalAlignment="Bottom" Width="Auto" 
+                    HorizontalAlignment="Center" Orientation="Horizontal"
+                    
+                    Panel.ZIndex="2">
+            <TextBlock 
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       Margin="0 0 8 0 ">
+                Bottom:
+            </TextBlock>
+            <TextBox  x:Name="Bottom"
+                 Style="{StaticResource DefaultTextBox}" 
+                 Height="20" 
+                 Width="70"
+                 TextAlignment="Right"
+                 ></TextBox>
+
+            <TextBlock FontFamily="{StaticResource Swirl}"
+                       FontStyle="Italic"
+                       Foreground="White"
+                       FontSize="20"
+                       Padding="0 0 50 0"
+                       VerticalAlignment="Center"
+                       Margin="2 0 0 0 ">
+                i
+            </TextBlock>
+        </StackPanel>
+
+        <!-- LEFT -->
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+                    VerticalAlignment="Center" Width="Auto" 
+                    HorizontalAlignment="Left" Orientation="Horizontal"
+                    
+                    Panel.ZIndex="2">
+            <TextBlock 
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       Margin="0 0 8 0 ">
+                Left:
+            </TextBlock>
+            <TextBox x:Name="Left"
+                 Style="{StaticResource DefaultTextBox}" 
+                 Height="20" 
+                 Width="70"
+                 TextAlignment="Right"
+                 ></TextBox>
+        </StackPanel>
+
+        <!-- RIGHT -->
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+                    VerticalAlignment="Center" Width="Auto" 
+                    HorizontalAlignment="Right" Orientation="Horizontal"
+                    
+                    Panel.ZIndex="2">
+            <TextBlock 
+                       Foreground="{StaticResource DarkGrayBrush}"
+                       FontSize="15"
+                       VerticalAlignment="Center"
+                       Margin="0 0 8 0 ">
+                Right:
+            </TextBlock>
+            <TextBox x:Name="Right"
+                 Style="{StaticResource DefaultTextBox}" 
+                 Height="20" 
+                 Width="70"
+                 TextAlignment="Right"
+                 ></TextBox>
+        </StackPanel>
+
+        <!-- IMAGE -->
+        <Image Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+               Source="/Images/mandelbrot_icon.png"
+               VerticalAlignment="Center"
+               Height="250" ></Image>
+        
+        <!-- Add Button -->
+        <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource AddInPopup}"
+                Width="70" Height="70"
+                Name="AddFractalFrame">
+            add
+        </Button>
+        
     </Grid>
 </UserControl>
