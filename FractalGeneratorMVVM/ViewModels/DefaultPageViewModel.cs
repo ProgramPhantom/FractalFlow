@@ -17,6 +17,10 @@ namespace FractalGeneratorMVVM.ViewModels
 
         private PainterStackViewModel _painterStackVM;
 
+        private ToolRibbonViewModel _toolRibbonVM;
+
+
+        private StatusBarViewModel _statusBarVM;
         #endregion
 
         #region Properties
@@ -46,6 +50,26 @@ namespace FractalGeneratorMVVM.ViewModels
             get { return _painterStackVM; }
             set { _painterStackVM = value; }
         }
+        
+        /// <summary>
+        /// The options at the top of the scree
+        /// </summary>
+        public ToolRibbonViewModel ToolRibbonVM
+        {
+            get { return _toolRibbonVM; }
+            set { _toolRibbonVM = value; }
+        }
+
+
+        /// <summary>
+        /// The bar at the bottom of the window which tells you essential info
+        /// </summary>
+        public StatusBarViewModel StatusBarVM
+        {
+            get { return _statusBarVM; }
+            set { _statusBarVM = value; }
+        }
+
         #endregion
 
         #region Constructor
@@ -54,7 +78,8 @@ namespace FractalGeneratorMVVM.ViewModels
             _fractalFrameStackVM = new FractalFrameStackViewModel();
             _iteratorStackVM = new IteratorStackViewModel();
             _painterStackVM = new PainterStackViewModel();
-
+            _toolRibbonVM = new ToolRibbonViewModel();
+            _statusBarVM = new StatusBarViewModel();
         }
 
         #endregion

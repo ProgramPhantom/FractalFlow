@@ -6,49 +6,91 @@
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
              mc:Ignorable="d"
              
-             d:DesignHeight="450" d:DesignWidth="80">
-    <Grid Background="{StaticResource MediumGrayBrush}" d:DataContext="{x:Static local:FractalFrameStackDESIGN.Instance}">
-        <Grid.ColumnDefinitions>
+             d:DesignHeight="450" >
 
-            <ColumnDefinition MinWidth="70"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+
+    <Grid Width ="60" Background="{StaticResource Blue2Brush}" d:DataContext="{x:Static local:FractalFrameStackDESIGN.Instance}">
+
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition/>
+            <RowDefinition Height="auto" MinHeight="50"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!--Fractal Frame title-->
-        <TextBlock Grid.Column="0" 
+        <TextBlock 
                    VerticalAlignment="Top" 
-                   FontSize="11"
-                   Foreground="White" 
-                   Grid.ColumnSpan="2"
-                   Height="18"
-                   HorizontalAlignment="Center">
+                   FontSize="12"
+                   TextWrapping="WrapWithOverflow"
+                   FontFamily="{StaticResource Inter}"
+                   Foreground="White"
+                   
+                   HorizontalAlignment="Center" Height="29" Width="42">
             Fractal Frames
         </TextBlock>
-        
+
         <ScrollViewer 
             Grid.Row="1" 
             HorizontalAlignment="Center" 
-            VerticalScrollBarVisibility="Auto">
+            VerticalScrollBarVisibility="Auto" Width="52">
+            <!--
             <ItemsControl  Width="auto" ItemsSource="{Binding FractalFrameViewModels}">
-                <ItemsControl.ItemTemplate>
+                <ItemsControl.ItemTemplate >
                     <DataTemplate>
-                        <local:FractalFrameView/>
+                        <StackPanel Orientation="Vertical">
+                            <Line X1="0" Y1="0" X2="50" Y2="0" StrokeThickness="1" 
+                                  Margin="0 0 0 5"
+                                  Stroke="{StaticResource LineGradient}"/>
+
+                            <local:FractalFrameView/>
+
+                        </StackPanel>
+
+
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="FrameworkElement.Margin" Value="0 0 0 9"/>
+
+
+
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>-->
+
+
+
+            <ListBox Background="Transparent" 
+                     Width="auto" 
+                     ItemsSource="{Binding FractalFrameViewModels}"
+                     BorderThickness="0"
+                     ItemContainerStyle="{StaticResource ItemStyleVertical}" 
+                     SelectedItem="{Binding SelectedFractalFrameVM}"
+                     >
+
+                <ListBox.ItemTemplate >
+                    <DataTemplate >
+
+                        <local:FractalFrameView/>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+
+            </ListBox>
         </ScrollViewer>
 
 
-        <Button Margin="5" Grid.Row="2" 
-                Style="{StaticResource AddNewButton}" 
-                x:Name="NewFractalFrameWindow">
-            
-        </Button>
+
+
+        <Button x:Name="NewFractalFrameWindow" Grid.Row="2" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Style="{StaticResource RibbonButton}" 
+                Content="{StaticResource Add}" Width="36" />
 
     </Grid>
 </UserControl>

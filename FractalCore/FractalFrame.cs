@@ -11,6 +11,8 @@ namespace FractalCore
     /// </summary>
     public class FractalFrame : BaseScaffold
     {
+        
+
         private float _left;
         private float _right;
         private float _bottom;

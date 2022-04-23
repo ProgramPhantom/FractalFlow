@@ -5,35 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="80">
-    <Grid Background="#424242">
-        <Grid.ColumnDefinitions>
+             d:DesignHeight="450">
+    <Grid Background="{StaticResource Blue2Brush}" Width="60">
 
-            <ColumnDefinition MinWidth="70"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition/>
+            <RowDefinition Height="auto" MinHeight="50"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!--Fractal Frame title-->
-        <TextBlock Grid.Column="0" 
+        <TextBlock 
                    VerticalAlignment="Top" 
-                   FontSize="11" 
-                   Background="#424242" 
-                   Foreground="White" 
-                   Grid.ColumnSpan="2"
-                   Height="18"
-                   HorizontalAlignment="Center">
+                   FontSize="12" 
+                   FontFamily="{StaticResource Inter}"
+                   Background="{StaticResource Blue2Brush}" 
+                   Foreground="White"
+                   
+                   HorizontalAlignment="Center" >
             Painters
         </TextBlock>
 
         <ScrollViewer 
             Grid.Row="1" 
             HorizontalAlignment="Center" 
-            VerticalScrollBarVisibility="Auto">
+            VerticalScrollBarVisibility="Auto" Width="0">
             <ItemsControl  Width="auto" ItemsSource="{Binding PainterViewModels}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -44,11 +41,12 @@
         </ScrollViewer>
 
 
-        <Button Margin="5" Grid.Row="2" 
-                Style="{StaticResource AddNewButton}" 
-                x:Name="NewPainterWindow">
 
-        </Button>
+        <Button x:Name="NewFractalFrameWindow" Grid.Row="2" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Style="{StaticResource RibbonButton}" 
+                Content="{StaticResource Add}" Width="36" Height="36" />
 
     </Grid>
 </UserControl>

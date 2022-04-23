@@ -12,7 +12,16 @@
     <FontFamily x:Key="Wave">pack://application:,,,/Fonts/Wave/#LT Wave</FontFamily>
     <FontFamily x:Key="WaveLight">pack://application:,,,/Fonts/Wave/#LT Wave Light</FontFamily>
     <FontFamily x:Key="WaveMono">pack://application:,,,/Fonts/Wave/#LT Wave Mono</FontFamily>
-    
+
+    <!-- Thinoo -->
+    <FontFamily x:Key="Thinoo">pack://application:,,,/Fonts/Thinoo/#thinoo</FontFamily>
+
+    <!-- Inter -->
+    <FontFamily x:Key="Inter">pack://application:,,,/Fonts/Inter/#Inter</FontFamily>
+    <FontFamily x:Key="InterLight">pack://application:,,,/Fonts/Inter/#Inter Light</FontFamily>
+    <FontFamily x:Key="InterBold">pack://application:,,,/Fonts/Inter/#Inter Bold</FontFamily>
+
+
     <!-- Swirly -->
     <FontFamily x:Key="Swirl">Times New Roman</FontFamily>
 

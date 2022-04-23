@@ -1,0 +1,9 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Viewbox Stretch="Uniform" x:Key="AddFilled" x:Shared="False">
+      <Canvas Height="45" Width="45">
+
+        <Path Fill="{StaticResource AddFilledColourBrush}" Data="M22.5 2.8125C17.2981 2.87544 12.327 4.96986 8.64843 8.64843C4.96986 12.327 2.87544 17.2981 2.8125 22.5C2.87544 27.7019 4.96986 32.673 8.64843 36.3516C12.327 40.0301 17.2981 42.1246 22.5 42.1875C27.7019 42.1246 32.673 40.0301 36.3516 36.3516C40.0301 32.673 42.1246 27.7019 42.1875 22.5C42.1246 17.2981 40.0301 12.327 36.3516 8.64843C32.673 4.96986 27.7019 2.87544 22.5 2.8125ZM33.75 23.9062H23.9062V33.75H21.0938V23.9062H11.25V21.0938H21.0938V11.25H23.9062V21.0938H33.75V23.9062Z" Height="45" Stretch="Fill" Width="45"   />
+      </Canvas>
+    </Viewbox>
+</ResourceDictionary>

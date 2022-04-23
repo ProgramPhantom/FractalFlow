@@ -6,6 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Xml.Serialization;
+
 namespace FractalGeneratorMVVM.ViewModels
 {
     public  class PainterStackViewModel : Screen
@@ -93,6 +98,11 @@ namespace FractalGeneratorMVVM.ViewModels
             _painterViewModels.Add(new PainterViewModel((BasicPainter)newPainter, 1));
 
             _painterViewModels.Last().PainterSelectedEvent += OnPainterSelected;
+        }
+
+        public void AddToDatabase(IPainter painter)
+        {
+
         }
 
         /// <summary>

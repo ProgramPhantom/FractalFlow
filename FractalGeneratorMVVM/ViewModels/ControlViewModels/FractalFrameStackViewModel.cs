@@ -11,32 +11,22 @@ namespace FractalGeneratorMVVM.ViewModels
     public class FractalFrameStackViewModel : Screen
     {
         #region Fields
-        /// <summary>
-        /// Holds the Fractal Frame models
-        /// </summary>
-        private List<FractalFrame> _fractalFrameList;
 
         private BindableCollection<FractalFrameViewModel> _fractalFrameViewModels;
+
+
+        private FractalFrameViewModel _selectedFractalFrameVM;
+
 
         private AddFractalFrameWindowViewModel _addFractalFrameWindow;
 
         #endregion
 
         #region Properties
-        public List<FractalFrame> FractalFrameList
-        {
-            get
-            {
-                return _fractalFrameList;
-            }
-            set
-            {
-                _fractalFrameList = value;
-                NotifyOfPropertyChange(() => FractalFrameList);
-            }
-        }
 
-
+        /// <summary>
+        /// The list of fractal frame view models which is displayed on the screen
+        /// </summary>
         public BindableCollection<FractalFrameViewModel> FractalFrameViewModels
         {
             get { return _fractalFrameViewModels; }
@@ -47,9 +37,38 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
+        /// <summary>
+        /// The view model of the selected fractal frame
+        /// </summary>
+        public FractalFrameViewModel SelectedFractalFrameVM
+        {
+            get { return _selectedFractalFrameVM; }
+            set
+            {
+                _selectedFractalFrameVM = value;
 
-        public FractalFrame SelectedFractalFrame { get; set; }
+                System.Diagnostics.Trace.WriteLine("NEW FRACTAL FRAME");
 
+                System.Diagnostics.Trace.WriteLine($"{_selectedFractalFrameVM.FractalFrameModel.Iterations}");
+
+            }
+        }
+
+        /// <summary>
+        /// The model of the selected fractal frame
+        /// </summary>
+        public FractalFrame SelectedFractalFrame
+        {
+            get
+            {
+                return _selectedFractalFrameVM.FractalFrameModel;
+            }
+
+        }
+
+        /// <summary>
+        /// The window to add a new fractal frame
+        /// </summary>
         public AddFractalFrameWindowViewModel AddFractalFrameWindow
         {
             get { return _addFractalFrameWindow; }
@@ -58,70 +77,38 @@ namespace FractalGeneratorMVVM.ViewModels
         #endregion
 
 
-
         #region Constructor
         // Constructor
         public FractalFrameStackViewModel()
         {
-            _fractalFrameList = new List<FractalFrame>();
             _fractalFrameViewModels = new BindableCollection<FractalFrameViewModel>();
-
 
             // Create the window for adding a new Fractal Frame, passing in this object so
             // the window knows where to put the new fractal frame
             _addFractalFrameWindow = new AddFractalFrameWindowViewModel(this);
-
+            
+            // Initial fractal frames on launch
             AddFractalFrame(new FractalFrame());
-
-
-            SelectedFractalFrame = FractalFrameList[0];
-            FractalFrameViewModels[0].IsSelected = true;
+            _selectedFractalFrameVM = FractalFrameViewModels[0];
+            FractalFrameViewModels[0].IsSelected = true;  // Select it 
         }
         #endregion
 
         #region Methods
         /// <summary>
-        /// Add a new fractal frame to the collection and set up a corresponding view model
+        /// Add a new fractal frame view model with connected fractal frame object
         /// </summary>
         /// <param name="newFF">The Fractal Frame to add</param>
         public void AddFractalFrame(FractalFrame newFF)
-        {
-            _fractalFrameList.Add(newFF);
-
-            // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
-            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1));
-
-            _fractalFrameViewModels.Last().FractalFrameSelectedEvent += OnFractalFrameSelected;
+        { 
+            // Add the new fractal frame view model and attatch the fractal frame model
+            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF));
         }
 
-        /// <summary>
-        /// Event handler for when one of the fractal frames is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        public void OnFractalFrameSelected(FractalFrameViewModel sender)
-        {
-            System.Diagnostics.Trace.WriteLine("Gotten the message!");
-
-            
-
-            int index = _fractalFrameViewModels.IndexOf(sender);
-
-            SelectedFractalFrame = FractalFrameList[index];
-
-            foreach (FractalFrameViewModel vm in _fractalFrameViewModels)
-            {
-                vm.IsSelected = false;
-            }
-
-            _fractalFrameViewModels[index].IsSelected = true;
-        }
 
         /// <summary>
         /// Opens the new fractal frame WINDOW
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void NewFractalFrameWindow(object sender, EventArgs e)
         {
             _addFractalFrameWindow.ShowWindow();

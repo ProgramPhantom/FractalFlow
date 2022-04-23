@@ -26,5 +26,78 @@
     <Color x:Key="TextBoxColor">#353535</Color>
     <SolidColorBrush x:Key="TextBoxColorBrush" Color="{StaticResource TextBoxColor}"></SolidColorBrush>
 
+    <Color x:Key="IconColor">#d6d6d6</Color>
+    <SolidColorBrush x:Key="IconColorBrush" Color="{StaticResource IconColor}"></SolidColorBrush>
+    
+    <!-- NEW DESIGN -->
+
+    <!-- For bar at top of window chrome -->
+    <Color x:Key="WindowChrome">#151515</Color>
+    <SolidColorBrush x:Key="WindowChromeBrush" Color="{StaticResource WindowChrome}"></SolidColorBrush>
+
+    <!--- For Tool Ribbon and formula input box -->
+    <Color x:Key="Blue1">#222533</Color>
+    <SolidColorBrush x:Key="Blue1Brush" Color="{StaticResource Blue1}"></SolidColorBrush>
+
+    <!-- For fractal frame stack and painter stack -->
+    <Color x:Key="Blue2">#1a1c29</Color>
+    <SolidColorBrush x:Key="Blue2Brush" Color="{StaticResource Blue2}"></SolidColorBrush>
+
+    <!-- For iterator stack -->
+    <Color x:Key="Blue3">#14161e</Color>
+    <SolidColorBrush x:Key="Blue3Brush" Color="{StaticResource Blue3}"></SolidColorBrush>
+
+    <!-- For status bar -->
+    <Color x:Key="Accent1">#955BF6</Color>
+    <SolidColorBrush x:Key="Accent1Brush" Color="{StaticResource Accent1}"></SolidColorBrush>
+
+    <!--  -->
+    <Color x:Key="Accent2">#498BFB</Color>
+    <SolidColorBrush x:Key="Accent2Brush" Color="{StaticResource Accent2}"></SolidColorBrush>
+
+    <!-- For the empty fractal canvas -->
+    <Color x:Key="Canvas">#F2F0F6</Color>
+    <SolidColorBrush x:Key="CanvasBrush" Color="{StaticResource Canvas}"></SolidColorBrush>
+
+    <!-- For the lines separating the icons on the toolbar -->
+    <Color x:Key="Line1">#3E455E</Color>
+    <SolidColorBrush x:Key="Line1Brush" Color="{StaticResource Line1}"></SolidColorBrush>
+
+    <!-- For icons and text -->
+    <Color x:Key="MyWhite">#FFFFFF</Color>
+    <SolidColorBrush x:Key="MyWhiteBrush" Color="{StaticResource MyWhite}"></SolidColorBrush>
+
+    <!-- For the render button and logo -->
+    <LinearGradientBrush x:Key="Render" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Accent2}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource Accent1}" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- For the lines seperating fractal frames and painters -->
+    <LinearGradientBrush x:Key="LineGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Blue2}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource Line1}" Offset="0.1"/>
+
+        <GradientStop Color="{StaticResource Line1}" Offset="0.9"/>
+        <GradientStop Color="{StaticResource Blue2}" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Selected fractal frame -->
+    <Color x:Key="SelectedGray">#3c3e49</Color>
+    <SolidColorBrush x:Key="SelectedGrayBrush" Color="{StaticResource SelectedGray}"></SolidColorBrush>
+
+    <!-- Selected Iterator -->
+    <Color x:Key="SelectedGray2">#373940</Color>
+    <SolidColorBrush x:Key="SelectedGray2Brush" Color="{StaticResource SelectedGray2}"></SolidColorBrush>
+
+    <!-- The filled add button in the iterator stack -->
+    <Color x:Key="AddFilledColour">#425FF6</Color>
+    <SolidColorBrush x:Key="AddFilledColourBrush" Color="{StaticResource AddFilledColour}"></SolidColorBrush>
+
+    <!-- The filled add button in the iterator stack -->
+    <Color x:Key="ItemHover">#31323b</Color>
+    <SolidColorBrush x:Key="ItemHoverBrush" Color="{StaticResource ItemHover}"></SolidColorBrush>
+
+
 
 </ResourceDictionary>

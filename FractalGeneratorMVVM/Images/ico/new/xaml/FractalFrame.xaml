@@ -1,0 +1,9 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Viewbox Stretch="Uniform" x:Key="FractalFrame" x:Shared="False">
+  <Canvas Height="32" Width="32">
+    <Path Data="M11.5 4.75H7V0.25H4.75V4.75H0.25V7H4.75V11.5H7V7H11.5V4.75Z" Fill="white" />
+    <Path Data="M31.75 9.25V2.5H25V4.75H16V7H25V9.25H27.25V25H25V27.25H9.25V25H7V16H4.75V25H2.5V31.75H9.25V29.5H25V31.75H31.75V25H29.5V9.25H31.75ZM7 29.5H4.75V27.25H7V29.5ZM29.5 29.5H27.25V27.25H29.5V29.5ZM27.25 4.75H29.5V7H27.25V4.75Z" Fill="white" />
+  </Canvas>
+</Viewbox>
+</ResourceDictionary>

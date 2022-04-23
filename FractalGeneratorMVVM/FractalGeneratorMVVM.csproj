@@ -9,10 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Old\ShellViewModelOld.cs" />
+    <Compile Remove="Old\**" />
+    <EmbeddedResource Remove="Old\**" />
+    <None Remove="Old\**" />
+    <Page Remove="Old\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Inter\Inter-Light.ttf" />
+    <None Remove="Fonts\Inter\Inter-Regular.ttf" />
     <None Remove="Fonts\Lato\Lato-Black.ttf" />
     <None Remove="Fonts\Lato\Lato-BlackItalic.ttf" />
     <None Remove="Fonts\Lato\Lato-Bold.ttf" />
@@ -23,6 +28,7 @@
     <None Remove="Fonts\Lato\Lato-Regular.ttf" />
     <None Remove="Fonts\Lato\Lato-Thin.ttf" />
     <None Remove="Fonts\Lato\Lato-ThinItalic.ttf" />
+    <None Remove="Fonts\Thinoo\thinoobold.ttf" />
     <None Remove="Fonts\Wave\LTWave-Bold.ttf" />
     <None Remove="Fonts\Wave\LTWave-BoldItalic.ttf" />
     <None Remove="Fonts\Wave\LTWave-Italic.ttf" />
@@ -31,6 +37,9 @@
     <None Remove="Fonts\Wave\LTWave-Mono.ttf" />
     <None Remove="Fonts\Wave\LTWave-Regular.ttf" />
     <None Remove="Fonts\Wave\LTWaveUI.ttf" />
+    <None Remove="Images\ico\ZoomIn.png" />
+    <None Remove="Images\ico\ZoomIn2.png" />
+    <None Remove="Images\ico\ZoomIn3.svg" />
     <None Remove="Images\temp\simulide.png" />
   </ItemGroup>
   
@@ -52,10 +61,17 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Database\" />
     <Folder Include="Window\" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\Inter\Inter-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Inter\Inter-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Fonts\Lato\Lato-Black.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -86,6 +102,9 @@
     <Resource Include="Fonts\Lato\Lato-ThinItalic.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Fonts\Thinoo\thinoobold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Fonts\Wave\LTWave-Bold.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -110,10 +129,20 @@
     <Resource Include="Fonts\Wave\LTWaveUI.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\ico\ZoomIn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ico\ZoomIn2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\ico\ZoomIn3.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\temp\simulide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <None Remove="Images\mandelbrot_icon.png" />
+    <Page Remove="Styles\Icons.xaml" />
     <Resource Include="Images\mandelbrot_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

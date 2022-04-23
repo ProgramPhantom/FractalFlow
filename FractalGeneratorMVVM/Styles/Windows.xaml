@@ -22,7 +22,12 @@
                         <Grid>
 
                             <Border x:Name="OuterBorder" Background="Black"
-                                CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" ></Border>
+                                CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" 
+                                    
+                                    >
+                                
+                                
+                            </Border>
 
                             <!-- Main window content -->
                             <Grid Background="{StaticResource BackgroundBrush}" ClipToBounds="True" Panel.ZIndex="1">
@@ -42,7 +47,7 @@
 
 
                                 <!-- Title Bar -->
-                                <Grid Background="{StaticResource BackgroundTone1Brush}" >
+                                <Grid Background="{StaticResource WindowChromeBrush}" >
                                     <!-- Increase z intex so buttons are clickable-->
 
 
@@ -60,7 +65,7 @@
 
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Icon -->
+                                    <!-- Icon 
                                     <Button Style="{StaticResource SysIco}"
                                         x:Name="MenuCommand">
                                         <Image Source="/Images/temp/simulide.png"/>
@@ -72,18 +77,44 @@
                                                 </cal:ActionMessage>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                    </Button>
+                                    </Button>-->
+
+                                    <TextBlock FontSize="20"
+                                                   FontFamily="{StaticResource InterLight}"
+                                                    VerticalAlignment="Center" Margin="10, 0, 0, 0"
+                                        
+                                            Text="Fractal Flow"
+                                        Foreground="{StaticResource MyWhiteBrush}">
+
+                                    </TextBlock>
 
                                     <!-- Title -->
+                                    <!--Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='FF'}"-->
                                     <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Margin="0" Stretch="None">
-                                        <TextBlock FontSize="16"
-                                        Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='FF'}"
-                                        Foreground="{StaticResource BackgroundBrush}">
+                                        <TextBlock FontSize="20"
+                                                   FontFamily="{StaticResource InterLight}"
+                                                   FontStyle="Italic"
+                                        
+                                            Text="Super Cool Fractal"
+                                        Foreground="{StaticResource MyWhiteBrush}">
 
                                         </TextBlock>
                                     </Viewbox>
                                     <!-- Window Buttons -->
                                     <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                        <Button  Style="{StaticResource RibbonButton}">
+                                            
+
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <cal:ActionMessage MethodName="MinimizeWindow">
+                                                        <cal:Parameter Value="$view"/>
+                                                    </cal:ActionMessage>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </Button>
+
+
                                         <Button Content="_" Style="{StaticResource WindowControlButton}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
@@ -93,6 +124,8 @@
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </Button>
+
+
                                         <Button Content="[]" Style="{StaticResource WindowControlButton}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">

@@ -6,34 +6,66 @@
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="250"
-             Width="250">
-    <Grid Background="{StaticResource DarkGrayBrush}">
-        <Grid.ColumnDefinitions>
+             d:DesignHeight="941" 
+             >
 
-            <ColumnDefinition MinWidth="70"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <UserControl.Resources>
+        <Style x:Key="ItemStyleVertical" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+
+
+                        <Grid Background="Transparent">
+
+                            <Line X1="0" Y1="0" X2="50" Y2="0" StrokeThickness="1" 
+                                Margin="0 0 0 9"
+                                Stroke="{StaticResource LineGradient}"/>
+
+                            <ContentPresenter Margin="0, 7, 0, 7"/>
+
+                            <Border Name="_Border" Margin="2,4,2,4" CornerRadius="4" Panel.ZIndex="-1"/>
+
+                        </Grid>
+
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="{StaticResource SelectedGrayBrush}"/>
+                                <Setter Property="Foreground" Value="Red"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Width="300" Background="{StaticResource Blue3Brush}" d:DataContext="{x:Static local:IteratorStackDESIGN.INSTANCE}">
+
+
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition/>
+            <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!--Fractal Frame title-->
-        <TextBlock Grid.Column="0" 
+        <TextBlock 
                    VerticalAlignment="Top" 
-                   FontSize="11" 
+                   FontSize="18" 
                    Foreground="White" 
                    Height="18"
-                   HorizontalAlignment="Center">
-            Iterators
+                   HorizontalAlignment="Center"
+                   FontFamily="{StaticResource Inter}" Width="78">
+            Formulae
         </TextBlock>
 
         <ScrollViewer 
             Grid.Row="1" 
             HorizontalAlignment="Center" 
-            VerticalScrollBarVisibility="Auto">
+            VerticalScrollBarVisibility="Auto" Width="10">
             <ItemsControl Padding="5" Width="auto" 
                           ItemsSource="{Binding IteratorViewModels}"
                           d:ItemsSource="{Binding IteratorStackDESIGN.INSTANCE.IteratorViewModels}">
@@ -46,44 +78,22 @@
         </ScrollViewer>
 
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" >
+        <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center" Height="52">
 
-            <!---->
-            <Border Background="{StaticResource MediumGrayBrush}" VerticalAlignment="Stretch">
-                <StackPanel Orientation="Vertical">
+            <!-- The text box -->
+            <TextBox Style="{StaticResource FormulaInput}" 
+                     Width="230"
+                     Margin="8 0 0 0"/>
 
-                    <Border>
-                        <StackPanel Orientation="Horizontal" Height="10">
-                            <TextBlock Foreground="{StaticResource LightGrayBrush}"
-                                   FontSize="11" Text="formula" Margin="3 0 0 0">
-                                
-                            </TextBlock>
-                        </StackPanel>
-                    </Border>
-                    
-                    <TextBox 
-                         BorderThickness="0"
-                         Background="Transparent"
-                         Width="200"
-                         x:Name="FormulaBox"
-                         TextAlignment="Center"
-                         FontSize="25" Height="22"
-                         Foreground="White"/>
-                    
-                    <Separator Margin="5 4 5 0" Background="{StaticResource LightGrayBrush}"></Separator>
-                    
-                </StackPanel>
-            </Border>
-
-
-            <Button HorizontalAlignment="Right" Width="50"
-                    Background="{StaticResource AccentBrush}" BorderThickness="0"
-                    Foreground="White"
-                    x:Name="AddIterator"
-                    >
-                add
+            <Button Style="{StaticResource RibbonButton}" Width="40"  Margin="10 0 0 0"
+                    Content="{StaticResource AddFilled}">
             </Button>
+
         </StackPanel>
+
+        <!---->
+
+
 
     </Grid>
 </UserControl>

@@ -2,40 +2,20 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-        <ResourceDictionary.MergedDictionaries>
-            <!--- Styles -->
-            <ResourceDictionary Source="Colours.xaml"/>
-            <ResourceDictionary Source="Fonts.xaml"/>
-        </ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary.MergedDictionaries>
+        <!--- Styles -->
+        <ResourceDictionary Source="Colours.xaml"/>
+        <ResourceDictionary Source="Fonts.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
 
-    <!-- HOVERLESS -->
-    <Style TargetType="{x:Type Button}" x:Key="Hoverless">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
 
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
-                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    <!-- System Icon Button -->
-    <Style TargetType="{x:Type Button}" x:Key="SysIco" BasedOn="{StaticResource Hoverless}">
-        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
-        <Setter Property="Padding" Value="3"/>
-    </Style>
 
     <!-- Window Control Buttons -->
     <Style TargetType="{x:Type Button}" x:Key="WindowControlButton" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10 0"/>
-        <Setter Property="Foreground" Value="{StaticResource BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MyWhiteBrush}"/>
 
         <Setter Property="LayoutTransform">
             <Setter.Value>
@@ -60,7 +40,7 @@
         </Style.Triggers>
 
     </Style>
-    
+
     <!-- Window Close Button -->
     <Style TargetType="{x:Type Button}" x:Key="WindowCloseButton" BasedOn="{StaticResource WindowControlButton}">
         <Style.Triggers>
@@ -80,15 +60,15 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
-                        <Ellipse Width="40" Height="40" Margin="{TemplateBinding Margin}"> 
+                        <Ellipse Width="40" Height="40" Margin="{TemplateBinding Margin}">
                             <Ellipse.Fill>
                                 <SolidColorBrush Color="Gray"/>
                             </Ellipse.Fill>
                         </Ellipse>
 
-                        <TextBlock Text="+" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"> </TextBlock>
+                        <TextBlock Text="+" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
 
-                       
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -114,6 +94,145 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="Gray"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Ribbon Button -->
+    <Style TargetType="{x:Type Button}" x:Key="RibbonButton">
+
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+
+
+
+                    <ContentPresenter Width="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="Content" />
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content"
+                                             Storyboard.TargetProperty="Width"
+                                              To="40" Duration="0:0:0:0.07"
+                                              />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content"
+                                             Storyboard.TargetProperty="Width"
+                                              To="36" Duration="0:0:0:0.03"
+                                              />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+    </Style>
+
+    <!-- Add full button -->
+    <Style TargetType="{x:Type Button}" x:Key="AddFull">
+
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource AddFilledColourBrush}"/>
+
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+
+
+
+                    <ContentPresenter Width="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="Content" />
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content"
+                                             Storyboard.TargetProperty="Width"
+                                              To="42" Duration="0:0:0:0.07"
+                                              />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Content"
+                                             Storyboard.TargetProperty="Width"
+                                              To="40" Duration="0:0:0:0.03"
+                                              />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+    </Style>
+
+    <!-- The render button -->
+    <Style TargetType="{x:Type Button}" x:Key="RenderButton">
+        <Setter Property="Background" Value="{StaticResource Render}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Padding="10">
+                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" CornerRadius="5">
+
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0"
+                                      Color="{StaticResource Accent1}"
+                                      Opacity="1"
+                                      BlurRadius="5"/>
+                            </Border.Effect>
+                        </Border>
+
+                    </Border>
+
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Accent1Brush}"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

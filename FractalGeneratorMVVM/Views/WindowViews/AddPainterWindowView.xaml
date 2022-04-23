@@ -146,51 +146,13 @@
                                >
                     Name:
                     </TextBlock>
-                        
+
                     <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"
                         HorizontalAlignment="Stretch" Height="20" x:Name="PainterName"
                               Style="{StaticResource DefaultTextBox}"
                              Text="{Binding Path=PainterName, Mode=TwoWay}"
                              ></TextBox>
 
-
-                    <!-- Red 
-                    <TextBlock Margin="0, 0, 10, 0"
-                               Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"
-                               >
-                    Red:
-                    </TextBlock>
-
-                    <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"
-                        HorizontalAlignment="Stretch" Height="20" x:Name="Red"
-                              Style="{StaticResource DefaultTextBox}"
-                             ></TextBox>
-
-                    
-                    <TextBlock Margin="0, 0, 10, 0"
-                               Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"
-                               >
-                    Green:
-                    </TextBlock>
-
-                    <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
-                        HorizontalAlignment="Stretch" Height="20" x:Name="Green"
-                              Style="{StaticResource DefaultTextBox}"
-                             ></TextBox>
-
-                    
-                    <TextBlock Margin="0, 0, 10, 0"
-                               Grid.Column="1" Grid.Row="4" VerticalAlignment="Center"
-                               >
-                    Blue:
-                    </TextBlock>
-
-
-                    <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center"
-                        HorizontalAlignment="Stretch" Height="20" x:Name="Blue"
-                              Style="{StaticResource DefaultTextBox}"
-                             ></TextBox>-->
-                    
                     <xctk:ColorCanvas Foreground="Black" Background="{StaticResource MediumGrayBrush}"
                                       BorderThickness="0"
                                       Height="auto"

@@ -9,30 +9,34 @@
     <Grid>
         <!-- Definitions -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" d:Width="70"/>
-            <ColumnDefinition Width="Auto" d:Width="250"/>
+            <ColumnDefinition Width="Auto" d:Width="60"/>
+            <ColumnDefinition Width="Auto" d:Width="300"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" d:Width="70"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
+            <RowDefinition Height="66"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="33"/>
         </Grid.RowDefinitions>
-        
+
         <!-- ControlBar -->
-        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  x:Name="ControlBar"/>
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  x:Name="ToolRibbonVM"/>
 
         <!-- Fractal Frame Stack -->
         <ContentControl Grid.Row="1" Grid.Column="0" x:Name="FractalFrameStackVM"/>
-        
+
         <!-- Iterator Stack -->
         <ContentControl Grid.Row="1" Grid.Column="1" x:Name="IteratorStackVM"/>
-        
+
         <!-- Painter Stack -->
         <ContentControl Grid.Row="1" Grid.Column="3" x:Name="PainterStackVM"/>
 
         <!-- Status Bar -->
-        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" x:Name="StatusBar"/>
+        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" x:Name="StatusBarVM"/> 
+
+        <!-- Canvas Placeholder -->
+        <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource CanvasBrush}"/>
+
     </Grid>
 </UserControl>

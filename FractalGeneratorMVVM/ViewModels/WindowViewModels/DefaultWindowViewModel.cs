@@ -21,7 +21,7 @@ namespace FractalGeneratorMVVM.ViewModels
 
         private int _resizeBorderSize = 6;
 
-        private int _titleHeight = 25;
+        private int _titleHeight = 33;
 
         private int _windowMinWidth = 800;
 

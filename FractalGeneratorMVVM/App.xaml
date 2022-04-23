@@ -16,7 +16,38 @@
                 <ResourceDictionary Source="Styles/Windows.xaml"/>
                 <ResourceDictionary Source="Styles/TextBoxes.xaml"/>
                 <ResourceDictionary Source="Styles/TabControls.xaml"/>
+                <ResourceDictionary Source="Styles/ListBoxItems.xaml"/>
                 <ResourceDictionary Source="Styles/Buttons/StyleButtonBase.xaml"/>
+                
+                <!-- Buttons -->
+
+                <!--<ResourceDictionary Source="Styles/Buttons/StyleButtonBase.xaml"/>-->
+
+                <!--<ResourceDictionary Source="Styles/Buttons/AddInPopup.xaml"/>-->
+                <!--<ResourceDictionary Source="Styles/Buttons/AddNewButton.xaml"/> -->
+                <ResourceDictionary Source="Styles/Buttons/Hoverless.xaml"/> 
+                <!--<ResourceDictionary Source="Styles/Buttons/RenderButton.xaml"/> -->
+                <ResourceDictionary Source="Styles/Buttons/RibbonButton.xaml"/>
+                
+                <ResourceDictionary Source="Styles/Buttons/SysIconButton.xaml"/>
+                <!--<ResourceDictionary Source="Styles/Buttons/WindowControlButton.xaml"/>-->
+                <!--<ResourceDictionary Source="Styles/Buttons/WindowCloseButton.xaml"/> -->
+
+                <!-- ICONS -->
+                <ResourceDictionary Source="Images/ico/new/xaml/Add.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/AddFilled.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/FractalFrame.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/OpenFile.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/Pointer.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/RandomColour.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/ResetZoom.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/Save.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/SelectZoom.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/ZoomIn.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/ZoomOut.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/Min.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/Max.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/Close.xaml"/>
 
 
 

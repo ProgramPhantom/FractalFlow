@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FractalCore;
 using FractalGeneratorMVVM.ViewModels;
 
-namespace FractalGeneratorMVVM.Views.ControlViews
+namespace FractalGeneratorMVVM.Views
 {
     public class IteratorStackDESIGN : IteratorStackViewModel
     {

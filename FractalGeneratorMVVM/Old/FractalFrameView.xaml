@@ -1,0 +1,184 @@
+﻿<UserControl x:Class="FractalGeneratorMVVM.Views.FractalFrameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FractalGeneratorMVVM.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+
+             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ContentControl}" x:Name="FractalFrameButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+
+
+                        <Grid Margin="5" Width="40" Height="40">
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="UIElement.MouseDown">
+                                    <cal:ActionMessage MethodName="Select">
+
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+
+
+                            <Border CornerRadius="5" Background="{StaticResource BackgroundBrush}" x:Name="OuterBorder">
+                                <Border CornerRadius="20" x:Name="Squircle" Width="40" Height="40" >
+
+                                    <Border.Background>
+
+                                        <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1">
+                                            <GradientStop Color="{StaticResource Accent}" Offset="0.0"/>
+                                            <GradientStop Color="#694966" Offset="1.7"/>
+                                        </LinearGradientBrush>
+
+                                    </Border.Background>
+                                </Border>
+                            </Border>
+
+                            <!-- This is the full button shape, when hovered or selected-->
+
+                            
+
+
+                            <!-- Present the text or image -->
+                            <TextBlock 
+                            Text="{Binding Number}" 
+                            FontSize="25" 
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"></TextBlock>
+           
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                                <Setter TargetName="OuterBorder" Property="Background" Value="Transparent"/>
+                            </DataTrigger>
+
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter TargetName="OuterBorder" Property="Background" Value="{StaticResource BackgroundBrush}"/>
+                            </DataTrigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+
+
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Squircle"
+                                                                       Storyboard.TargetProperty="CornerRadius">
+                                                <ObjectAnimationUsingKeyFrames.KeyFrames>
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="20" BottomRight="20" TopLeft="20" TopRight="20"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.05">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="15" BottomRight="15" TopLeft="15" TopRight="15"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.1">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="10" BottomRight="10" TopLeft="10" TopRight="10"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.125">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="8" BottomRight="8" TopLeft="8" TopRight="8"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.15">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="5" BottomRight="5" TopLeft="5" TopRight="5"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                </ObjectAnimationUsingKeyFrames.KeyFrames>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Squircle"
+                                                                       Storyboard.TargetProperty="CornerRadius">
+                                                <ObjectAnimationUsingKeyFrames.KeyFrames>
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="5" BottomRight="5" TopLeft="5" TopRight="5"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.05">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="8" BottomRight="8" TopLeft="8" TopRight="8"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.1">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="10" BottomRight="10" TopLeft="10" TopRight="10"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.125">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="15" BottomRight="15" TopLeft="15" TopRight="15"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.15">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <CornerRadius BottomLeft="25" BottomRight="25" TopLeft="25" TopRight="25"/>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+
+
+                                                </ObjectAnimationUsingKeyFrames.KeyFrames>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+                
+            </Setter>
+
+
+        </Style>
+    </UserControl.Resources>
+
+
+
+    <ContentControl d:DataContext="{x:Static local:FractalFrameDESIGN.Instance}">
+
+    </ContentControl>
+
+
+
+
+</UserControl>
