@@ -31,14 +31,14 @@
         <ScrollViewer 
             Grid.Row="1" 
             HorizontalAlignment="Center" 
-            VerticalScrollBarVisibility="Auto" Width="0">
+            VerticalScrollBarVisibility="Auto" Width="auto">
 
             <ListBox Background="Transparent" 
                      Width="auto" 
                      ItemsSource="{Binding PainterViewModels}"
                      BorderThickness="0"
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 
-                     SelectedItem="{Binding SelectedPainter}"
+                     SelectedItem="{Binding SelectedPainterVM}"
                      >
 
                 <ListBox.ItemTemplate >
@@ -55,7 +55,7 @@
 
 
 
-        <Button x:Name="NewFractalFrameWindow" Grid.Row="2" 
+        <Button x:Name="NewPainterWindow" Grid.Row="2" 
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Style="{StaticResource RibbonButton}" 

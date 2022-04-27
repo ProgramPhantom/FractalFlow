@@ -12,38 +12,27 @@ using System.IO;
 using System.Xml.Serialization;
 using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels.Windows;
+using FractalGeneratorMVVM.Views.Models;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public  class PainterStackViewModel : Screen
     {
         #region Fields
-        /// <summary>
-        /// Holds the Fractal Frame models
-        /// </summary>
-        private List<IPainter> _paintersList;
+       
 
         private BindableCollection<BasicPainterViewModel> _painterViewModels;
 
         private AddPainterWindowViewModel _addPainterWindow;
 
+        private BasicPainterViewModel _selectedPainterVM;
+
         #endregion
 
         #region Properties
-        public List<IPainter> PaintersList
-        {
-            get
-            {
-                return _paintersList;
-            }
-            set
-            {
-                _paintersList = value;
-                NotifyOfPropertyChange(() => PaintersList);
-            }
-        }
-
-
+        /// <summary>
+        /// The view models of the painters
+        /// </summary>
         public BindableCollection<BasicPainterViewModel> PainterViewModels
         {
             get { return _painterViewModels; }
@@ -55,10 +44,25 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         }
 
         /// <summary>
-        /// The painter model that is selected
+        /// The painter view model which is selected
         /// </summary>
-        public IPainter SelectedPainter { get; set; }
+        public BasicPainterViewModel SelectedPainterVM
+        {
+            get
+            {
+                return _selectedPainterVM;
+            }
+            set
+            {
+                _selectedPainterVM = value;
+                NotifyOfPropertyChange(() => SelectedPainterVM);
+            }
 
+        }
+
+        /// <summary>
+        /// The window to add a painter
+        /// </summary>
         public AddPainterWindowViewModel AddPainterWindow
         {
             get { return _addPainterWindow; }
@@ -72,7 +76,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         // Constructor
         public PainterStackViewModel()
         {
-            _paintersList = new List<IPainter>();
+            
             _painterViewModels = new BindableCollection<BasicPainterViewModel>();
 
             _addPainterWindow = new AddPainterWindowViewModel(this);
@@ -85,8 +89,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
 
 
-            SelectedPainter = PaintersList[0];
+            
             PainterViewModels[0].IsSelected = true;
+            _selectedPainterVM = PainterViewModels[0];
         }
         #endregion
 
@@ -97,39 +102,14 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <param name="newFF">The Fractal Frame to add</param>
         public void NewPainter(IPainter newPainter)
         {
-            _paintersList.Add(newPainter);
+            
 
             // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
             _painterViewModels.Add(new BasicPainterViewModel((BasicPainter)newPainter, 1));
 
-            _painterViewModels.Last().PainterSelectedEvent += OnPainterSelected;
-        }
-
-        public void AddToDatabase(IPainter painter)
-        {
 
         }
 
-        /// <summary>
-        /// Event handler for when one of the fractal frames is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        public void OnPainterSelected(BasicPainterViewModel sender)
-        {
-            System.Diagnostics.Trace.WriteLine("Gotten the message!");
-
-            int index = _painterViewModels.IndexOf(sender);
-
-            SelectedPainter = PaintersList[index];
-
-            foreach (BasicPainterViewModel vm in _painterViewModels)
-            {
-                vm.IsSelected = false;
-            }
-
-            _painterViewModels[index].IsSelected = true;
-        }
 
         /// <summary>
         /// Opens the new fractal frame WINDOW
