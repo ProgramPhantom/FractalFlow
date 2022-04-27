@@ -44,13 +44,16 @@
             Painters
         </TextBlock>
 
-        <ScrollViewer 
+        <ScrollViewer Width="60"
             Grid.Row="1" 
             HorizontalAlignment="Center" 
-            VerticalScrollBarVisibility="Auto" Width="auto">
+            Style="{StaticResource PainterStackScrollViewer}"
+            VerticalScrollBarVisibility="Auto" 
+            PreviewMouseWheel="Scroll">
 
             <ListBox Background="Transparent" 
                      Width="auto" 
+                     Margin="4"
                      ItemsSource="{Binding PainterViewModels}"
                      BorderThickness="0"
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 

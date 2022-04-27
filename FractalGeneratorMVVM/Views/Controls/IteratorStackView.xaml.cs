@@ -24,5 +24,17 @@ namespace FractalGeneratorMVVM.Views.Controls
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Some cringe code to get it to scroll
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Scroll(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }

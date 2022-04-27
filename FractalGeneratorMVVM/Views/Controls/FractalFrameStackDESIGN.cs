@@ -23,6 +23,14 @@ namespace FractalGeneratorMVVM.Views.Controls
             AddFractalFrame(new FractalFrame());
             AddFractalFrame(new FractalFrame());
 
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+
         }
     }
 }

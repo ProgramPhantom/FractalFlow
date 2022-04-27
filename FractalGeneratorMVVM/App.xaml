@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="Styles/TextBoxes.xaml"/>
                 <ResourceDictionary Source="Styles/TabControls.xaml"/>
                 <ResourceDictionary Source="Styles/ListBoxItems.xaml"/>
+                <ResourceDictionary Source="Styles/ScrollBars.xaml"/>
                 <ResourceDictionary Source="Styles/Buttons/StyleButtonBase.xaml"/>
                 
                 <!-- Buttons -->

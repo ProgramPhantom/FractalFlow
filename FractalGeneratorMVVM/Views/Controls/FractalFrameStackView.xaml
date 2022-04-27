@@ -34,10 +34,13 @@
         <ScrollViewer 
             Grid.Row="1" 
             HorizontalAlignment="Center" 
-            VerticalScrollBarVisibility="Auto" Width="52">
+            VerticalScrollBarVisibility="Auto" Width="60"
+            Style="{StaticResource FractalFrameStackScrollViewer}"
+            PreviewMouseWheel="Scroll">
 
             <ListBox Background="Transparent" 
                      Width="auto" 
+                     Margin="3, 0"
                      ItemsSource="{Binding FractalFrameViewModels}"
                      BorderThickness="0"
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 

@@ -18,6 +18,12 @@ namespace FractalGeneratorMVVM.Views.Controls
         {
             AddIterator();
             AddIterator();
+            AddIterator();
+            AddIterator();
+            AddIterator();
+            AddIterator();
+            AddIterator();
+            AddIterator();
         }
     }
 }

@@ -21,6 +21,10 @@ namespace FractalGeneratorMVVM.Views.Controls
 
             NewBasicPainter(new BasicPainter("Test", 1, 255, 25));
             NewPainterWhite(new PainterWhite("Test", 233, 2, 2));
+            NewBasicPainter(new BasicPainter("Test", 1, 255, 25));
+            NewPainterWhite(new PainterWhite("Test", 233, 2, 2));
+            NewBasicPainter(new BasicPainter("Test", 1, 255, 25));
+            NewPainterWhite(new PainterWhite("Test", 233, 2, 2));
 
         }
     }

@@ -94,9 +94,21 @@
     <Color x:Key="AddFilledColour">#425FF6</Color>
     <SolidColorBrush x:Key="AddFilledColourBrush" Color="{StaticResource AddFilledColour}"></SolidColorBrush>
 
-    <!-- The filled add button in the iterator stack -->
+    <!-- Hover over an item like iterator, fractal frame etc -->
     <Color x:Key="ItemHover">#31323b</Color>
     <SolidColorBrush x:Key="ItemHoverBrush" Color="{StaticResource ItemHover}"></SolidColorBrush>
+
+    <!-- Colour for scroll bar -->
+    <Color x:Key="ScrollBar">#686868</Color>
+    <SolidColorBrush x:Key="ScrollBarBrush" Color="{StaticResource ScrollBar}"></SolidColorBrush>
+
+    <!-- Colour for scroll bar HOVER -->
+    <Color x:Key="ScrollBarHover">#9e9e9e</Color>
+    <SolidColorBrush x:Key="ScrollBarHoverBrush" Color="{StaticResource ScrollBarHover}"></SolidColorBrush>
+
+    <!-- Colour for scroll bar DRAG -->
+    <Color x:Key="ScrollBarDrag">#efebef</Color>
+    <SolidColorBrush x:Key="ScrollBarDragBrush" Color="{StaticResource ScrollBarDrag}"></SolidColorBrush>
 
 
 

@@ -80,28 +80,28 @@
         </TextBlock>
 
         <ScrollViewer 
+           
             Grid.Row="1" 
             HorizontalAlignment="Center" 
             VerticalScrollBarVisibility="Auto"
-            HorizontalScrollBarVisibility="Disabled" Width="auto">
-            <!--<ItemsControl Padding="5" Width="auto" 
-                          ItemsSource="{Binding IteratorViewModels}"
-                          d:ItemsSource="{Binding IteratorStackDESIGN.INSTANCE.IteratorViewModels}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        
-                        <mv:IteratorView/>
-                        
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>-->
+            HorizontalScrollBarVisibility="Hidden" Width="300"
+            Margin="0"
+            Padding="5, 0"
+            Style="{StaticResource IteratorStackScroll}"
+            PreviewMouseWheel="Scroll"
+            
+            >
+            
+
 
             <ListBox Background="Transparent" 
                      Width="auto" 
+                     Padding="4, 0"
                      ItemsSource="{Binding IteratorViewModels}"
                      BorderThickness="0"
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 
                      SelectedItem="{Binding SelectedIteratorVM}"
+                    
                      >
 
                 <ListBox.ItemTemplate >
@@ -110,8 +110,11 @@
                         <mv:IteratorView/>
 
                     </DataTemplate>
-                </ListBox.ItemTemplate>
 
+                    
+                </ListBox.ItemTemplate>
+                
+                
 
             </ListBox>
         </ScrollViewer>
