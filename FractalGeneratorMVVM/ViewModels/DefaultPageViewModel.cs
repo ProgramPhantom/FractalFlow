@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using FractalGeneratorMVVM.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;

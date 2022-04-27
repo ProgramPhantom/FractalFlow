@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="FractalGeneratorMVVM.Views.Models.IteratorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Models"
+             mc:Ignorable="d" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             d:DesignHeight="100" d:DesignWidth="250"
+             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]">
+    
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ContentControl}" x:Name="IteratorButton">
+            <Setter Property="Width" Value="240"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="5" x:Name="OuterBorder" Margin="5 10">
+
+                            
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Header -->
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Number}"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           Margin="5,5,0,5"/>
+
+                                    <TextBlock Text="."
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           Margin="0,0,7,0"/>
+
+                                    <TextBlock Text="{Binding Name}"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           Margin="0,0,15,0"/>
+                                </StackPanel>
+
+                                <!-- Formula -->
+
+                                <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding FormulaString}"
+                                       Foreground="White"
+                                       Grid.Row="1"
+                                           FontSize="60"/>
+                            </Grid>
+                            <!--
+                            <Border.Style>
+
+                                
+                                <Style>
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="Border.MouseEnter">
+
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation To="Gray"
+                                                                    Duration="0:0:0.1"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+
+                                        </EventTrigger>
+
+                                        <EventTrigger RoutedEvent="Border.MouseLeave">
+
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation To="Transparent"
+                                                                    Duration="0:0:0.1"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+
+                                        </EventTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                                
+                                
+                            </Border.Style>-->
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                                <Setter TargetName="OuterBorder" Property="Background" Value="Transparent"/>
+                            </DataTrigger>
+
+
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter TargetName="OuterBorder" Property="Background" Value="{StaticResource BackgroundBrush}"/>
+                            </DataTrigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                    
+                    
+                </Setter.Value>
+            </Setter>
+            
+            
+        </Style>
+    </UserControl.Resources>
+
+    <ContentControl 
+        d:DataContext="{x:Static local:IteratorDESIGN.INSTANCE}"
+        d:Background="{StaticResource BackgroundBrush}"></ContentControl>
+</UserControl>

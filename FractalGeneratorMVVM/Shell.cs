@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using FractalGeneratorMVVM.Views;
 using FractalGeneratorMVVM.ViewModels;
-
+using FractalGeneratorMVVM.ViewModels.Windows;
 
 namespace FractalGeneratorMVVM
 {
