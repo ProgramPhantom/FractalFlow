@@ -20,6 +20,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Holds the value of the formula box
+        /// </summary>
         public string FormulaBox
         {
             get { return _formulaBox; }
@@ -30,6 +33,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             }
         }
 
+        /// <summary>
+        /// Collection of ViewModels for iterators
+        /// </summary>
         public BindableCollection<IteratorViewModel> IteratorViewModels
         {
             get
@@ -43,16 +49,23 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             }
         }
 
+        /// <summary>
+        /// The selected Iterator View Model
+        /// </summary>
         public IteratorViewModel SelectedIteratorVM
         {
             get { return _selectedIteratorVM; }
             set
             {
                 _selectedIteratorVM = value;
+                
                 NotifyOfPropertyChange(() => SelectedIteratorVM);
             }
         }
 
+        /// <summary>
+        /// Presents the IteratorModel under the SelectedIterator ViewModel
+        /// </summary>
         public IIterator SelectedIteratorModel
         {
             get
@@ -98,6 +111,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void AddIterator()
         {
             BasicIterator iterator = new BasicIterator(FormulaBox);
+
 
             _iteratorViewModels.Add(new IteratorViewModel(iterator, _iteratorViewModels.Count() + 1));
 

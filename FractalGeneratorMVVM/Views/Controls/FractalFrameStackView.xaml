@@ -35,34 +35,6 @@
             Grid.Row="1" 
             HorizontalAlignment="Center" 
             VerticalScrollBarVisibility="Auto" Width="52">
-            <!--
-            <ItemsControl  Width="auto" ItemsSource="{Binding FractalFrameViewModels}">
-                <ItemsControl.ItemTemplate >
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <Line X1="0" Y1="0" X2="50" Y2="0" StrokeThickness="1" 
-                                  Margin="0 0 0 5"
-                                  Stroke="{StaticResource LineGradient}"/>
-
-                            <local:FractalFrameView/>
-
-                        </StackPanel>
-
-
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="FrameworkElement.Margin" Value="0 0 0 9"/>
-
-
-
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>-->
-
-
 
             <ListBox Background="Transparent" 
                      Width="auto" 

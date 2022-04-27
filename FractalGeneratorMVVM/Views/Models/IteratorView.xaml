@@ -7,53 +7,33 @@
              mc:Ignorable="d" 
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             d:DesignHeight="100" d:DesignWidth="250"
              cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]">
     
     <UserControl.Resources>
         <Style TargetType="{x:Type ContentControl}" x:Name="IteratorButton">
-            <Setter Property="Width" Value="240"></Setter>
-            <Setter Property="Height" Value="auto"></Setter>
-            
+            <Setter Property="Width" Value="285"></Setter>
+            <Setter Property="Height" Value="65"></Setter>
+            <Setter Property="Background" Value="Green"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border CornerRadius="5" x:Name="OuterBorder" Margin="5 10">
+                        <Border CornerRadius="5" x:Name="OuterBorder" >
+
 
                             
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
 
-                                <!-- Header -->
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Number}"
-                                           VerticalAlignment="Center"
-                                           Foreground="White"
-                                           Margin="5,5,0,5"/>
 
-                                    <TextBlock Text="."
-                                           VerticalAlignment="Center"
-                                           Foreground="White"
-                                           Margin="0,0,7,0"/>
 
-                                    <TextBlock Text="{Binding Name}"
-                                           VerticalAlignment="Center"
-                                           Foreground="White"
-                                           Margin="0,0,15,0"/>
-                                </StackPanel>
+                            <!-- Formula -->
 
-                                <!-- Formula -->
-
-                                <TextBlock HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding FormulaString}"
-                                       Foreground="White"
-                                       Grid.Row="1"
-                                           FontSize="60"/>
-                            </Grid>
+                            <TextBlock HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding FormulaString}"
+                                    Foreground="White"
+                                    Grid.Row="1"
+                                    FontSize="60"/>
+                            
                             <!--
                             <Border.Style>
 
@@ -90,18 +70,7 @@
                             </Border.Style>-->
                         </Border>
 
-                        <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="False">
-                                <Setter TargetName="OuterBorder" Property="Background" Value="Transparent"/>
-                            </DataTrigger>
-
-
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter TargetName="OuterBorder" Property="Background" Value="{StaticResource BackgroundBrush}"/>
-                            </DataTrigger>
-
-
-                        </ControlTemplate.Triggers>
+                        
                     </ControlTemplate>
                     
                     
@@ -114,5 +83,7 @@
 
     <ContentControl 
         d:DataContext="{x:Static local:IteratorDESIGN.INSTANCE}"
-        d:Background="{StaticResource BackgroundBrush}"></ContentControl>
+        d:Background="Green">
+        
+    </ContentControl>
 </UserControl>
