@@ -10,60 +10,18 @@ using FractalCore;
 
 namespace FractalCore
 {
-    public class BasicPainter : PainterBase, IPainter
+    public class PainterWhite : BasicPainter, IPainter
     {
-        private byte _red;
-        private byte _green;
-        private byte _blue;
 
-        private FractalImage _thumbnail;
 
-        public byte Red
+
+        public PainterWhite(string name, byte red, byte green, byte blue) : base(name, red, green, blue)
         {
-            get { return _red; }
-            set { _red = value; }
-        }
 
-        public byte Green
-        {
-            get { return _green; }
-            set { _green = value; }
-        }
-
-        public byte Blue
-        {
-            get { return _blue; }
-            set { _blue = value; }
-        }
-
-        public FractalImage Thumbnail 
-        { 
-            get
-            {
-                return _thumbnail;
-            }
-            set
-            {
-                _thumbnail = value;
-            }
         }
 
 
-
-        public BasicPainter(string name, byte red, byte green, byte blue) : base(name)
-        {
-            _red = red;
-            _green = green;
-            _blue = blue;
-
-            Name = name;
-
-            ThumbnailFractal.Generate();
-            _thumbnail = new FractalImage(ref ThumbnailFractal, this);
-        }
-
-
-        public virtual void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)
+        public override void  Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)
         {
             byte[,,] pixels = new byte[fractal.Height, fractal.Width , 4];
 
@@ -86,15 +44,15 @@ namespace FractalCore
                     if (iterationCap == iterations)  // In the set
                     {  // ^^ Checking if iteration ratio is 1 will have the same effect
                         // Paint it, black.
-                        pixels[y, x, 0] = 0;
-                        pixels[y, x, 1] = 0;
-                        pixels[y, x, 2] = 0;
+                        pixels[y, x, 0] = 255;
+                        pixels[y, x, 1] = 255;
+                        pixels[y, x, 2] = 255;
                     }
                     else
                     {
-                        pixels[y, x, 0] = Convert.ToByte(iterationRatio * _blue);
-                        pixels[y, x, 1] = Convert.ToByte(iterationRatio * _green);
-                        pixels[y, x, 2] = Convert.ToByte(iterationRatio * _red);
+                        pixels[y, x, 0] = Convert.ToByte(iterationRatio * Blue);
+                        pixels[y, x, 1] = Convert.ToByte(iterationRatio * Green);
+                        pixels[y, x, 2] = Convert.ToByte(iterationRatio * Red);
                     }
                 }
             }

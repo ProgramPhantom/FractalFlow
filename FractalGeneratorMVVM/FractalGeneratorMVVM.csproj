@@ -149,13 +149,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Models\BasicPainterView.xaml.cs">
+    <Compile Update="Views\Models\Painters\BasicPainterView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\Models\BasicPainterView.xaml">
+    <Page Update="Views\Models\Painters\BasicPainterView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

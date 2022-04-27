@@ -1,13 +1,13 @@
-﻿<UserControl x:Class="FractalGeneratorMVVM.Views.Models.BasicPainterView"
+﻿<UserControl x:Class="FractalGeneratorMVVM.Views.Models.Painters.BasicPainterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Models"
+             xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Models.Painters"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]">
+             >
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ContentControl}" x:Name="FractalFrameButton">

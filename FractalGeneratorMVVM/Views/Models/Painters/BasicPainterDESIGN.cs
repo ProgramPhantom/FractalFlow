@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using FractalGeneratorMVVM.ViewModels;
 using FractalCore;
 using FractalGeneratorMVVM.ViewModels.Models;
+using FractalGeneratorMVVM.ViewModels.Models.Painters;
 
-namespace FractalGeneratorMVVM.Views.Models
+namespace FractalGeneratorMVVM.Views.Models.Painters
 {
     public class BasicPainterDESIGN : BasicPainterViewModel
     {

@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels.Windows;
 using FractalGeneratorMVVM.Views.Models;
+using FractalGeneratorMVVM.ViewModels.Models.Painters;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
@@ -21,11 +22,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         #region Fields
        
 
-        private BindableCollection<BasicPainterViewModel> _painterViewModels;
+        private BindableCollection<IPainterViewModel> _painterViewModels;
 
         private AddPainterWindowViewModel _addPainterWindow;
 
-        private BasicPainterViewModel _selectedPainterVM;
+        private IPainterViewModel _selectedPainterVM;
 
         #endregion
 
@@ -33,7 +34,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// The view models of the painters
         /// </summary>
-        public BindableCollection<BasicPainterViewModel> PainterViewModels
+        public BindableCollection<IPainterViewModel> PainterViewModels
         {
             get { return _painterViewModels; }
             set
@@ -46,7 +47,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// The painter view model which is selected
         /// </summary>
-        public BasicPainterViewModel SelectedPainterVM
+        public IPainterViewModel SelectedPainterVM
         {
             get
             {
@@ -55,6 +56,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             set
             {
                 _selectedPainterVM = value;
+                System.Diagnostics.Trace.WriteLine($"New painter selected: {_selectedPainterVM.PainterModel.GetType()}");
                 NotifyOfPropertyChange(() => SelectedPainterVM);
             }
 
@@ -77,20 +79,19 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public PainterStackViewModel()
         {
             
-            _painterViewModels = new BindableCollection<BasicPainterViewModel>();
+            _painterViewModels = new BindableCollection<IPainterViewModel>();
 
             _addPainterWindow = new AddPainterWindowViewModel(this);
 
 
 
-            NewPainter(new BasicPainter("Basic", 255, 0, 0));
-            NewPainter(new BasicPainter("Basic", 0, 255, 0));
-            NewPainter(new BasicPainter("Basic", 0, 0, 255));
+            NewBasicPainter(new BasicPainter("Basic", 255, 0, 0));
+            NewBasicPainter(new BasicPainter("Basic", 0, 255, 0));
+            NewBasicPainter(new BasicPainter("Basic", 0, 0, 255));
+
+            NewPainterWhite(new PainterWhite("Basic", 0, 0, 255));
 
 
-
-            
-            PainterViewModels[0].IsSelected = true;
             _selectedPainterVM = PainterViewModels[0];
         }
         #endregion
@@ -99,13 +100,18 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// Add a new fractal frame to the collection and set up a corresponding view model
         /// </summary>
-        /// <param name="newFF">The Fractal Frame to add</param>
-        public void NewPainter(IPainter newPainter)
+        public void NewBasicPainter(BasicPainter newPainter)
         {
-            
-
+           
             // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
-            _painterViewModels.Add(new BasicPainterViewModel((BasicPainter)newPainter, 1));
+            _painterViewModels.Add(new BasicPainterViewModel(newPainter, 1));
+
+        }
+
+        public void NewPainterWhite(PainterWhite newPainter)
+        {
+            // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
+            _painterViewModels.Add(new PainterWhiteViewModel(newPainter, 1));
 
 
         }

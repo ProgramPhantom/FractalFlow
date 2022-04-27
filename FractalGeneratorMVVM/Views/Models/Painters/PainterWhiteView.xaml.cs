@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FractalGeneratorMVVM.Views.Models
+namespace FractalGeneratorMVVM.Views.Models.Painters
 {
     /// <summary>
-    /// Interaction logic for FractalFrameView.xaml
+    /// Interaction logic for PainterWhiteView.xaml
     /// </summary>
-    public partial class BasicPainterView : UserControl
+    public partial class PainterWhiteView : UserControl
     {
-        public BasicPainterView()
+        public PainterWhiteView()
         {
             InitializeComponent();
         }

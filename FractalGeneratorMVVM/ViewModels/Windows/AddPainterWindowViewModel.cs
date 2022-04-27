@@ -62,7 +62,7 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         public void AddBasicPainter()
         {
             System.Diagnostics.Trace.WriteLine($"{PainterName}, {Red}, {Green}, {Blue}");
-            _painterStack.NewPainter(new BasicPainter(PainterName, Red, Green, Blue));
+            _painterStack.NewBasicPainter(new BasicPainter(PainterName, Red, Green, Blue));
             _window.TryCloseAsync();
         }
     }

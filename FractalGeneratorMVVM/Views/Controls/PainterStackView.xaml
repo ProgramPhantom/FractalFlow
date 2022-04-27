@@ -4,10 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Controls"
-             xmlns:mv="clr-namespace:FractalGeneratorMVVM.Views.Models"
+             xmlns:mv="clr-namespace:FractalGeneratorMVVM.Views.Models.Painters"
+             xmlns:vm="clr-namespace:FractalGeneratorMVVM.ViewModels.Models.Painters"
              mc:Ignorable="d" 
              d:DesignHeight="450">
-    <Grid Background="{StaticResource Blue2Brush}" Width="60">
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type vm:BasicPainterViewModel}" >
+
+            <mv:BasicPainterView/>
+
+        </DataTemplate>
+
+        <DataTemplate  DataType="{x:Type vm:PainterWhiteViewModel}" >
+
+            <mv:PainterWhiteView/>
+
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid Background="{StaticResource Blue2Brush}" Width="60" d:DataContext="{x:Static local:PainterStackDESIGN.INSTANCE}">
 
 
         <Grid.RowDefinitions>
@@ -40,15 +56,6 @@
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 
                      SelectedItem="{Binding SelectedPainterVM}"
                      >
-
-                <ListBox.ItemTemplate >
-                    <DataTemplate >
-
-                        <mv:BasicPainterView/>
-
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-
 
             </ListBox>
         </ScrollViewer>
