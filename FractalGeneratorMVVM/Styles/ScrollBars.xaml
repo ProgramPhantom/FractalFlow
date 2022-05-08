@@ -171,8 +171,8 @@
         
     
     
-    <!-- Styling for an entire scroll VIEWER - PAINTER STACK -->
-    <Style x:Key="PainterStackScrollViewer" TargetType="{x:Type ScrollViewer}">
+    <!-- Styling for an entire scroll VIEWER - Fractal Frame Stack -->
+    <Style x:Key="FractalFrameScrollViewer" TargetType="{x:Type ScrollViewer}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -201,8 +201,8 @@
     </Style>
 
     
-    <!-- Styling for an entire scroll VIEWER - FRACTAL FRAME STACK -->
-    <Style x:Key="FractalFrameStackScrollViewer" TargetType="{x:Type ScrollViewer}">
+    <!-- Styling for an entire scroll VIEWER - Painter stack -->
+    <Style x:Key="PainterStackScrollViewer" TargetType="{x:Type ScrollViewer}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>

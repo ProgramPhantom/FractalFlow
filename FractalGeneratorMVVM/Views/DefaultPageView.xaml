@@ -35,8 +35,8 @@
         <!-- Status Bar -->
         <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" x:Name="StatusBarVM"/> 
 
-        <!-- Canvas Placeholder -->
-        <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource CanvasBrush}"/>
+        <!-- Canvas -->
+        <ContentControl Grid.Row="1" Grid.Column="2" x:Name="CanvasVM"/>
 
     </Grid>
 </UserControl>

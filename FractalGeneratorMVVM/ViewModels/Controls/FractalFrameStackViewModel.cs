@@ -91,6 +91,25 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             
             // Initial fractal frames on launch
             AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
+            AddFractalFrame(new FractalFrame());
             _selectedFractalFrameVM = FractalFrameViewModels[0];
             FractalFrameViewModels[0].IsSelected = true;  // Select it 
         }

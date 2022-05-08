@@ -66,7 +66,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// Presents the IteratorModel under the SelectedIterator ViewModel
         /// </summary>
-        public IIterator SelectedIteratorModel
+        public IIterator SelectedIterator
         {
             get
             {

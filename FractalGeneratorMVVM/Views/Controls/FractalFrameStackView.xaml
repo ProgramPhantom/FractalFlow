@@ -35,7 +35,7 @@
             Grid.Row="1" 
             HorizontalAlignment="Center" 
             VerticalScrollBarVisibility="Auto" Width="60"
-            Style="{StaticResource FractalFrameStackScrollViewer}"
+            Style="{StaticResource FractalFrameScrollViewer}"
             PreviewMouseWheel="Scroll">
 
             <ListBox Background="Transparent" 

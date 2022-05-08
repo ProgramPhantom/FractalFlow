@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FractalCore;
 
 namespace FractalGeneratorMVVM.ViewModels
 {
@@ -20,8 +21,9 @@ namespace FractalGeneratorMVVM.ViewModels
 
         private ToolRibbonViewModel _toolRibbonVM;
 
-
         private StatusBarViewModel _statusBarVM;
+
+        private CanvasViewModel _canvasVM;
         #endregion
 
         #region Properties
@@ -61,7 +63,6 @@ namespace FractalGeneratorMVVM.ViewModels
             set { _toolRibbonVM = value; }
         }
 
-
         /// <summary>
         /// The bar at the bottom of the window which tells you essential info
         /// </summary>
@@ -69,6 +70,41 @@ namespace FractalGeneratorMVVM.ViewModels
         {
             get { return _statusBarVM; }
             set { _statusBarVM = value; }
+        }
+
+        public CanvasViewModel CanvasVM
+        {
+            get { return _canvasVM; }
+            set { _canvasVM = value; }
+        }
+
+
+        // FRACTAL DEFINITION OBJECTS
+
+        // Exposes selected models on fractal frame, painter and iterator stack.
+
+        public FractalFrame SelectedFractalFrame
+        {
+            get
+            {
+                return FractalFrameStackVM.SelectedFractalFrame;
+            }
+        }
+
+        public IPainter SelectedPainter
+        {
+            get
+            {
+                return PainterStackVM.SelectedPainter;
+            }
+        }
+
+        public IIterator SelectedIterator
+        {
+            get
+            {
+                return IteratorStackVM.SelectedIterator;
+            }
         }
 
         #endregion
@@ -81,6 +117,7 @@ namespace FractalGeneratorMVVM.ViewModels
             _painterStackVM = new PainterStackViewModel();
             _toolRibbonVM = new ToolRibbonViewModel();
             _statusBarVM = new StatusBarViewModel();
+            _canvasVM = new CanvasViewModel();
         }
 
         #endregion

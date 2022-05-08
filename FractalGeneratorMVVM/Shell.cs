@@ -12,7 +12,7 @@ using FractalGeneratorMVVM.ViewModels.Windows;
 namespace FractalGeneratorMVVM
 {
     /// <summary>
-    /// View model for the custom flat window
+    /// Shell
     /// </summary>
     public class Shell : PropertyChangedBase
     {

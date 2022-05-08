@@ -70,6 +70,17 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             get { return _addPainterWindow; }
             set { _addPainterWindow = value; }
         }
+
+        /// <summary>
+        /// Exposes the model housed in the SelectedPainter View Model.
+        /// </summary>
+        public IPainter SelectedPainter
+        {
+            get
+            {
+                return SelectedPainterVM.PainterModel;
+            }
+        }
         #endregion
 
 
