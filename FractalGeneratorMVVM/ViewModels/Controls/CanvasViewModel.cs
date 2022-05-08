@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using FractalCore;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
-    public class CanvasViewModel
+    public class CanvasViewModel : Screen
     {
 
         private FractalImage? _image;
@@ -15,9 +16,16 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public FractalImage? Image
         {
             get { return _image; }
-            set { _image = value; }
+            set 
+            { 
+                _image = value;
+                NotifyOfPropertyChange(() => Image);
+            }
         }
 
-
+        public CanvasViewModel()
+        {
+            
+        }
     }
 }

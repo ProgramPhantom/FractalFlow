@@ -67,15 +67,11 @@
             </Grid.ColumnDefinitions>
             
             <Track Name="PART_Track" Grid.Column="1" IsDirectionReversed="False">
-                <Track.DecreaseRepeatButton>
-                    <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageLeftCommand" />
-                </Track.DecreaseRepeatButton>
+
                 <Track.Thumb>
                     <Thumb Style="{StaticResource ScrollBarThumb}" Margin="0,1,0,1" Background="{StaticResource ScrollBarBrush}"/>
                 </Track.Thumb>
-                <Track.IncreaseRepeatButton>
-                    <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageRightCommand" />
-                </Track.IncreaseRepeatButton>
+
             </Track>
             
             

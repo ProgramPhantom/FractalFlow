@@ -107,6 +107,16 @@ namespace FractalGeneratorMVVM.ViewModels
             }
         }
 
+        // IMAGE
+
+        public FractalImage Image
+        {
+            get
+            {
+                return CanvasVM.Image;
+            }
+        }
+
         #endregion
 
         #region Constructor

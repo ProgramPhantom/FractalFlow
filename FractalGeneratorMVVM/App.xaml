@@ -37,6 +37,7 @@
                 <!-- ICONS -->
                 <ResourceDictionary Source="Images/ico/new/xaml/Add.xaml"/>
                 <ResourceDictionary Source="Images/ico/new/xaml/AddFilled.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/CancelRender.xaml"/>
                 <ResourceDictionary Source="Images/ico/new/xaml/FractalFrame.xaml"/>
                 <ResourceDictionary Source="Images/ico/new/xaml/OpenFile.xaml"/>
                 <ResourceDictionary Source="Images/ico/new/xaml/Pointer.xaml"/>

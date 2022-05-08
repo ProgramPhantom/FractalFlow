@@ -7,6 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="33" d:DesignWidth="1920">
     <Grid Background="{StaticResource Accent1Brush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="377"/>
+            <ColumnDefinition Width="43"/>
+        </Grid.ColumnDefinitions>
+
+
+        <ProgressBar Grid.Column="1" x:Name="ProgressBar"
+                   Maximum="100"
+                    Margin="0,9,10,9"
+                     BorderThickness="0">
+
+        </ProgressBar>
+
+        <Button x:Name="CancelRender" Grid.Column="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Style="{StaticResource RibbonButton}" 
+                Content="{StaticResource CancelRender}" Width="36" />
 
     </Grid>
 </UserControl>

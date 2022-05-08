@@ -107,7 +107,8 @@
         </StackPanel>
 
         <!-- Render button -->
-        <Button Style="{StaticResource RenderButton}" Grid.Column="3" >
+        <Button Style="{StaticResource RenderButton}" Grid.Column="3" 
+                x:Name="RenderClicked">
             RENDER
         </Button>
 
