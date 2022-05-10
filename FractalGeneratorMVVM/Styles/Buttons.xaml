@@ -16,6 +16,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10 0"/>
         <Setter Property="Foreground" Value="{StaticResource MyWhiteBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
 
         <Setter Property="LayoutTransform">
             <Setter.Value>
@@ -26,29 +27,51 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" x:Name="Border" BorderThickness="1">
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource WindowButtonBorderBrush}" TargetName="Border" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="Gray"></Setter>
+                <Setter Property="Background" Value="{StaticResource ItemHoverBrush}"></Setter>
             </Trigger>
         </Style.Triggers>
 
     </Style>
 
     <!-- Window Close Button -->
-    <Style TargetType="{x:Type Button}" x:Key="WindowCloseButton" BasedOn="{StaticResource WindowControlButton}">
+    <Style  TargetType="{x:Type Button}" x:Key="WindowCloseButton" BasedOn="{StaticResource WindowControlButton}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="Red"/>
-                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="{StaticResource CloseWindowRedBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource MyWhiteBrush}"/>
             </Trigger>
         </Style.Triggers>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" x:Name="Border" BorderThickness="1">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="Red" TargetName="Border" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- Add new Button -->

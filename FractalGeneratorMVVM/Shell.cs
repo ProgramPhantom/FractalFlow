@@ -43,7 +43,7 @@ namespace FractalGeneratorMVVM
         CancellationTokenSource cts = new CancellationTokenSource();
         #endregion
 
-
+        #region Constructor
         public Shell()
         {
             _windowManager = new WindowManager();
@@ -52,7 +52,7 @@ namespace FractalGeneratorMVVM
             _defaultPage = new DefaultPageViewModel();
 
             // Create the main window
-            _mainWindow = new DefaultWindowViewModel(_defaultPage, ResizeMode.CanResizeWithGrip);
+            _mainWindow = new DefaultWindowViewModel(_defaultPage, "Untitled", ResizeMode.CanResizeWithGrip);
 
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
             _defaultPage.ToolRibbonVM.FireRenderEvent += RenderAsync;
@@ -74,7 +74,7 @@ namespace FractalGeneratorMVVM
 
         }
 
-
+        #endregion
 
         public async void RenderAsync(object? sender, EventArgs e)
         {

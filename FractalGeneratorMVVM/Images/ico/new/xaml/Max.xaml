@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Viewbox Stretch="Uniform" x:Key="Max">
   <Canvas Height="18" Width="17">
-    <Path Data="M0.0625 0.562592V17.4376H16.9375V0.562592H0.0625ZM15.25 15.7501H1.75V2.25009H15.25V15.7501Z" Fill="#C5C5C5" />
+    <Path Data="M0.0625 0.562592V17.4376H16.9375V0.562592H0.0625ZM15.25 15.7501H1.75V2.25009H15.25V15.7501Z" Fill="#C5C5C5"/>
   </Canvas>
 </Viewbox>
-    </ResourceDictionary>
+</ResourceDictionary>

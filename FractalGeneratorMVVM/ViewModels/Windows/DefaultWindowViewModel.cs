@@ -34,9 +34,9 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
 
         private bool _maximised = false;
 
-
-
         private Screen _currentPage;
+
+        private string _windowTitle;
 
         #endregion
 
@@ -142,22 +142,30 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
 
         public ResizeMode CanWindowResize { get; set; }
 
+
+        public string WindowTitle
+        {
+            get { return _windowTitle; }
+            set { _windowTitle = value; }
+        }
+
         #endregion
 
         #region Constructor
-        public DefaultWindowViewModel(Screen page, ResizeMode resize)
+        public DefaultWindowViewModel(Screen page, string windowTitle, ResizeMode resize)
         {
             _currentPage = page;
+            _windowTitle = windowTitle;
             CanWindowResize = resize;
 
             LoadPage();
-            
         }
         #endregion
 
         #region Methods
         public void LoadPage()
         {
+            // Load up the thing that the winodw is displaying 
             ActivateItemAsync(CurrentPage);
         }
 

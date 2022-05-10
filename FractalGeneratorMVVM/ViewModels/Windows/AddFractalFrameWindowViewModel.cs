@@ -45,7 +45,7 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
             _fractalFrameStack = fractalFrameStack;
 
             _windowManager = new WindowManager();
-            _window = new DefaultWindowViewModel(this, ResizeMode.NoResize);
+            _window = new DefaultWindowViewModel(this, "Add Fractal Frame", ResizeMode.NoResize);
         }
 
         public void ShowWindow()

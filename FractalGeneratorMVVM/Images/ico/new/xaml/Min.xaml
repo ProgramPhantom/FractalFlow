@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Viewbox Stretch="Uniform" x:Key="Min">
         <Canvas Height="2" Width="19">
-            <Path Data="M18.625 0V1.6875H0.0625V0H18.625Z" Fill="#C5C5C5" />
+            <Path Data="M18.625 0V1.6875H0.0625V0H18.625Z" Fill="{StaticResource MyWhiteBrush}" />
         </Canvas>
     </Viewbox>
 </ResourceDictionary>

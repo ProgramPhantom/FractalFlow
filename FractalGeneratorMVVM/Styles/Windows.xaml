@@ -34,7 +34,7 @@
                                     <VisualBrush Visual="{Binding ElementName=OuterBorder}"/>
                                 </Grid.OpacityMask>
 
-
+                       
                                 <Grid.RowDefinitions>
                                     <!-- Title bar -->
                                     <RowDefinition Height="{Binding TitleHeightGridLength}"/>
@@ -43,66 +43,40 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
-
+                                
                                 <!-- Title Bar -->
                                 <Grid Background="{StaticResource WindowChromeBrush}" >
                                     <!-- Increase z intex so buttons are clickable-->
 
 
-
-                                    <Grid.ColumnDefinitions>
-
-                                        <!-- Icon -->
-                                        <ColumnDefinition  Width="auto"/>
-
-                                        <!-- Middle -->
-                                        <ColumnDefinition  Width="*"/>
-
-                                        <!-- Buttons -->
-                                        <ColumnDefinition  Width="auto"/>
-
-                                    </Grid.ColumnDefinitions>
-
-                                    <!-- Icon 
-                                    <Button Style="{StaticResource SysIco}"
-                                        x:Name="MenuCommand">
-                                        <Image Source="/Images/temp/simulide.png"/>
-
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="Click">
-                                                <cal:ActionMessage MethodName="OpenMenu">
-                                                    <cal:Parameter Value="$view"/>
-                                                </cal:ActionMessage>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Button>-->
-
-                                    <TextBlock FontSize="15"
-                                                   
-                                                    VerticalAlignment="Center" Margin="13, 0, 0, 0"
-                                        
-                                            Text="Fractal Flow"
-                                        Foreground="{StaticResource MyWhiteBrush}">
+                                    <!-- Fractal Flow Title -->
+                                    <TextBlock FontSize="{StaticResource WindowChomeText}"
+                                               VerticalAlignment="Center" Margin="13, 0, 0, 0"
+                                               Text="Fractal Flow"
+                                               HorizontalAlignment="Left"
+                                               Foreground="{StaticResource MyWhiteBrush}">
 
                                     </TextBlock>
 
-                                    <!-- Title -->
-                                    <!--Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='FF'}"-->
+                                    
+                                    <!-- Title - The file name for the mainwindow -->
                                     <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Margin="0" Stretch="None">
-                                        <TextBlock FontSize="15"
-                                                   
-                                                  
-                                        
-                                            Text="Super Cool Fractal"
-                                        Foreground="{StaticResource MyWhiteBrush}">
+                                        <TextBlock FontSize="{StaticResource WindowChomeText}"
+                                                   Text="{TemplateBinding Title}"
+                                                   Foreground="{StaticResource MyWhiteBrush}">
 
                                         </TextBlock>
                                     </Viewbox>
+                                    
+                                    
                                     <!-- Window Buttons -->
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                        <Button  Style="{StaticResource RibbonButton}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Content="_" 
+                                                Style="{StaticResource WindowControlButton}" 
+                                                Foreground="{StaticResource MyWhiteBrush}">
+
                                             
-
+                                            
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
                                                     <cal:ActionMessage MethodName="MinimizeWindow">
@@ -112,19 +86,9 @@
                                             </i:Interaction.Triggers>
                                         </Button>
 
-
-                                        <Button Content="_" Style="{StaticResource WindowControlButton}">
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="Click">
-                                                    <cal:ActionMessage MethodName="MinimizeWindow">
-                                                        <cal:Parameter Value="$view"/>
-                                                    </cal:ActionMessage>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </Button>
+                                        <Button Content="[]"  Style="{StaticResource WindowControlButton}" >
 
 
-                                        <Button Content="[]" Style="{StaticResource WindowControlButton}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
                                                     <cal:ActionMessage MethodName="MaximizeWindow">
@@ -133,6 +97,7 @@
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </Button>
+                                        
                                         <Button Content="X" Style="{StaticResource WindowCloseButton}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">

@@ -48,7 +48,8 @@
     <SolidColorBrush x:Key="Blue3Brush" Color="{StaticResource Blue3}"></SolidColorBrush>
 
     <!-- For status bar -->
-    <Color x:Key="Accent1">#955BF6</Color>
+    <!-- 955BF6 -->
+    <Color x:Key="Accent1">#7160e8</Color>
     <SolidColorBrush x:Key="Accent1Brush" Color="{StaticResource Accent1}"></SolidColorBrush>
 
     <!--  -->
@@ -110,6 +111,12 @@
     <Color x:Key="ScrollBarDrag">#efebef</Color>
     <SolidColorBrush x:Key="ScrollBarDragBrush" Color="{StaticResource ScrollBarDrag}"></SolidColorBrush>
 
+    <!-- Colour for close button in top right -->
+    <Color x:Key="CloseWindowRed">#d03535</Color>
+    <SolidColorBrush x:Key="CloseWindowRedBrush" Color="{StaticResource CloseWindowRed}"></SolidColorBrush>
 
+    <!-- Border For window buttons -->
+    <Color x:Key="WindowButtonBorder">#474956</Color>
+    <SolidColorBrush x:Key="WindowButtonBorderBrush" Color="{StaticResource WindowButtonBorder}"></SolidColorBrush>
 
 </ResourceDictionary>
