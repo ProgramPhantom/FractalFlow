@@ -22,15 +22,6 @@
 
                         <Grid  Width="40" Height="40">
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="UIElement.MouseDown">
-                                    <cal:ActionMessage MethodName="Select">
-
-                                    </cal:ActionMessage>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-
-
 
 
 
@@ -44,8 +35,7 @@
 
                                     <TextBlock 
                                         Text="{Binding Number}"
-                                        FontFamily="{StaticResource InterBold}"
-                                        FontSize="20" 
+                                        FontSize="13" 
                                         Foreground="{Binding TextColour}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"/>

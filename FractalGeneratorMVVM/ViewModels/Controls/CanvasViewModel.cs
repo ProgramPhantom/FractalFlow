@@ -10,11 +10,20 @@ using System.Windows;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
+    public delegate void MouseOverCanvas(Point Pos, double width, double height);
+
     public class CanvasViewModel : Screen
     {
-        
-        private FractalImage? _image;
+        #region Events
+        public event MouseOverCanvas? MouseOverCanvasEvent;  // Event
+        #endregion
 
+        #region Fields
+        private Point _pos;
+        private FractalImage? _image;
+        #endregion
+
+        #region Properties
         public FractalImage? Image
         {
             get { return _image; }
@@ -25,6 +34,19 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             }
         }
 
+        public Point Pos
+        {
+            get
+            {
+                return _pos;
+            }
+            set
+            {
+                _pos = value;
+                NotifyOfPropertyChange(() => Pos);
+            }
+        }
+        #endregion
 
 
         public CanvasViewModel()
@@ -35,10 +57,15 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void MouseOver( System.Windows.Controls.Image sender, MouseEventArgs relative)
         {
             // pos = Mouse.GetPosition(relative.View);
-            Point pos = Mouse.GetPosition(sender);
+            Pos = Mouse.GetPosition(sender);
+
+            MouseOverCanvasEvent?.Invoke(Pos, sender.ActualWidth, sender.ActualHeight);
+            
             
 
-            System.Diagnostics.Trace.WriteLine($"X: {pos.X}, Y: {pos.Y}");
+            //System.Diagnostics.Trace.WriteLine($"X: {Pos.X}, Y: {Pos.Y}");
+
+            //System.Diagnostics.Trace.WriteLine($"Width: {sender.ActualWidth}, Height: {sender.ActualHeight}");
         }
     }
 }

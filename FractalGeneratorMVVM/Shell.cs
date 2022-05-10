@@ -60,6 +60,13 @@ namespace FractalGeneratorMVVM
             // Wire up the cancel render button
             _defaultPage.StatusBarVM.CancelRenderEvent += CancelRender;
 
+            #region Mouse hover event linking
+            // Send the mouse hover data over to the selected fractal frame so that it can be processed into a complex number
+            _defaultPage.CanvasVM.MouseOverCanvasEvent += _defaultPage.SelectedFractalFrame.PxToComplex;
+            // The fractal frame then fires the ComplexHoveredEvent event so everyone can have access to the complex number the mouse is hovering over
+            _defaultPage.SelectedFractalFrame.ComplexHoveredEvent += _defaultPage.StatusBarVM.UpdateHoverMessage;
+            #endregion
+
 
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
@@ -68,12 +75,6 @@ namespace FractalGeneratorMVVM
         }
 
 
-        public static async void BeginRender()
-        {
-            
-
-            
-        }
 
         public async void RenderAsync(object? sender, EventArgs e)
         {

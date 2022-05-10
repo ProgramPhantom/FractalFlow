@@ -5,27 +5,63 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="33" d:DesignWidth="1920">
-    <Grid Background="{StaticResource Accent1Brush}">
+             d:DesignHeight="34" d:DesignWidth="1920">
+    <Grid Background="{StaticResource Accent1Brush}" Height="33">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="377"/>
-            <ColumnDefinition Width="43"/>
+            <ColumnDefinition Width="430"/>
+            <ColumnDefinition Width="45"/>
         </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4"/>
+        </Grid.RowDefinitions>
 
-        <ProgressBar Grid.Column="1" x:Name="ProgressBar"
-                   Maximum="100"
-                    Margin="0,9,10,9"
-                     BorderThickness="0">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                    Grid.Column="0">
 
-        </ProgressBar>
+            <ContentPresenter Content="{StaticResource Pointer}" 
+                              Height="17"
+                              Margin="7 0 3 0">
 
-        <Button x:Name="CancelRender" Grid.Column="2"
+            </ContentPresenter>
+
+            <TextBlock x:Name="HoverLocationString"
+                   FontFamily="Segoe UI Light"
+                   FontSize="14" VerticalAlignment="Center"
+                   Foreground="{StaticResource MyWhiteBrush}"
+                   Margin="0 0 10 0">
+                <TextBlock.Effect>
+                    <DropShadowEffect Direction="-45" BlurRadius="7" Opacity="0" />
+                </TextBlock.Effect>
+            </TextBlock>
+          
+        </StackPanel>
+
+
+        <Button x:Name="CancelRender" Grid.Column="3"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Style="{StaticResource RibbonButton}" 
-                Content="{StaticResource CancelRender}" Width="36" />
+                Content="{StaticResource CancelRender}" Width="30" Height="26">
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="9" Direction="-70" ShadowDepth="3" Opacity="0.5"/>
+            </Button.Effect>
+        </Button>
 
+
+
+        <ProgressBar x:Name="ProgressBar"
+                   Maximum="100"
+                   Grid.ColumnSpan="4"
+                   Grid.Row="1"
+                   VerticalAlignment="Bottom"
+                   Margin="0,0,0,0"
+                   Height="4"
+                   BorderThickness="0">
+
+        </ProgressBar>
     </Grid>
 </UserControl>

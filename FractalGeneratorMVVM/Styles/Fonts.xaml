@@ -27,12 +27,12 @@
 
     <!-- Chaning the font here will not work until VS is restarted, because VS is garbage. -->
     <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
-        <Setter Property="FontFamily" Value="{StaticResource WaveLight}"></Setter>
+        <Setter Property="FontFamily" Value="Segoe UI"></Setter>
     </Style>
 
     
     <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">  <!-- Do a different one for TextBlock for... reasons. -->
-        <Setter Property="FontFamily" Value="{StaticResource Wave}"></Setter>
+        <Setter Property="FontFamily" Value="Segoe UI"></Setter>
     </Style>
 
     <!-- Set the default font for the following controls -->

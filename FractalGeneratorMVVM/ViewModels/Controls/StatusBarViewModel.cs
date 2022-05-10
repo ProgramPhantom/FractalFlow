@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -14,7 +15,8 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public event CancelRender? CancelRenderEvent;  // Event
 
         #region Fields
-        private int _progressBar = 0;
+        private int _progressBar = 100;
+        private string _hoverLocationString = "";
         #endregion
 
 
@@ -28,12 +30,31 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 NotifyOfPropertyChange(() => ProgressBar);
             }
         }
+
+
+        public string HoverLocationString
+        {
+            get { return _hoverLocationString; }
+            set 
+            { 
+                _hoverLocationString = value;
+                NotifyOfPropertyChange(() => HoverLocationString);
+            }
+        }
+
         #endregion
 
         #region Methods
         public void CancelRender()
         {
             CancelRenderEvent?.Invoke();
+        }
+
+        public void UpdateHoverMessage(Complex p)
+        {
+            HoverLocationString = $"{(p.Real > 0 ? " " : string.Empty)} {Math.Round(p.Real, 10).ToString("N10")} {(p.Imaginary > 0 ? '+' : '-')} i{(Math.Round(Math.Abs(p.Imaginary), 10).ToString("N10"))}";
+
+            
         }
         #endregion
     }

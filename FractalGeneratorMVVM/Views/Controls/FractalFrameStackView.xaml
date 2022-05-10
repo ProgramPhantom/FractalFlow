@@ -24,9 +24,9 @@
                    VerticalAlignment="Top" 
                    FontSize="12"
                    TextWrapping="WrapWithOverflow"
-                   FontFamily="{StaticResource Inter}"
+                   FontFamily="Segoe UI"
                    Foreground="White"
-                   
+                   TextAlignment="Center"
                    HorizontalAlignment="Center" Height="29" Width="42">
             Fractal Frames
         </TextBlock>

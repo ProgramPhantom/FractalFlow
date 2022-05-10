@@ -26,7 +26,7 @@
                     <Border Background="{StaticResource Blue1Brush}" 
 
 
-                        CornerRadius="15"
+                        CornerRadius="7"
                         
                         
                         >

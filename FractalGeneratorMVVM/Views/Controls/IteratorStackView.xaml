@@ -71,11 +71,11 @@
         <!--Fractal Frame title-->
         <TextBlock 
                    VerticalAlignment="Top" 
-                   FontSize="18" 
+                   FontSize="14" 
                    Foreground="White" 
-                   Height="18"
+                   
                    HorizontalAlignment="Center"
-                   FontFamily="{StaticResource Inter}" Width="78">
+                    Width="78">
             Formulae
         </TextBlock>
 
