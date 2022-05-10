@@ -126,7 +126,112 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
 
+    <Style TargetType="{x:Type Window}" x:Key="NoResizeWindowChrome">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="Title" Value="Window"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
+
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Opacity="0.5" Color="Black"/>
+                        </Border.Effect>
+
+                        <!-- Container Grid -->
+                        <Grid>
+
+                            <Border x:Name="OuterBorder" Background="Black"
+                                CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" 
+                                    
+                                    >
+                            </Border>
+
+                            <!-- Main window content -->
+                            <Grid Background="{StaticResource BackgroundBrush}" ClipToBounds="True" Panel.ZIndex="1">
+                                <!-- Corner Clipping -->
+                                <Grid.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=OuterBorder}"/>
+                                </Grid.OpacityMask>
+
+
+                                <Grid.RowDefinitions>
+                                    <!-- Title bar -->
+                                    <RowDefinition Height="{Binding TitleHeightGridLength}"/>
+
+                                    <!-- Window Content -->
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+
+                                <!-- Title Bar -->
+                                <Grid Background="{StaticResource WindowChromeBrush}" >
+                                    <!-- Increase z intex so buttons are clickable-->
+
+
+                                    <!-- Fractal Flow Title -->
+                                    <TextBlock FontSize="{StaticResource WindowChomeText}"
+                                               VerticalAlignment="Center" Margin="13, 0, 0, 0"
+                                               Text="Fractal Flow"
+                                               HorizontalAlignment="Left"
+                                               Foreground="{StaticResource MyWhiteBrush}">
+
+                                    </TextBlock>
+
+
+                                    <!-- Title - The file name for the mainwindow -->
+                                    <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Margin="0" Stretch="None">
+                                        <TextBlock FontSize="{StaticResource WindowChomeText}"
+                                                   Text="{TemplateBinding Title}"
+                                                   Foreground="{StaticResource MyWhiteBrush}">
+
+                                        </TextBlock>
+                                    </Viewbox>
+
+
+                                    <!-- Window Buttons -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Content="_" 
+                                                Style="{StaticResource WindowControlButton}" 
+                                                Foreground="{StaticResource MyWhiteBrush}">
+
+
+
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <cal:ActionMessage MethodName="MinimizeWindow">
+                                                        <cal:Parameter Value="$view"/>
+                                                    </cal:ActionMessage>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </Button>
+
+                                        <Button Content="X" Style="{StaticResource WindowCloseButton}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <cal:ActionMessage MethodName="CloseWindow">
+                                                        <cal:Parameter Value="$view"/>
+                                                    </cal:ActionMessage>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </Button>
+                                    </StackPanel>
+
+                                </Grid>
+
+
+                                <!-- Display the content of the window here -->
+                                <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1" />
+                            </Grid>
+                        </Grid>
+
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

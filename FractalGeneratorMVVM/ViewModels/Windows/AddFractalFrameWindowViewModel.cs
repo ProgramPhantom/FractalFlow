@@ -12,9 +12,14 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
 {
     public class AddFractalFrameWindowViewModel : Screen
     {
+        #region Fields
         private FractalFrameStackViewModel _fractalFrameStack;
 
         private WindowManager _windowManager;
+
+        private NoMaxWindowViewModel _window;
+        #endregion
+
 
         public WindowManager WindowManager
         {
@@ -23,9 +28,7 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         }
 
 
-        private DefaultWindowViewModel _window;
-
-        public DefaultWindowViewModel Window
+        public NoMaxWindowViewModel Window
         {
             get { return _window; }
             set { _window = value; }
@@ -45,14 +48,14 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
             _fractalFrameStack = fractalFrameStack;
 
             _windowManager = new WindowManager();
-            _window = new DefaultWindowViewModel(this, "Add Fractal Frame", ResizeMode.NoResize);
+            _window = new NoMaxWindowViewModel(this, "Add Fractal Frame", ResizeMode.NoResize);
         }
 
         public void ShowWindow()
         {
             _windowManager.ShowWindowAsync(_window);
         }
-
+        
         /// <summary>
         /// When the add button is clicked
         /// </summary>
