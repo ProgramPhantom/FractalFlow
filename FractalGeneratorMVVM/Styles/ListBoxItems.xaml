@@ -4,6 +4,7 @@
 
     <Style x:Key="ItemStyleVertical" TargetType="ListBoxItem">
         <Setter Property="Background" Value="Black"/>
+        <Setter Property="Cursor" Value="Hand"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -26,18 +27,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
                             <Setter TargetName="_Border" Property="Background" Value="{StaticResource SelectedGrayBrush}"/>
-                            
+
                         </Trigger>
-
-                        <!--<MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                            </MultiTrigger.Conditions>
-
-                            <Setter TargetName="_Border" Property="Background" Value="{StaticResource ItemHoverBrush}"/>
-                           
-                        </MultiTrigger>-->
 
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="_Border" Property="Background" Value="{StaticResource ItemHoverBrush}"/>
@@ -52,6 +43,8 @@
 
     
     <Style x:Key="ItemStyleIterator" TargetType="ListBoxItem">
+        <Setter Property="Cursor" Value="Hand"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
