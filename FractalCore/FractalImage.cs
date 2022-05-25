@@ -16,33 +16,58 @@ namespace FractalCore
     /// </summary>
     public class FractalImage
     {
-
+        #region Fields
         private WriteableBitmap _fractalBitmap;
 
+        private Fractal _fractal;
+        #endregion
+
+        #region Properties
         public WriteableBitmap FractalBitmap
         {
             get { return _fractalBitmap; }
         }
 
-        private IPainter _painter;
 
-        public IPainter Painter
+
+        public Fractal Fractal
         {
-            get { return _painter; }
-            set { _painter = value; }
+            get { return _fractal; }
+            set { _fractal = value; }
         }
+        #endregion
 
-
-        public FractalImage(ref Fractal fractal, IPainter painter)
+        public FractalImage(ref Fractal fractal)
         {
             // Need to now create the writeable bitmap with the colours
             _fractalBitmap = new WriteableBitmap(fractal.Width, fractal.Height, 96, 96, PixelFormats.Bgr32, null);  // Set up an empty WriteableBitmap with the correct dimensions
             // painter.Paint(ref _fractalBitmap, ref fractal);  // Paint the 
 
-            _painter = painter;
+            _fractal = fractal;
+        }
 
-            Painter.Paint(ref _fractalBitmap, ref fractal);
+        ///// <summary>
+        ///// Temporary method for creating an image straight from a flat array rather than taking a 2D array
+        ///// </summary>
+        ///// <param name="flatArray"></param>
+        ///// <param name="width"></param>
+        ///// <param name="height"></param>
+        ///// <param name="painter"></param>
+        //public FractalImage(ref uint[] flatArray, int width, int height, BasicPainter painter)
+        //{
+        //    // Need to now create the writeable bitmap with the colours
+        //    _fractalBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr32, null);  // Set up an empty WriteableBitmap with the correct dimensions
+        //    // painter.Paint(ref _fractalBitmap, ref fractal);  // Paint the 
 
+        //    _painter = painter;
+
+            
+
+        //}
+
+        public void Render(IPainter painter)
+        {
+            painter.Paint(ref _fractalBitmap, ref _fractal);
         }
 
         public void SaveImage(string filename)

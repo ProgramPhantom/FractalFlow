@@ -88,6 +88,17 @@ namespace FractalCore
             _name = NameDefault;
         }
 
+        public FractalFrame(FractalFrame fractalFrame)
+        {
+            _left = fractalFrame.Left;
+            _right = fractalFrame.Right;
+            _top = fractalFrame.Top;
+            _bottom = fractalFrame.Bottom;
+            _iterations = fractalFrame.Iterations;
+            _bail = fractalFrame.Bail;
+            _name = fractalFrame.Name;
+        }
+
         public FractalFrame(float left, float right, float top, float bottom, string name, uint iterations, int bail)
         {
             _left = left;

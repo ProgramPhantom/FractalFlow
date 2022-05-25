@@ -7,7 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cloo.clSharp" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FormulaParser\FormulaParser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Cloo">
+      <HintPath>OpenCl\Cloo.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenCLlib">
+      <HintPath>OpenCl\OpenCLlib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

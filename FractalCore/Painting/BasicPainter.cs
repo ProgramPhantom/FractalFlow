@@ -59,7 +59,7 @@ namespace FractalCore
             Name = name;
 
             ThumbnailFractal.Generate();
-            _thumbnail = new FractalImage(ref ThumbnailFractal, this);
+            _thumbnail = new FractalImage(ref ThumbnailFractal);
         }
 
 
@@ -103,5 +103,7 @@ namespace FractalCore
             // Then write the array to the WriteableBitmap
             WriteArrToBM(ref pixels, ref fractalBitmap);
         }
+
+        
     }
 }

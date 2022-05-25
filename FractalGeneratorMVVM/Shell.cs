@@ -27,6 +27,8 @@ namespace FractalGeneratorMVVM
 
         private DefaultPageViewModel _defaultPage;
 
+        private RenderEngine _renderEngine;
+
         #endregion
 
         #region Properties
@@ -41,6 +43,14 @@ namespace FractalGeneratorMVVM
         }
 
         CancellationTokenSource cts = new CancellationTokenSource();
+
+
+        public RenderEngine RenderEngine
+        {
+            get { return _renderEngine; }
+            set { _renderEngine = value; }
+        }
+
         #endregion
 
         #region Constructor
@@ -55,7 +65,8 @@ namespace FractalGeneratorMVVM
             _mainWindow = new DefaultWindowViewModel(_defaultPage, "Untitled", ResizeMode.CanResizeWithGrip);
 
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
-            _defaultPage.ToolRibbonVM.FireRenderEvent += RenderAsync;
+            // _defaultPage.ToolRibbonVM.FireRenderEvent += RenderAsync;
+            _defaultPage.ToolRibbonVM.FireRenderEvent += FastRender;
 
             // Wire up the cancel render button
             _defaultPage.StatusBarVM.CancelRenderEvent += CancelRender;
@@ -71,7 +82,7 @@ namespace FractalGeneratorMVVM
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
 
-
+            RenderEngine = new RenderEngine();
         }
 
         #endregion
@@ -83,7 +94,7 @@ namespace FractalGeneratorMVVM
             cts = new CancellationTokenSource();  // Set up the cancel thing
 
 
-            Fractal fractal = new Fractal(500, 500, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Fractal fractal = new Fractal(10000, 10000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
 
             // Progress is a metadata thing
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
@@ -99,9 +110,22 @@ namespace FractalGeneratorMVVM
             }
 
             // Set the image of the new canvas to the newley rendered fractal painted with the selected painter.
-            DefaultPage.CanvasVM.Image = new FractalImage(ref fractal, DefaultPage.SelectedPainter);
+            DefaultPage.CanvasVM.Image = new FractalImage(ref fractal);
 
         }
+
+        public void FastRender(object? sender, EventArgs e)
+        {
+            Fractal fractal = new Fractal(1000, 1000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            FractalImage fractalImage = new FractalImage(ref fractal);
+
+            RenderBitmapJob job = new RenderBitmapJob(fractal, DefaultPage.SelectedPainter, fractalImage);
+
+            RenderEngine.CLBitmapCompute(job);
+
+            DefaultPage.CanvasVM.Image = fractalImage;
+        }
+        
 
         public void CancelRender()
         {
