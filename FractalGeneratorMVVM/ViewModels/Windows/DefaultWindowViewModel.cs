@@ -26,6 +26,9 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         private int _windowMinWidth = 800;
 
         private int _windowMinHeight = 450;
+                    
+        private int _height = 800;
+        private int _width = 450;
 
         /// <summary>
         /// The radius of the edges of the window
@@ -149,13 +152,46 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
             set { _windowTitle = value; }
         }
 
+
+        public int Width
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                _width = value;
+                NotifyOfPropertyChange(() => Width);
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                _height = value ;
+                NotifyOfPropertyChange(() => Height);
+            }
+        }
+
         #endregion
 
         #region Constructor
-        public DefaultWindowViewModel(Screen page, string windowTitle, ResizeMode resize)
+        public DefaultWindowViewModel(Screen page, string windowTitle, ResizeMode resize, int width=800, int height=450)
         {
             _currentPage = page;
             _windowTitle = windowTitle;
+
+            _width = width;
+            _height = height + _titleHeight;
+
+            
+
             CanWindowResize = resize;
 
             LoadPage();

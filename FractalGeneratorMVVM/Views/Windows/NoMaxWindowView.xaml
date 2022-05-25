@@ -12,14 +12,13 @@
         x:Name="MainWindow"
         Title="{Binding WindowTitle}"
         WindowStartupLocation="CenterScreen"
-        Width="800"
-        Height="500" 
-        MinHeight="450"
-        MinWidth="800"
+        
+        Width="{Binding Width, Mode=TwoWay}"
+        Height="{Binding Height, Mode=TwoWay}"
         Style="{StaticResource NoResizeWindowChrome}"
         ResizeMode="{Binding CanWindowResize}"
         cal:Message.Attach="[Event StateChanged] = [Action UpdateProperties($view)]"
-        
+        cal:Bind.AtDesignTime="True"
         >
 
     <WindowChrome.WindowChrome>

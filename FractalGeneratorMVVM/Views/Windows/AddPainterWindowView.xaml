@@ -89,7 +89,7 @@
                     >
             <TabControl.Resources>
                 <Style TargetType="TabItem">
-                    
+
 
                     <Setter Property="Template">
                         <Setter.Value>
@@ -119,7 +119,7 @@
                     </Setter>
                 </Style>
             </TabControl.Resources>
-            
+
             <TabItem Header="Basic">
                 <Grid >
                     <Grid.ColumnDefinitions>
@@ -162,6 +162,11 @@
                         Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" Grid.ColumnSpan="2" 
                                       SelectedColor="#FFB85555" UsingAlphaChannel="False"
                                       VerticalAlignment="Center"/>
+
+
+
+
+
 
                     <!-- Description -->
                     <Grid Grid.Row="1" Grid.Column="3"  Grid.RowSpan="2"

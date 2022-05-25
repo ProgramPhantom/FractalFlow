@@ -119,4 +119,18 @@
     <Color x:Key="WindowButtonBorder">#474956</Color>
     <SolidColorBrush x:Key="WindowButtonBorderBrush" Color="{StaticResource WindowButtonBorder}"></SolidColorBrush>
 
+    <!-- Background for popup windows-->
+    <Color x:Key="PopupWindowBackground">#2b2d34</Color>
+    <SolidColorBrush x:Key="PopupWindowBackgroundBrush" Color="{StaticResource PopupWindowBackground}"></SolidColorBrush>
+
+    <!-- Background for text box in popup windows -->
+    <Color x:Key="FormTextBoxBackground">#2F3242</Color>
+    <SolidColorBrush x:Key="FormTextBoxBackgroundBrush" Color="{StaticResource FormTextBoxBackground}"></SolidColorBrush>
+
+    <!-- Colour for when you hover over text box (for the border) -->
+    <Color x:Key="TextBoxBorderHover">#594c61</Color>
+    <SolidColorBrush x:Key="TextBoxBorderHoverBrush" Color="{StaticResource TextBoxBorderHover}"></SolidColorBrush>
+    
+    
+
 </ResourceDictionary>

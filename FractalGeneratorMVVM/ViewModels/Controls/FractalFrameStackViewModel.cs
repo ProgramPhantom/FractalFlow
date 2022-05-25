@@ -7,11 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public class FractalFrameStackViewModel : Screen
     {
+        static Color DEFAULTCOLOUR = Colors.AliceBlue;
+
         #region Fields
 
         private BindableCollection<FractalFrameViewModel> _fractalFrameViewModels;
@@ -91,25 +94,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             
             // Initial fractal frames on launch
             AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
-            AddFractalFrame(new FractalFrame());
+            
             _selectedFractalFrameVM = FractalFrameViewModels[0];
             FractalFrameViewModels[0].IsSelected = true;  // Select it 
         }
@@ -120,10 +105,10 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// Add a new fractal frame view model with connected fractal frame object
         /// </summary>
         /// <param name="newFF">The Fractal Frame to add</param>
-        public void AddFractalFrame(FractalFrame newFF)
+        public void AddFractalFrame(FractalFrame newFF, byte red=200, byte green=100, byte blue=100)
         { 
             // Add the new fractal frame view model and attatch the fractal frame model
-            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF));
+            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF, red, green, blue));
         }
 
 

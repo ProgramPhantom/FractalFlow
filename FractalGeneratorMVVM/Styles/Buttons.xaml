@@ -74,30 +74,50 @@
         </Setter>
     </Style>
 
-    <!-- Add new Button -->
-    <Style TargetType="{x:Type Button}" x:Key="AddNewButton">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
+    <!-- Popup window buttons -->
+    <Style TargetType="{x:Type Button}" x:Key="PopupButton">
+
+        <Setter Property="Width" Value="110"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Background" Value="{StaticResource Blue2Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MyWhiteBrush}"/>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <Ellipse Width="40" Height="40" Margin="{TemplateBinding Margin}">
-                            <Ellipse.Fill>
-                                <SolidColorBrush Color="Gray"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{StaticResource WindowButtonBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6">
 
-                        <TextBlock Text="+" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock Text="{TemplateBinding Content}" 
+                                FontSize="{StaticResource PopupRegText}" 
+                                Foreground="{TemplateBinding Foreground}"
+                                HorizontalAlignment="Center"
+                                   
+                                VerticalAlignment="Center"> 
 
 
-                    </Grid>
+                        </TextBlock>
+                        
+                   
+
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderHoverBrush}" TargetName="Border"/>
+
+                            <Setter Property="Background" Value="{StaticResource ItemHoverBrush}" TargetName="Border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
+    <!-- -->
     <Style TargetType="{x:Type Button}" x:Key="AddInPopup">
         <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>

@@ -6,9 +6,7 @@
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Models"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d" 
-
-             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]">
+             mc:Ignorable="d" >
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ContentControl}" x:Name="FractalFrameButton">

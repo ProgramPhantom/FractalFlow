@@ -50,7 +50,7 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         {
             _painterStack = painterStack;
 
-            _window = new NoMaxWindowViewModel(this, "Add Painter", ResizeMode.NoResize);
+            _window = new NoMaxWindowViewModel(this, "Add Painter", ResizeMode.NoResize, 800, 650);
             _windowManager = new WindowManager();
 
         }

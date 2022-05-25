@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace FractalGeneratorMVVM.ViewModels.Models
 {
-    public delegate void FractalFrameSelected(FractalFrameViewModel sender);
+
 
     public class FractalFrameViewModel : Screen
     {
@@ -61,7 +61,6 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             set { _colour = value; }
         }
 
-       
         public SolidColorBrush TextColour
         {
             get { return _textColour; }
@@ -79,7 +78,7 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             _colour = new SolidColorBrush(Color.FromRgb(red, green, blue));
 
             // Decide if the font colour should be black or white depending on the colour of the background
-            if (red * 0.299f + green * 0.587f + blue * 0.114f > 186)
+            if (red * 0.299f + green * 0.587f + blue * 0.2f > 186)
             {
                 _textColour = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             } else
@@ -88,21 +87,9 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             }
         }
 
-        public event FractalFrameSelected FractalFrameSelectedEvent;
 
-        public void SelectButton()
-        {
-            IsSelected = true;
-            System.Diagnostics.Trace.WriteLine("Clicked!");
 
-            SelectedEvent();
-        }
 
-        protected virtual void SelectedEvent()
-        {
-
-            FractalFrameSelectedEvent?.Invoke(this);
-        }
 
     }
 }

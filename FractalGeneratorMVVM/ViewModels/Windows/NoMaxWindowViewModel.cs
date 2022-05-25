@@ -15,10 +15,10 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         
 
         #region Constructor
-        public NoMaxWindowViewModel(Screen page, string windowTitle, ResizeMode resize) : base(page, windowTitle, resize)
+        public NoMaxWindowViewModel(Screen page, string windowTitle, ResizeMode resize, int width, int height) : base(page, windowTitle, resize, width, height)
         {
 
-            LoadPage();
+            
         }
         #endregion
 

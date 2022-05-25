@@ -4,6 +4,9 @@
     
     <!-- The text at the top of windows -->
     <sys:Double x:Key="WindowChomeText">14</sys:Double>
-    
-    
+
+    <!-- Font size for paragraph text in popup windows -->
+    <sys:Double x:Key="PopupRegText">14</sys:Double>
+
+
 </ResourceDictionary>

@@ -5,257 +5,320 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Windows"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}"
         mc:Ignorable="d"
-        Height="450" Width="800" cal:Bind.AtDesignTime="True">
-    
-    
-    <Grid Background="{StaticResource MediumGrayBrush}">
+        cal:Bind.AtDesignTime="True"
+        xmlns:VM="clr-namespace:FractalGeneratorMVVM.ViewModels.Windows"
+        d:DataContext="{d:DesignInstance VM:AddFractalFrameWindowViewModel, IsDesignTimeCreatable=True}">
+
+
+    <Grid Background="{StaticResource PopupWindowBackgroundBrush}" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="320"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="70"/>
-
+            <RowDefinition Height="58.667"/>
+            <RowDefinition Height="66.333"/>
+            <RowDefinition Height="415"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        
-        <!-- Big Title -->
-        <TextBlock Grid.Row="1" Grid.Column="1" 
-                   HorizontalAlignment="Center"
+
+        <!-- Title -->
+        <TextBlock FontSize="34"
+                   Foreground="{StaticResource MyWhiteBrush}"
                    VerticalAlignment="Top"
-                   Margin="0 15 0 0"
-                   FontSize="48"
-                   FontFamily="{StaticResource Swirl}"
-                   FontStyle="Italic"
-                   Foreground="{StaticResource DarkGrayBrush}">
-            fractal frame
-            
-            <TextBlock.Effect>
-                <DropShadowEffect Opacity="0.2"
-                                  BlurRadius="10"
-                                  ></DropShadowEffect>
-            </TextBlock.Effect>
+                   HorizontalAlignment="Center"
+                   TextDecorations="Underline" Margin="0,40,0,0" Grid.RowSpan="2">
+            Fractal Frame
         </TextBlock>
-        
-        <!-- Description -->
-        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
-              Margin="20 5 5 5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            
-            <Separator 
-                Background="{StaticResource BackgroundBrush}"
-                VerticalAlignment="Top" Margin="0 5 0 0">
-                
-                <Separator.RenderTransform>
-                    <ScaleTransform ScaleY="2" />
-                </Separator.RenderTransform>
-            </Separator>
-            
-            <TextBlock Grid.Row="0" Text="DESCRIPTION" 
+
+        <!-- Fractal frame description -->
+        <Border Grid.Column="1"
+                Margin="20,20,20,20"
+                CornerRadius="6"
+                Background="{StaticResource Blue1Brush}" Grid.RowSpan="2">
+            <TextBlock Foreground="{StaticResource MyWhiteBrush}"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Background="{StaticResource MediumGrayBrush}"
-                       Padding="6 0"
-                       Margin="0 0"
-                       Height="12"
-                       Foreground="{StaticResource DarkGrayBrush}">
-                
-            </TextBlock>
-            
-            <TextBlock Grid.Row="1" Padding="10" 
                        TextWrapping="WrapWithOverflow"
-                       Foreground="{StaticResource TextGrayBrush}"
-                       FontSize="16">
-                Define the position on the complex plane where the fractal will be 
-                rendered, along with the number of iterations and the bail value.
+                       Margin="22, 0"
+                       FontSize="{StaticResource PopupRegText}">
+                Define the area on the complex plane where the fractal will 
+                be rendered, along with the number of iterations and the bail value.
             </TextBlock>
-        </Grid>
-        
-        <!-- Name -->
-        <Grid Grid.Row="2" Grid.Column="1"
-              VerticalAlignment="Center"
-              HorizontalAlignment="Center">
+        </Border>
+
+        <!-- Form -->
+        <Border Grid.Row="2"
+                Background="{StaticResource Blue1Brush}"
+                Margin="35,30,35,30"
+                CornerRadius="6">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Name -->
+                <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Bottom">
+
+                    <TextBlock HorizontalAlignment="Left"
+                               Margin="30, 0, 0, 4"
+                               Foreground="{StaticResource MyWhiteBrush}">
+                        Name
+                    </TextBlock>
+
+                    <TextBox Style="{StaticResource FormTextBox}"
+                             Grid.Row="0"
+                             Width="200"
+                             Height="45"
+                             VerticalAlignment="Bottom"
+                             x:Name="Name">
+
+                    </TextBox>
+
+                </StackPanel>
+
+                <!-- Iterations -->
+                <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Bottom"
+                            Grid.Row="1">
+
+                    <TextBlock HorizontalAlignment="Left"
+                               Margin="30, 0, 0, 4"
+                               Foreground="{StaticResource MyWhiteBrush}"
+                               >
+                        Iterations
+                    </TextBlock>
+
+                    <TextBox Style="{StaticResource FormTextBox}"
+                             Grid.Row="0"
+                             Width="200"
+                             Height="45"
+                             VerticalAlignment="Bottom"
+                             x:Name="Iterations">
+
+                    </TextBox>
+
+                </StackPanel>
+
+                <!-- Bail -->
+                <StackPanel Orientation="Vertical" 
+                            VerticalAlignment="Bottom"
+                            Grid.Row="2">
+
+                    <TextBlock HorizontalAlignment="Left"
+                               Margin="30, 0, 0, 4"
+                               Foreground="{StaticResource MyWhiteBrush}">
+                        Bail
+                    </TextBlock>
+
+                    <TextBox Style="{StaticResource FormTextBox}"
+                             Grid.Row="0"
+                             Width="200"
+                             Height="45"
+                             VerticalAlignment="Bottom"
+                             x:Name="Bail">
+
+                    </TextBox>
+
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" 
+                            VerticalAlignment="Center"
+                            Grid.Row="3">
+
+                    <TextBlock HorizontalAlignment="Left"
+                               Margin="34, 0, 23, 2"
+                               Foreground="{StaticResource MyWhiteBrush}">
+                        Colour
+                    </TextBlock>
+
+                    <xctk:ColorPicker Width="120" Height="22" Grid.Row="3" 
+                                  Background="{StaticResource Blue2Brush}"
+                                  DropDownBackground="{StaticResource Blue2Brush}"
+                                  BorderThickness="0"
+                                  Padding="0"
+                                  DropDownBorderThickness="0"
+                                  DisplayColorTooltip="True"
+                                  DisplayColorAndName="False"
+                                  MaxDropDownWidth="270"
+                                  RecentColorsHeader="Your Colours"
+                                  ShowDropDownButton="True"
+                                  ShowRecentColors="True"
+                                  ShowTabHeaders="True"
+                                  UsingAlphaChannel="False"
+                                  TabForeground="{StaticResource MyWhiteBrush}"
+                                  TabBackground="{StaticResource Blue1Brush}"
+                                  HeaderBackground="{StaticResource Blue1Brush}"
+                                  HeaderForeground="{StaticResource MyWhiteBrush}"
+                                  Foreground="{StaticResource MyWhiteBrush}"
+                                  SelectedColor="{Binding Colour, Mode=TwoWay}">
+
+                    </xctk:ColorPicker>
+
+                </StackPanel>
+
+
+            </Grid>
+
+        </Border>
+
+        <!-- Dimensions -->
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <TextBlock Grid.Column="0"
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center">
-                Name:
-            </TextBlock>
-
-            <TextBox x:Name="Name" Text="{Binding Path=Name, Mode=TwoWay}" Grid.Column="1" Style="{StaticResource DefaultTextBox}" Height="40" Width="150"></TextBox>
-        </Grid>
-        
-        <!-- Iterations -->
-        <Grid Grid.Row="2" Grid.Column="2"
-              VerticalAlignment="Center"
-              HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0"
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center"
-                       Margin="0 0 7 0 ">
-                Iterations:
-            </TextBlock>
+            <!-- Top -->
+            <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Grid.Column="1">
 
-            <TextBox x:Name="Iterations" Grid.Column="1" Style="{StaticResource DefaultTextBox}" Height="40" Width="150"></TextBox>
-        </Grid>
-        
-        <!-- Bail -->
-        <Grid Grid.Row="2" Grid.Column="3"
-              VerticalAlignment="Center"
-              HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <TextBlock Grid.Column="0"
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center">
-                Bail:
-            </TextBlock>
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0, 0, 25, 0"
+                           Foreground="{StaticResource MyWhiteBrush}">
+                        Top
+                </TextBlock>
 
-            <TextBox x:Name="Bail" Grid.Column="1" Style="{StaticResource DefaultTextBox}" Height="40" Width="150"></TextBox>
-        </Grid>
+                <TextBox Style="{StaticResource FormTextBox}"
+                         Grid.Row="0"
+                         Width="180"
+                         Height="35"
+                         x:Name="Top"
+                         VerticalAlignment="Bottom">
 
-        <!-- TOP -->
-        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
-                    VerticalAlignment="Top" Width="Auto" 
-                    HorizontalAlignment="Center" Orientation="Horizontal"
-                    Margin="0 10 0 0 "
-                    Panel.ZIndex="2">
-            <TextBlock 
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center"
-                       Margin="0 0 8 0 ">
-                Top:
-            </TextBlock>
-            <TextBox x:Name="Top"
-                 Style="{StaticResource DefaultTextBox}" 
-                 Height="20" 
-                 Width="70"
-                 TextAlignment="Right"
-                 ></TextBox>
+                </TextBox>
 
-            <TextBlock FontFamily="{StaticResource Swirl}"
-                       Padding="0 0 30 0"
-                       FontStyle="Italic"
-                       Foreground="White"
-                       FontSize="20"
-                       VerticalAlignment="Center"
-                       Margin="2 0 0 0 ">
-                i
-            </TextBlock>
-        </StackPanel>
+            </StackPanel>
 
-        <!-- BOTTOM -->
-        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
-                    VerticalAlignment="Bottom" Width="Auto" 
-                    HorizontalAlignment="Center" Orientation="Horizontal"
-                    
-                    Panel.ZIndex="2">
-            <TextBlock 
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center"
-                       Margin="0 0 8 0 ">
-                Bottom:
-            </TextBlock>
-            <TextBox  x:Name="Bottom"
-                 Style="{StaticResource DefaultTextBox}" 
-                 Height="20" 
-                 Width="70"
-                 TextAlignment="Right"
-                 ></TextBox>
+            <!-- Bottom -->
+            <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3">
 
-            <TextBlock FontFamily="{StaticResource Swirl}"
-                       FontStyle="Italic"
-                       Foreground="White"
-                       FontSize="20"
-                       Padding="0 0 50 0"
-                       VerticalAlignment="Center"
-                       Margin="2 0 0 0 ">
-                i
-            </TextBlock>
-        </StackPanel>
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0, 0, 25, 0"
+                           Foreground="{StaticResource MyWhiteBrush}">
+                        Bottom
+                </TextBlock>
 
-        <!-- LEFT -->
-        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
-                    VerticalAlignment="Center" Width="Auto" 
-                    HorizontalAlignment="Left" Orientation="Horizontal"
-                    
-                    Panel.ZIndex="2">
-            <TextBlock 
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center"
-                       Margin="0 0 8 0 ">
-                Left:
-            </TextBlock>
-            <TextBox x:Name="Left"
-                 Style="{StaticResource DefaultTextBox}" 
-                 Height="20" 
-                 Width="70"
-                 TextAlignment="Right"
-                 ></TextBox>
-        </StackPanel>
+                <TextBox Style="{StaticResource FormTextBox}"
+                         Grid.Row="0"
+                         Width="180"
+                         Height="35"
+                         VerticalAlignment="Bottom"
+                         x:Name="Bottom">
 
-        <!-- RIGHT -->
-        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
-                    VerticalAlignment="Center" Width="Auto" 
-                    HorizontalAlignment="Right" Orientation="Horizontal"
-                    
-                    Panel.ZIndex="2">
-            <TextBlock 
-                       Foreground="{StaticResource DarkGrayBrush}"
-                       FontSize="15"
-                       VerticalAlignment="Center"
-                       Margin="0 0 8 0 ">
-                Right:
-            </TextBlock>
-            <TextBox x:Name="Right"
-                 Style="{StaticResource DefaultTextBox}" 
-                 Height="20" 
-                 Width="70"
-                 TextAlignment="Right"
-                 ></TextBox>
-        </StackPanel>
+                </TextBox>
 
-        <!-- IMAGE -->
-        <Image Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+            </StackPanel>
+
+            <!-- Left -->
+            <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Grid.Column="0"
+                        Grid.Row="1">
+
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0, 0, 0, 5"
+                           Foreground="{StaticResource MyWhiteBrush}">
+                        Left
+                </TextBlock>
+
+                <TextBox Style="{StaticResource FormTextBox}"
+                         Grid.Row="0"
+                         Width="180"
+                         Height="35"
+                         x:Name="Left"
+                         VerticalAlignment="Bottom">
+
+                </TextBox>
+
+            </StackPanel>
+
+            <!-- Right -->
+            <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Grid.Column="2"
+                        Grid.Row="1">
+
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0, 0, 0, 5"
+                           Foreground="{StaticResource MyWhiteBrush}">
+                        Right
+                </TextBlock>
+
+                <TextBox Style="{StaticResource FormTextBox}"
+                         Grid.Row="0"
+                         Width="180"
+                         Height="35"
+                         x:Name="Right"
+                         VerticalAlignment="Bottom">
+
+                </TextBox>
+
+            </StackPanel>
+
+            <!-- IMAGE -->
+            <Image Grid.Row="1" Grid.Column="1" 
                Source="/Images/mandelbrot_icon.png"
                VerticalAlignment="Center"
-               Height="250" ></Image>
-        
-        <!-- Add Button -->
-        <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource AddInPopup}"
-                Width="70" Height="70"
-                Name="AddFractalFrame">
-            add
-        </Button>
-        
+               HorizontalAlignment="Center"
+                ></Image>
+
+
+        </Grid>
+
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right" Margin="20,0,0,0">
+            <Button 
+                Background="Transparent"
+                Margin="15 0 10 0"
+                Style="{StaticResource PopupButton}"
+                x:Name="CloseWindow"
+                >
+                Canel
+            </Button>
+
+            <Button Grid.Row="2" 
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Margin="15 0 40 0"
+                Style="{StaticResource PopupButton}"
+                x:Name="AddFractalFrame"
+                >
+                Add
+            </Button>
+        </StackPanel>
+
     </Grid>
 </UserControl>
