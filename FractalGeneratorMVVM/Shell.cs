@@ -19,6 +19,8 @@ namespace FractalGeneratorMVVM
     /// </summary>
     public class Shell : PropertyChangedBase
     {
+        CancellationTokenSource cts = new CancellationTokenSource();
+
         #region Feilds
 
         private readonly IWindowManager _windowManager;
@@ -32,6 +34,7 @@ namespace FractalGeneratorMVVM
         #endregion
 
         #region Properties
+        
 
         /// <summary>
         /// The page which is given to the main window to display
@@ -42,15 +45,33 @@ namespace FractalGeneratorMVVM
             set { _defaultPage = value; }
         }
 
-        CancellationTokenSource cts = new CancellationTokenSource();
-
-
         public RenderEngine RenderEngine
         {
             get { return _renderEngine; }
             set { _renderEngine = value; }
         }
 
+        public FractalFrame SelectedFractalFrame
+        {
+            get
+            {
+                return DefaultPage.SelectedFractalFrame;
+            }
+        }
+        public IPainter SelectedPainter
+        {
+            get
+            {
+                return DefaultPage.SelectedPainter;
+            }
+        }
+        public IIterator SelectedIterator
+        {
+            get
+            {
+                return DefaultPage.SelectedIterator;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -65,8 +86,8 @@ namespace FractalGeneratorMVVM
             _mainWindow = new DefaultWindowViewModel(_defaultPage, "Untitled", ResizeMode.CanResizeWithGrip);
 
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
-            // _defaultPage.ToolRibbonVM.FireRenderEvent += RenderAsync;
-            _defaultPage.ToolRibbonVM.FireRenderEvent += FastRender;
+            
+            _defaultPage.ToolRibbonVM.FireRenderEvent += PreRender;
 
             // Wire up the cancel render button
             _defaultPage.StatusBarVM.CancelRenderEvent += CancelRender;
@@ -82,12 +103,23 @@ namespace FractalGeneratorMVVM
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
 
-            RenderEngine = new RenderEngine();
+            _renderEngine = new RenderEngine();
         }
 
         #endregion
 
-        public async void RenderAsync(object? sender, EventArgs e)
+        public void PreRender(object? sender, EventArgs e)
+        {
+            if (DefaultPage.ToolRibbonVM.GPURender == true)
+            {
+                CLRenderAsync();
+            } else
+            {
+                RenderAsync();
+            }
+        }
+
+        public async void RenderAsync()
         {
             Trace.WriteLine("Message recieved over in the shell");
 
@@ -122,7 +154,7 @@ namespace FractalGeneratorMVVM
 
         }
 
-        public async void FastRender(object? sender, EventArgs e)
+        public async void CLRenderAsync()
         {
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update

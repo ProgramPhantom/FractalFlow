@@ -11,14 +11,15 @@
             <ColumnDefinition Width="360"/>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="175"/>
         </Grid.ColumnDefinitions>
 
         <!-- Title -->
 
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                    VerticalAlignment="Top" Margin="0,9,0,0">
+                    VerticalAlignment="Top" Margin="0,9,0,0" Height="52" Width="248">
             <TextBlock
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -63,7 +64,7 @@
 
 
             <Line X1="5" Y1="11" X2="5" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>
-            
+
             <!-- Zoom IN -->
             <Button Style="{StaticResource RibbonButton}" Margin="29 4 0 4" Width="36"
                     Content="{StaticResource ZoomIn}">
@@ -106,11 +107,29 @@
 
         </StackPanel>
 
-        <!-- Render button -->
-        <Button Style="{StaticResource RenderButton}" Grid.Column="3" 
-                x:Name="RenderClicked">
+        <StackPanel Orientation="Vertical" Grid.Column="3" >
+            <TextBlock Foreground="{StaticResource MyWhiteBrush}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">
+                GPU RENDER
+            </TextBlock>
+
+            <CheckBox x:Name="GPURender"
+                      VerticalAlignment="Center" 
+                      HorizontalAlignment="Center"
+                      Margin="0 18 0 0"
+                      IsChecked="False">
+                
+            </CheckBox>
+        </StackPanel>
+        
+        <Button Style="{StaticResource RenderButton}" Grid.Column="4" 
+            x:Name="RenderClicked" 
+                >
             RENDER
         </Button>
+        
+
 
     </Grid>
 </UserControl>
