@@ -10,7 +10,7 @@ namespace FractalCore
     {
         public Fractal Fractal;
         
-        public ComputeIterationsJob(Fractal fractal)
+        public ComputeIterationsJob(Fractal fractal, int num) : base(num)
         {
             Fractal = fractal;
         }

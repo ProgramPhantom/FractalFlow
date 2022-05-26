@@ -107,21 +107,25 @@
 
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Column="3" >
+        <Border Background="{StaticResource Blue2Brush}" Margin="7" CornerRadius="4" Grid.Column="3">
+            <StackPanel Orientation="Vertical" >
             <TextBlock Foreground="{StaticResource MyWhiteBrush}"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center">
+                       HorizontalAlignment="Center"
+                       Margin="0 6 0 0">
                 GPU RENDER
             </TextBlock>
 
             <CheckBox x:Name="GPURender"
                       VerticalAlignment="Center" 
                       HorizontalAlignment="Center"
-                      Margin="0 18 0 0"
+                      Margin="0 6 0 0"
                       IsChecked="False">
                 
             </CheckBox>
         </StackPanel>
+        </Border>
+        
         
         <Button Style="{StaticResource RenderButton}" Grid.Column="4" 
             x:Name="RenderClicked" 

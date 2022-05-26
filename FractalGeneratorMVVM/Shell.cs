@@ -26,15 +26,25 @@ namespace FractalGeneratorMVVM
         private readonly IWindowManager _windowManager;
 
         private DefaultWindowViewModel _mainWindow;
-
+        private DefaultWindowViewModel _consoleWindow;
         private DefaultPageViewModel _defaultPage;
-
+        private ConsolePageViewModel _consolePage;
         private RenderEngine _renderEngine;
+        private int _renders;
 
         #endregion
 
         #region Properties
-        
+        public DefaultWindowViewModel MainWindow
+        {
+            get { return _mainWindow; }
+            set { _mainWindow = value; }
+        }
+        public DefaultWindowViewModel ConsoleWindow
+        {
+            get { return _consoleWindow; }
+            set { _consoleWindow = value; }
+        }
 
         /// <summary>
         /// The page which is given to the main window to display
@@ -44,6 +54,12 @@ namespace FractalGeneratorMVVM
             get { return _defaultPage; }
             set { _defaultPage = value; }
         }
+        public ConsolePageViewModel ConsolePage
+        {
+            get { return _consolePage; }
+            set { _consolePage = value; }
+        }
+
 
         public RenderEngine RenderEngine
         {
@@ -72,6 +88,12 @@ namespace FractalGeneratorMVVM
                 return DefaultPage.SelectedIterator;
             }
         }
+
+        public int JobCount
+        {
+            get { return _renders; }
+            set { _renders = value; }
+        }
         #endregion
 
         #region Constructor
@@ -79,18 +101,22 @@ namespace FractalGeneratorMVVM
         {
             _windowManager = new WindowManager();
 
-           
+            _consolePage = new ConsolePageViewModel();
             _defaultPage = new DefaultPageViewModel();
 
             // Create the main window
             _mainWindow = new DefaultWindowViewModel(_defaultPage, "Untitled", ResizeMode.CanResizeWithGrip);
+            _consoleWindow = new DefaultWindowViewModel(_consolePage, "Console", ResizeMode.CanResizeWithGrip);
 
+            #region Render Button Event
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
-            
             _defaultPage.ToolRibbonVM.FireRenderEvent += PreRender;
+            #endregion
 
+            #region Cancel Render Event
             // Wire up the cancel render button
             _defaultPage.StatusBarVM.CancelRenderEvent += CancelRender;
+            #endregion
 
             #region Mouse hover event linking
             // Send the mouse hover data over to the selected fractal frame so that it can be processed into a complex number
@@ -102,6 +128,10 @@ namespace FractalGeneratorMVVM
 
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
+
+            _windowManager.ShowWindowAsync(_consoleWindow);
+
+            _consolePage.NewLog(new Status("Done", NotificationType.OperationComplete));
 
             _renderEngine = new RenderEngine();
         }
@@ -117,6 +147,8 @@ namespace FractalGeneratorMVVM
             {
                 RenderAsync();
             }
+
+            JobCount += 2;
         }
 
         public async void RenderAsync()
@@ -129,14 +161,14 @@ namespace FractalGeneratorMVVM
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
 
-            Fractal fractal = new Fractal(1000, 1000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Fractal fractal = new Fractal(100, 100, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
-            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal);
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage);
+            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage, JobCount);
 
-            computeJob.StatusUpdateEvent += ConsoleOut;
-            job.StatusUpdateEvent += ConsoleOut;
+            computeJob.StatusUpdateEvent += _consolePage.NewLog;
+            job.StatusUpdateEvent += _consolePage.NewLog;
 
             
 
@@ -162,22 +194,16 @@ namespace FractalGeneratorMVVM
             Fractal fractal = new Fractal(10000, 10000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
-            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal);
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage);
+            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage, JobCount);
 
-            computeJob.StatusUpdateEvent += ConsoleOut;
-            job.StatusUpdateEvent += ConsoleOut;
+            computeJob.StatusUpdateEvent += _consolePage.NewLog;
+            job.StatusUpdateEvent += _consolePage.NewLog;
 
 
             await RenderEngine.CLBitmapCompute(job, progress);
 
             DefaultPage.CanvasVM.Image = fractalImage;
-        }
-        
-
-        public void ConsoleOut(string line)
-        {
-            System.Diagnostics.Trace.WriteLine(line);
         }
 
         public void CancelRender()

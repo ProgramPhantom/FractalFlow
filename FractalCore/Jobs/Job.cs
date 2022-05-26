@@ -6,19 +6,37 @@ using System.Threading.Tasks;
 
 namespace FractalCore
 {
-    public delegate void StatusUpdate(string message);
+    public enum NotificationType { OperationComplete, OperationCancel, Initialization }
+
+    public struct Status
+    {
+        public string StatusDescription;
+        public DateTime TimeCreated;
+        public NotificationType NotificationType;
+
+        public Status(string status, NotificationType type)
+        {
+            StatusDescription = status;
+            TimeCreated = DateTime.Now;
+            NotificationType = type;
+        }
+    }
+
+    public delegate void StatusUpdate(Status statusStruct);
 
     public class Job
     {
         #region Fields
-        private string _status = "NO STATUS";
-
+        private Status _status;
+        private int _jobNum;
         private string _jobID = "XH23&2^cS^£";
         #endregion
 
         #region Properties
         public event StatusUpdate? StatusUpdateEvent;
-        public string Status
+
+
+        public Status JobStatus
         {
             get
             {
@@ -27,8 +45,13 @@ namespace FractalCore
             set
             {
                 _status = value;
-                UpdateShell(_status);
             }
+        }
+
+        public int JobNum
+        {
+            get { return _jobNum; }
+            set { _jobNum = value; }
         }
 
         public string JobID
@@ -38,11 +61,21 @@ namespace FractalCore
         }
         #endregion
 
-
-
-        protected virtual void UpdateShell(string message)
+        public Job(int num)
         {
-            StatusUpdateEvent?.Invoke(message);
+            _jobNum = num;
+        }
+
+        public void SetStatus(string statusMessage, NotificationType type)
+        {
+            JobStatus = new Status(statusMessage, type);
+
+            UpdateShell();
+        }
+
+        protected virtual void UpdateShell()
+        {
+            StatusUpdateEvent?.Invoke(JobStatus);
         }
     }
 }

@@ -35,16 +35,16 @@ namespace FractalCore
             }
         }
 
-        public RenderBitmapJob(Fractal fractal, IPainter painter, FractalImage image)
+        public RenderBitmapJob(Fractal fractal, IPainter painter, FractalImage image, int num) : base(num++)
         {
-            ComputeIterationsJob = new ComputeIterationsJob(fractal);
+            ComputeIterationsJob = new ComputeIterationsJob(fractal, num);
 
 
             Painter = painter;
             FractalImage = image;
         }
 
-        public RenderBitmapJob(ComputeIterationsJob job, IPainter painter, FractalImage image)
+        public RenderBitmapJob(ComputeIterationsJob job, IPainter painter, FractalImage image, int num) : base(num++)
         {
             ComputeIterationsJob = job;
 

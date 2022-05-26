@@ -162,7 +162,7 @@ namespace FractalCore
             await IterationsComputeAsync(job.ComputeIterationsJob, progress, cancellationToken);
 
             #region Timer start
-            job.Status = $"{job.JobID}: Beginning bitmap render";
+            job.SetStatus($"{job.JobNum}: Starting bitmap render", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
@@ -180,7 +180,7 @@ namespace FractalCore
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
 
-            job.Status = $"{job.JobID}: Finished bitmap render in {elapsedTime}";
+            job.SetStatus($"{job.JobNum}: Finished bitmap render in {elapsedTime}", NotificationType.OperationComplete);
             #endregion
         }
 
@@ -200,7 +200,7 @@ namespace FractalCore
             #endregion
 
             #region Timer start
-            job.Status = $"{job.JobID}: Beginning iterations compute";
+            job.SetStatus($"{job.JobNum}: Beginning iterations compute", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
@@ -240,7 +240,7 @@ namespace FractalCore
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
 
-            job.Status = $"{job.JobID}: Finished iterations compute in {elapsedTime}";
+            job.SetStatus($"{job.JobNum}: Finished iterations compute in {elapsedTime}", NotificationType.OperationComplete);
             #endregion
         }
 
@@ -254,7 +254,7 @@ namespace FractalCore
             // ---------------------------------------------------------------------------------------------------
 
             #region Timer start
-            job.Status = $"CL: {job.JobID}: Beginning bitmap render";
+            job.SetStatus($"CL-{job.JobNum}: Starting bitmap render", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
@@ -272,7 +272,7 @@ namespace FractalCore
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
 
-            job.Status = $"CL: {job.JobID}: Finished bitmap render in {elapsedTime}";
+            job.SetStatus($"CL-{job.JobNum}: Finished bitmap render in {elapsedTime}", NotificationType.OperationComplete);
             #endregion
         }
 
@@ -292,8 +292,7 @@ namespace FractalCore
             // ----------------------------------------------------------------------------
 
 
-            job.Status = "Starting";
-
+            
             
             Fractal fractal = job.Fractal;
 
@@ -306,10 +305,10 @@ namespace FractalCore
             CLEngine.SetParameter(flatArray, width, height, fractal.Left, fractal.Top, fractal.RealStep, fractal.ImagStep, fractal.Iterations, fractal.Bail);
             CLEngine.ProgressChangedEvent += Report;
 
-            
+
 
             #region Timer start
-            job.Status = $"CL: {job.JobID}: Beginning iterations compute";
+            job.SetStatus($"CL-{job.JobNum}: Beginning iterations compute", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
@@ -340,7 +339,7 @@ namespace FractalCore
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
 
-            job.Status = $"CL: {job.JobID}: Finished iterations compute in {elapsedTime}";
+            job.SetStatus($"{job.JobNum}: Finished iterations compute in {elapsedTime}", NotificationType.OperationComplete);
             #endregion
         }
         #endregion
