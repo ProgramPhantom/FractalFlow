@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using OpenCL;
 
@@ -147,37 +149,152 @@ namespace FractalCore
                 ts.Milliseconds / 10);
             Trace.WriteLine(elapsedTime);
         }
-    
-    
-        public void GenerateIterations(ref Fractal fractalObj, FractalFrame pos)
+        
+        /// <summary>
+        /// Compute a full fractal image, (Iterations Array and Fractal Bitmap)
+        /// </summary>
+        /// <param name="job"></param>
+        /// <param name="progress"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task BitmapComputeAsync(RenderBitmapJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
+            await IterationsComputeAsync(job.ComputeIterationsJob, progress, cancellationToken);
 
+            #region Timer start
+            job.Status = $"{job.JobID}: Beginning bitmap render";
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            #endregion
+
+            job.FractalImage.Render(job.Painter);
+            
+            #region Timer end
+            timer.Stop();
+
+            
+            TimeSpan ts = timer.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            job.Status = $"{job.JobID}: Finished bitmap render in {elapsedTime}";
+            #endregion
         }
 
-        public void GenerateWritableBitmap(ref Fractal fractalObj, FractalFrame pos)
+        public async Task IterationsComputeAsync(ComputeIterationsJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
 
+            #region Variables
+            Fractal fractal = job.Fractal;
+            double realStep = job.Fractal.RealStep;
+            double imagStep = job.Fractal.ImagStep;
+            int height = job.Fractal.Height;
+            int width = job.Fractal.Width;
+
+            RenderProgressModel report = new RenderProgressModel();
+
+            Complex point;
+            #endregion
+
+            #region Timer start
+            job.Status = $"{job.JobID}: Beginning iterations compute";
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            #endregion
+
+            // Iterate through every pixel on the complex plane
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();  // CANCEL HERE IF TOKEN ACTIVATED
+
+                    double realCoord = (realStep * x) + fractal.Left;
+                    double imaginaryCoord = (imagStep * y) + fractal.Bottom;
+
+                    point = new Complex(realCoord, imaginaryCoord);
+
+                    uint iterations = await Task.Run(() => fractal.Iterator.Iterate(point, fractal.Iterations, fractal.Bail));
+
+                    fractal.IterationsArray[y, x] = iterations;
+
+                    
+                }
+
+                // Add one as y starts at 0
+                report.PercentageComplete = ((y + 1) * 100) / height;
+                progress.Report(report);
+
+            }
+
+            #region Timer end
+            timer.Stop();
+
+            TimeSpan ts = timer.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            job.Status = $"{job.JobID}: Finished iterations compute in {elapsedTime}";
+            #endregion
         }
 
-        public void CLBitmapCompute(RenderBitmapJob job)
+
+        public async Task CLBitmapCompute(RenderBitmapJob job, IProgress<RenderProgressModel> progress)
         {
             // First, compute the iterations array in Fractal
 
             // ------------ This is where a check is needed to see if this fractal already exists ----------------
-            CLIterationsCompute(job.ComputeIterationsJob);
+            await CLIterationsCompute(job.ComputeIterationsJob, progress);
+            // ---------------------------------------------------------------------------------------------------
+
+            #region Timer start
+            job.Status = $"CL: {job.JobID}: Beginning bitmap render";
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            #endregion
 
             // Colour 
-            job.FractalImage.Render(job.Painter);
+            job.FractalImage.Render(job.Painter);  // TODO: the paint is becoming computationally important at large images
+
+            #region Timer end
+            timer.Stop();
+
+            TimeSpan ts = timer.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            job.Status = $"CL: {job.JobID}: Finished bitmap render in {elapsedTime}";
+            #endregion
         }
 
-        public void CLIterationsCompute(ComputeIterationsJob job)
+        public async Task CLIterationsCompute(ComputeIterationsJob job, IProgress<RenderProgressModel> progress)
         {
+            RenderProgressModel report = new RenderProgressModel();
+            void Report(object sender, double e)
+            {
+                report.PercentageComplete = (int)Math.Round(e * 100);
+                progress.Report(report);
+            }
+
             // Fill the array at Fractal.IterationsArr with numbers and set it to rendered
 
             // ------- This will be where a new c script will have to be generated --------
             CLEngine.SetKernel(Mandelbrot, "Mandelbrot");
             // ----------------------------------------------------------------------------
 
+
+            job.Status = "Starting";
+
+            
             Fractal fractal = job.Fractal;
 
             int height = fractal.Height;
@@ -187,7 +304,20 @@ namespace FractalCore
             uint[] flatArray = new uint[width * height];
 
             CLEngine.SetParameter(flatArray, width, height, fractal.Left, fractal.Top, fractal.RealStep, fractal.ImagStep, fractal.Iterations, fractal.Bail);
-            CLEngine.Invoke(0, flatArray.Length, 1);
+            CLEngine.ProgressChangedEvent += Report;
+
+            
+
+            #region Timer start
+            job.Status = $"CL: {job.JobID}: Beginning iterations compute";
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            #endregion
+
+            // The parts simply splits it into sections to be completed between which a progress report is sent
+            await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 100));
+            
+
 
             int pos = 0;
             // Write the flat array to the 2d array in fractal
@@ -199,6 +329,19 @@ namespace FractalCore
                     pos++;                
                 }
             }
+
+            #region Timer end
+            timer.Stop();
+
+            TimeSpan ts = timer.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            job.Status = $"CL: {job.JobID}: Finished iterations compute in {elapsedTime}";
+            #endregion
         }
         #endregion
     }

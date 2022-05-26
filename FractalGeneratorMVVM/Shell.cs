@@ -92,17 +92,25 @@ namespace FractalGeneratorMVVM
             Trace.WriteLine("Message recieved over in the shell");
 
             cts = new CancellationTokenSource();  // Set up the cancel thing
-
-
-            Fractal fractal = new Fractal(10000, 10000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
-
             // Progress is a metadata thing
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
+
+            Fractal fractal = new Fractal(1000, 1000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            FractalImage fractalImage = new FractalImage(ref fractal);
+
+            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage);
+
+            computeJob.StatusUpdateEvent += ConsoleOut;
+            job.StatusUpdateEvent += ConsoleOut;
+
+            
+
             try
             {
-                await fractal.GenerateProgressAsync(progress, cts.Token);
+                await RenderEngine.BitmapComputeAsync(job, progress, cts.Token);
             }
             catch (OperationCanceledException)
             {
@@ -110,22 +118,35 @@ namespace FractalGeneratorMVVM
             }
 
             // Set the image of the new canvas to the newley rendered fractal painted with the selected painter.
-            DefaultPage.CanvasVM.Image = new FractalImage(ref fractal);
+            DefaultPage.CanvasVM.Image = fractalImage;
 
         }
 
-        public void FastRender(object? sender, EventArgs e)
+        public async void FastRender(object? sender, EventArgs e)
         {
-            Fractal fractal = new Fractal(1000, 1000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
+            progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
+
+            Fractal fractal = new Fractal(10000, 10000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
-            RenderBitmapJob job = new RenderBitmapJob(fractal, DefaultPage.SelectedPainter, fractalImage);
+            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage);
 
-            RenderEngine.CLBitmapCompute(job);
+            computeJob.StatusUpdateEvent += ConsoleOut;
+            job.StatusUpdateEvent += ConsoleOut;
+
+
+            await RenderEngine.CLBitmapCompute(job, progress);
 
             DefaultPage.CanvasVM.Image = fractalImage;
         }
         
+
+        public void ConsoleOut(string line)
+        {
+            System.Diagnostics.Trace.WriteLine(line);
+        }
 
         public void CancelRender()
         {
