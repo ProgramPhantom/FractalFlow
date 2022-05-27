@@ -10,13 +10,37 @@ namespace FractalCore
 
     public struct Status
     {
-        public string StatusDescription;
+        public static string Prompt = ">>>";
+
+        private string _statusDescription;
+
+        
         public DateTime TimeCreated;
         public NotificationType NotificationType;
 
+        public string LogPrefix
+        {
+            get
+            {
+                return $"{TimeCreated.ToString("MM/dd/yyyy HH:mm")} {NotificationType.ToString()}";
+            }
+        }
+
+        public string StatusDescription
+        {
+            get
+            {
+                return $"{LogPrefix.PadRight(35)} {Prompt} {_statusDescription}";
+            }
+            set
+            {
+                _statusDescription = value;
+            }
+        }
+
         public Status(string status, NotificationType type)
         {
-            StatusDescription = status;
+            _statusDescription = status;
             TimeCreated = DateTime.Now;
             NotificationType = type;
         }
@@ -34,7 +58,6 @@ namespace FractalCore
 
         #region Properties
         public event StatusUpdate? StatusUpdateEvent;
-
 
         public Status JobStatus
         {
@@ -59,6 +82,8 @@ namespace FractalCore
             get { return _jobID; }
             set { _jobID = value; }
         }
+
+        
         #endregion
 
         public Job(int num)

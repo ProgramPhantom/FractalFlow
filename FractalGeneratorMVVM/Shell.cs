@@ -148,7 +148,7 @@ namespace FractalGeneratorMVVM
                 RenderAsync();
             }
 
-            JobCount += 2;
+            
         }
 
         public async void RenderAsync()
@@ -165,7 +165,9 @@ namespace FractalGeneratorMVVM
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
+            JobCount++;
             RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage, JobCount);
+            JobCount++;
 
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
             job.StatusUpdateEvent += _consolePage.NewLog;
@@ -195,7 +197,9 @@ namespace FractalGeneratorMVVM
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
+            JobCount++;
             RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage, JobCount);
+            JobCount++;
 
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
             job.StatusUpdateEvent += _consolePage.NewLog;
