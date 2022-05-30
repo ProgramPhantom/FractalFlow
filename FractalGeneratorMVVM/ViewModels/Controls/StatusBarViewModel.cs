@@ -9,10 +9,12 @@ using Caliburn.Micro;
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public delegate void CancelRender();   // The method
+    public delegate void ToggleConsole();   // The method
 
     public class StatusBarViewModel : Screen
     {
         public event CancelRender? CancelRenderEvent;  // Event
+        public event ToggleConsole? ToggleConsoleEvent;  // Event
 
         #region Fields
         private int _progressBar = 100;
@@ -48,6 +50,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void CancelRender()
         {
             CancelRenderEvent?.Invoke();
+        }
+
+        public void ToggleConsole()
+        {
+            ToggleConsoleEvent?.Invoke();
         }
 
         public void UpdateHoverMessage(Complex p)

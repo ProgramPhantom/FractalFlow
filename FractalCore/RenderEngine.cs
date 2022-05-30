@@ -245,7 +245,7 @@ namespace FractalCore
         }
 
 
-        public async Task CLBitmapCompute(RenderBitmapJob job, IProgress<RenderProgressModel> progress)
+        public async Task CLBitmapCompute(RenderBitmapJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
             // First, compute the iterations array in Fractal
 
@@ -283,6 +283,7 @@ namespace FractalCore
             {
                 report.PercentageComplete = (int)Math.Round(e * 100);
                 progress.Report(report);
+
             }
 
             // Fill the array at Fractal.IterationsArr with numbers and set it to rendered

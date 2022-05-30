@@ -16,6 +16,7 @@
         Height="{Binding Height, Mode=TwoWay}" 
         d:Height="650"
         d:Width="1000"
+
         Style="{StaticResource DefaultChromeWindow}"
         ResizeMode="{Binding CanWindowResize}"
         cal:Message.Attach="[Event StateChanged] = [Action UpdateProperties($view)]"

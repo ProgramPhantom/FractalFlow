@@ -11,6 +11,7 @@
             <ColumnDefinition Width="360"/>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="175"/>
         </Grid.ColumnDefinitions>
@@ -107,32 +108,66 @@
 
         </StackPanel>
 
-        <Border Background="{StaticResource Blue2Brush}" Margin="7" CornerRadius="4" Grid.Column="3">
+        <StackPanel Orientation="Horizontal" Grid.Column="3" HorizontalAlignment="Right">
+            
+
+            <StackPanel Orientation="Vertical">
+                <TextBlock Foreground="{StaticResource MyWhiteBrush}"
+                       VerticalAlignment="Top"
+                       Margin="0 7 0 0">
+                Width:
+                </TextBlock>
+
+                <TextBlock Foreground="{StaticResource MyWhiteBrush}"
+                       VerticalAlignment="Top"
+                       Margin="0 16 0 0">
+                Height:
+                </TextBlock>
+            </StackPanel>
+            
+            <Grid  HorizontalAlignment="Right" Margin="5,0,15,0" Width="70">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBox Height="20" x:Name="Width"
+                         Style="{StaticResource FormTextBox}">
+
+                </TextBox>
+
+                <TextBox Height="20" x:Name="Height"
+                         Style="{StaticResource FormTextBox}" Grid.Row="1">
+
+                </TextBox>
+            </Grid>
+        </StackPanel>
+
+        <Border Background="{StaticResource Blue2Brush}" Margin="7,7,7,7" CornerRadius="4" Grid.Column="4">
             <StackPanel Orientation="Vertical" >
-            <TextBlock Foreground="{StaticResource MyWhiteBrush}"
+                <TextBlock Foreground="{StaticResource MyWhiteBrush}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Margin="0 6 0 0">
                 GPU RENDER
-            </TextBlock>
+                </TextBlock>
 
-            <CheckBox x:Name="GPURender"
+                <CheckBox x:Name="GPURender"
                       VerticalAlignment="Center" 
                       HorizontalAlignment="Center"
                       Margin="0 6 0 0"
                       IsChecked="False">
-                
-            </CheckBox>
-        </StackPanel>
+
+                </CheckBox>
+            </StackPanel>
         </Border>
-        
-        
-        <Button Style="{StaticResource RenderButton}" Grid.Column="4" 
+
+        <Button Style="{StaticResource RenderButton}" Grid.Column="5" 
             x:Name="RenderClicked" 
                 >
             RENDER
         </Button>
-        
+
 
 
     </Grid>

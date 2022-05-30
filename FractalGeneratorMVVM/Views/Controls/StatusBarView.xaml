@@ -10,8 +10,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="430"/>
-            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="358"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                    Grid.Column="0">
+                    Grid.Column="0" Height="19">
 
             <ContentPresenter Content="{StaticResource Pointer}" 
                               Height="17"
@@ -37,19 +37,29 @@
                     <DropShadowEffect Direction="-45" BlurRadius="7" Opacity="0" />
                 </TextBlock.Effect>
             </TextBlock>
-          
+
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" Grid.Column="3" 
+                    HorizontalAlignment="Right"
+                    Margin="0 0 3 0">
 
-        <Button x:Name="CancelRender" Grid.Column="3"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Style="{StaticResource RibbonButton}" 
-                Content="{StaticResource CancelRender}" Width="30" Height="26">
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="9" Direction="-70" ShadowDepth="3" Opacity="0.5"/>
-            </Button.Effect>
-        </Button>
+            <Button x:Name="CancelRender" 
+                Margin="6 0"
+                Style="{StaticResource Hoverless}" 
+                Content="{StaticResource CancelRender}"  Height="20">
+
+            </Button>
+
+            <Button x:Name="ToggleConsole" 
+                Margin="6 0"
+                
+                Style="{StaticResource Hoverless}" 
+                Content="{StaticResource Console}" Height="20">
+
+            </Button>
+
+        </StackPanel>
 
 
 
@@ -57,11 +67,8 @@
                    Maximum="100"
                    Grid.ColumnSpan="4"
                    Grid.Row="1"
-                   VerticalAlignment="Bottom"
-                   Margin="0,0,0,0"
+                   VerticalAlignment="Center"
                    Height="4"
-                   BorderThickness="0">
-
-        </ProgressBar>
+                   BorderThickness="0"/>
     </Grid>
 </UserControl>

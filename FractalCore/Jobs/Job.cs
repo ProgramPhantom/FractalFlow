@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FractalCore
 {
-    public enum NotificationType { OperationComplete, OperationCancel, Initialization }
+    public enum NotificationType { OperationComplete, OperationCancel, Initialization, RenderDuration }
 
     public struct Status
     {

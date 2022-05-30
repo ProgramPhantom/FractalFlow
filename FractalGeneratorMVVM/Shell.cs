@@ -32,6 +32,9 @@ namespace FractalGeneratorMVVM
         private RenderEngine _renderEngine;
         private int _renders;
 
+        private bool _consoleOpen = false;
+
+
         #endregion
 
         #region Properties
@@ -67,6 +70,7 @@ namespace FractalGeneratorMVVM
             set { _renderEngine = value; }
         }
 
+        #region Exposers
         public FractalFrame SelectedFractalFrame
         {
             get
@@ -88,11 +92,31 @@ namespace FractalGeneratorMVVM
                 return DefaultPage.SelectedIterator;
             }
         }
+        public ushort RenderHeight
+        {
+            get
+            {
+                return DefaultPage.ToolRibbonVM.Height;
+            }
+        }
+        public ushort RenderWidth
+        {
+            get
+            {
+                return DefaultPage.ToolRibbonVM.Width;
+            }
+        }
+        #endregion
 
         public int JobCount
         {
             get { return _renders; }
             set { _renders = value; }
+        }
+        public bool ConsoleOpen
+        {
+            get { return _consoleOpen; }
+            set { _consoleOpen = value; }
         }
         #endregion
 
@@ -125,11 +149,11 @@ namespace FractalGeneratorMVVM
             _defaultPage.SelectedFractalFrame.ComplexHoveredEvent += _defaultPage.StatusBarVM.UpdateHoverMessage;
             #endregion
 
+            _defaultPage.StatusBarVM.ToggleConsoleEvent += ToggleConsoleWindowShow;
 
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
 
-            _windowManager.ShowWindowAsync(_consoleWindow);
 
             _consolePage.NewLog(new Status("Done", NotificationType.OperationComplete));
 
@@ -140,8 +164,12 @@ namespace FractalGeneratorMVVM
 
         public void PreRender(object? sender, EventArgs e)
         {
+            
+
             if (DefaultPage.ToolRibbonVM.GPURender == true)
             {
+                
+
                 CLRenderAsync();
             } else
             {
@@ -151,9 +179,26 @@ namespace FractalGeneratorMVVM
             
         }
 
+        public void ToggleConsoleWindowShow()
+        {
+            ConsoleOpen = !ConsoleOpen;
+
+            if (ConsoleOpen == true)
+            {
+                _windowManager.ShowWindowAsync(ConsoleWindow);
+            } else
+            {
+                ConsoleWindow.TryCloseAsync();
+            }
+        }
+
         public async void RenderAsync()
         {
-            Trace.WriteLine("Message recieved over in the shell");
+            #region Timer start
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            #endregion
+
 
             cts = new CancellationTokenSource();  // Set up the cancel thing
             // Progress is a metadata thing
@@ -161,7 +206,7 @@ namespace FractalGeneratorMVVM
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
 
-            Fractal fractal = new Fractal(100, 100, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Fractal fractal = new Fractal(RenderWidth, RenderHeight, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
@@ -186,14 +231,31 @@ namespace FractalGeneratorMVVM
             // Set the image of the new canvas to the newley rendered fractal painted with the selected painter.
             DefaultPage.CanvasVM.Image = fractalImage;
 
+            #region Timer end
+            timer.Stop();
+            TimeSpan ts = timer.Elapsed;
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            ConsolePage.NewLog(new Status($"Overall render duration: {elapsedTime}", NotificationType.RenderDuration));
+            #endregion
         }
 
         public async void CLRenderAsync()
         {
+            #region Timer start
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            #endregion
+
+            cts = new CancellationTokenSource();  // Set up the cancel thing
+
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
-            Fractal fractal = new Fractal(10000, 10000, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Fractal fractal = new Fractal(RenderWidth, RenderHeight, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
@@ -204,10 +266,28 @@ namespace FractalGeneratorMVVM
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
             job.StatusUpdateEvent += _consolePage.NewLog;
 
+            try
+            {
+                await RenderEngine.CLBitmapCompute(job, progress, cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
 
-            await RenderEngine.CLBitmapCompute(job, progress);
+            }
+            
 
             DefaultPage.CanvasVM.Image = fractalImage;
+
+            #region Timer end
+            timer.Stop();
+            TimeSpan ts = timer.Elapsed;
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            ConsolePage.NewLog(new Status($"Overall render duration: {elapsedTime}", NotificationType.RenderDuration));
+            #endregion
         }
 
         public void CancelRender()

@@ -51,6 +51,7 @@
                 <ResourceDictionary Source="Images/ico/new/xaml/Min.xaml"/>
                 <ResourceDictionary Source="Images/ico/new/xaml/Max.xaml"/>
                 <ResourceDictionary Source="Images/ico/new/xaml/Close.xaml"/>
+                <ResourceDictionary Source="Images/ico/new/xaml/Console.xaml"/>
 
 
 

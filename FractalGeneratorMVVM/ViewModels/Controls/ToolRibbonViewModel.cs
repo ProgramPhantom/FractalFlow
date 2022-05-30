@@ -16,6 +16,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         #region Fields
         private bool _gpuRender;
+        private UInt16 _width = 500;
+        private UInt16 _height = 500;
+
         #endregion
 
         #region Properties
@@ -28,6 +31,29 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 NotifyOfPropertyChange(() => GPURender);
             }
         }
+
+        public UInt16 Width
+        {
+            get { return _width; }
+            set 
+            { 
+                _width = value;
+                NotifyOfPropertyChange(() => Width);
+            }
+        }
+
+
+
+        public UInt16 Height
+        {
+            get { return _height; }
+            set 
+            { 
+                _height = value;
+                NotifyOfPropertyChange(() => Height);
+            }
+        }
+
         #endregion
 
 
