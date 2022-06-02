@@ -14,10 +14,11 @@ using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels.Windows;
 using FractalGeneratorMVVM.Views.Models;
 using FractalGeneratorMVVM.ViewModels.Models.Painters;
+using FractalCore.Painting;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
-    public  class PainterStackViewModel : Screen
+    public class PainterStackViewModel : Screen
     {
         #region Fields
        
@@ -96,11 +97,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
 
 
-            NewBasicPainter(new BasicPainter("Basic", 255, 0, 0));
-            NewBasicPainter(new BasicPainter("Basic", 0, 255, 0));
-            NewBasicPainter(new BasicPainter("Basic", 0, 0, 255));
+            NewBasicPainterLight(new BasicPainterLight());
+            NewBasicPainterLight(new BasicPainterLight());
+            NewBasicPainterLight(new BasicPainterLight());
 
-            NewPainterWhite(new PainterWhite("Basic", 0, 0, 255));
+            
 
 
             _selectedPainterVM = PainterViewModels[0];
@@ -111,21 +112,20 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// Add a new fractal frame to the collection and set up a corresponding view model
         /// </summary>
-        public void NewBasicPainter(BasicPainter newPainter)
+        public void NewBasicPainterLight(BasicPainterLight newPainter)
         {
            
             // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
-            _painterViewModels.Add(new BasicPainterViewModel(newPainter, 1));
+            _painterViewModels.Add(new BasicPainterLightViewModel(newPainter, 1));
 
         }
 
-        public void NewPainterWhite(PainterWhite newPainter)
+        public void NewBasicPainterDark(BasicPainterDark newPainter)
         {
-            // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
-            _painterViewModels.Add(new PainterWhiteViewModel(newPainter, 1));
-
-
+            _painterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1));
         }
+
+
 
 
         /// <summary>

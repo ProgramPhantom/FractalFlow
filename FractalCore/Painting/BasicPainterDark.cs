@@ -8,20 +8,21 @@ using System.Numerics;
 using System.Windows;
 using FractalCore;
 
-namespace FractalCore
+using System.Windows.Media;
+
+namespace FractalCore.Painting
 {
-    public class PainterWhite : BasicPainter, IPainter
+    public class BasicPainterDark : BasicPainterBase, IPainter
     {
 
 
-
-        public PainterWhite(string name, byte red, byte green, byte blue) : base(name, red, green, blue)
-        {
-
-        }
+        public BasicPainterDark() : base("Default", Color.FromRgb(255, 0, 0), Color.FromRgb(0, 0, 0)) { }
 
 
-        public override void  Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)
+        public BasicPainterDark(string name, Color mainColour, Color inSetColour) : base(name, mainColour, inSetColour) { }
+
+
+        public override void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)
         {
             byte[,,] pixels = new byte[fractal.Height, fractal.Width , 4];
 
@@ -44,15 +45,18 @@ namespace FractalCore
                     if (iterationCap == iterations)  // In the set
                     {  // ^^ Checking if iteration ratio is 1 will have the same effect
                         // Paint it, black.
-                        pixels[y, x, 0] = 255;
-                        pixels[y, x, 1] = 255;
-                        pixels[y, x, 2] = 255;
+                        pixels[y, x, 0] = InSetColour.B;
+                        pixels[y, x, 1] = InSetColour.G;
+                        pixels[y, x, 2] = InSetColour.R;
                     }
                     else
                     {
-                        pixels[y, x, 0] = Convert.ToByte(iterationRatio * Blue);
-                        pixels[y, x, 1] = Convert.ToByte(iterationRatio * Green);
-                        pixels[y, x, 2] = Convert.ToByte(iterationRatio * Red);
+                        
+                        
+                        pixels[y, x, 0] =  Convert.ToByte(iterationRatio * MainColour.B);
+                        pixels[y, x, 1] =  Convert.ToByte(iterationRatio * MainColour.G);
+                        pixels[y, x, 2] =  Convert.ToByte(iterationRatio * MainColour.R);
+                        
                     }
                 }
             }
@@ -61,5 +65,7 @@ namespace FractalCore
             // Then write the array to the WriteableBitmap
             WriteArrToBM(ref pixels, ref fractalBitmap);
         }
+
+        
     }
 }

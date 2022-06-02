@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FractalGeneratorMVVM.Views.Models.Painters
 {
     /// <summary>
-    /// Interaction logic for PainterWhiteView.xaml
+    /// Interaction logic for FractalFrameView.xaml
     /// </summary>
-    public partial class PainterWhiteView : UserControl
+    public partial class BasicPainterDarkView : UserControl
     {
-        public PainterWhiteView()
+        public BasicPainterDarkView()
         {
             InitializeComponent();
         }

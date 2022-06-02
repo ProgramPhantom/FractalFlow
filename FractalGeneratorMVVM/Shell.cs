@@ -11,6 +11,7 @@ using FractalGeneratorMVVM.ViewModels.Windows;
 using System.Diagnostics;
 using FractalCore;
 using System.Threading;
+using FractalCore.Painting;
 
 namespace FractalGeneratorMVVM
 {

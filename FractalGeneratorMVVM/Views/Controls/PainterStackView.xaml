@@ -10,15 +10,15 @@
              d:DesignHeight="450">
     <UserControl.Resources>
 
-        <DataTemplate DataType="{x:Type vm:BasicPainterViewModel}" >
+        <DataTemplate DataType="{x:Type vm:BasicPainterLightViewModel}" >
 
-            <mv:BasicPainterView/>
+            <mv:BasicPainterLightView/>
 
         </DataTemplate>
 
-        <DataTemplate  DataType="{x:Type vm:PainterWhiteViewModel}" >
+        <DataTemplate DataType="{x:Type vm:BasicPainterDarkViewModel}" >
 
-            <mv:PainterWhiteView/>
+            <mv:BasicPainterDarkView/>
 
         </DataTemplate>
     </UserControl.Resources>

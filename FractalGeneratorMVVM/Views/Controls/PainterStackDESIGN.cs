@@ -7,6 +7,7 @@ using FractalGeneratorMVVM.ViewModels;
 using Caliburn.Micro;
 using FractalCore;
 using FractalGeneratorMVVM.ViewModels.Controls;
+using FractalCore.Painting;
 
 namespace FractalGeneratorMVVM.Views.Controls
 {
@@ -19,12 +20,12 @@ namespace FractalGeneratorMVVM.Views.Controls
             //FractalFrameViewModels = new BindableCollection<FractalFrameViewModel>();
             //FractalFrameCollection = new List<FractalFrame>();
 
-            NewBasicPainter(new BasicPainter("Test", 1, 255, 25));
-            NewPainterWhite(new PainterWhite("Test", 233, 2, 2));
-            NewBasicPainter(new BasicPainter("Test", 1, 255, 25));
-            NewPainterWhite(new PainterWhite("Test", 233, 2, 2));
-            NewBasicPainter(new BasicPainter("Test", 1, 255, 25));
-            NewPainterWhite(new PainterWhite("Test", 233, 2, 2));
+            NewBasicPainterLight(new BasicPainterLight());
+                           
+            NewBasicPainterLight(new BasicPainterLight());
+                           
+            NewBasicPainterLight(new BasicPainterLight());
+            
 
         }
     }

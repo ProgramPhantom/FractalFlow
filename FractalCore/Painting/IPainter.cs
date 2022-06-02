@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace FractalCore
+namespace FractalCore.Painting
 {
     /// <summary>
     /// Add this interface to all the painter classes.
@@ -17,6 +17,6 @@ namespace FractalCore
     {
         void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal);
 
-        public FractalImage Thumbnail { get; set; }
+       
     }
 }

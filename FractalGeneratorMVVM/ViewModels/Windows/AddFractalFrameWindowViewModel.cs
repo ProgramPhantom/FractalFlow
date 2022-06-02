@@ -118,7 +118,6 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
 
         public void CloseWindow()
         {
-            System.Diagnostics.Trace.Write("try");
             _window.TryCloseAsync();
         }
         

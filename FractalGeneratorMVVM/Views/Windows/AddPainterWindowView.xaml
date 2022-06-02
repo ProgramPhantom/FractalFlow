@@ -7,220 +7,195 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         mc:Ignorable="d"
         xmlns:cal="http://www.caliburnproject.org"
-        Height="450" Width="800"
+        Height="650" Width="1000"
         >
 
-    <Grid Background="{StaticResource MediumGrayBrush}">
+    <Grid Background="{StaticResource PopupWindowBackgroundBrush}">
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="320"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="100"/>
-
+            <RowDefinition Height="128"/>
+            <RowDefinition Height="415"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <!-- Big Title -->
-        <TextBlock Grid.Row="1" Grid.Column="1" 
-                   HorizontalAlignment="Center"
+        <!-- Title -->
+        <TextBlock FontSize="34"
+                   Foreground="{StaticResource MyWhiteBrush}"
                    VerticalAlignment="Top"
-                   Margin="0,15,0,0"
-                   FontSize="50"
-                   FontFamily="{StaticResource Swirl}"
-                   FontStyle="Italic"
-                   Foreground="{StaticResource DarkGrayBrush}" >
-             painter
-
-            <TextBlock.Effect>
-                <DropShadowEffect Opacity="0.2"
-                                  BlurRadius="10"
-                                  ></DropShadowEffect>
-            </TextBlock.Effect>
+                   HorizontalAlignment="Center"
+                   TextDecorations="Underline" Margin="0,40,0,0" 
+                   Grid.RowSpan="2">
+            Painter
         </TextBlock>
 
-        <!-- Description -->
-        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
-              Margin="20,5,5,5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Separator 
-                Background="{StaticResource BackgroundBrush}"
-                VerticalAlignment="Top" Margin="0 5 0 0">
-
-                <Separator.RenderTransform>
-                    <ScaleTransform ScaleY="2" />
-                </Separator.RenderTransform>
-            </Separator>
-
-            <TextBlock Grid.Row="0" Text="DESCRIPTION" 
+        <!-- Painter description -->
+        <Border Grid.Column="1"
+                Margin="20,20,20,20"
+                CornerRadius="6"
+                Background="{StaticResource Blue1Brush}">
+            <TextBlock Foreground="{StaticResource MyWhiteBrush}"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Background="{StaticResource MediumGrayBrush}"
-                       Padding="6 0"
-                       Margin="0 0"
-                       Height="12"
-                       Foreground="{StaticResource DarkGrayBrush}">
-
-            </TextBlock>
-
-            <TextBlock Grid.Row="1" Padding="10" 
                        TextWrapping="WrapWithOverflow"
-                       Foreground="{StaticResource TextGrayBrush}"
-                       FontSize="16">
-                Takes the number of iterations for each point on the complex plane and applies a colour to each.
-                The colour is determined by an algorithm which you can create here.
+                       Margin="22, 0"
+                       FontSize="{StaticResource PopupRegText}">
+                Define the area on the complex plane where the fractal will 
+                be rendered, along with the number of iterations and the bail value.
             </TextBlock>
-        </Grid>
+        </Border>
 
-
-        <TabControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
-                    Background="{StaticResource MediumGrayBrush}"
-                    BorderBrush="{StaticResource DarkGrayBrush}"
-                    >
-            <TabControl.Resources>
-                <Style TargetType="TabItem">
-
-
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="{StaticResource DarkGrayBrush}" 
-                                        CornerRadius="4,4,0,0" 
-                                        Margin="2,0"
-                                        Background="{StaticResource MediumGrayBrush}">
-                                    <ContentPresenter x:Name="ContentSite"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        ContentSource="Header"
-                                        Margin="10,2"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource DarkGrayBrush}" />
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                                        <Setter Property="Foreground" Value="Black"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources>
-
-            <TabItem Header="Basic">
-                <Grid >
+        <TabControl Grid.Row="1"
+                    Style="{StaticResource DefaultTabControlStyle}"
+                    SelectedIndex="{Binding TabIndex, Mode=TwoWay}"
+                    Grid.Column="0" Grid.ColumnSpan="2"
+                    Width="920" Height="350">
+            <TabItem Header="Basic Painter Light"
+                     >
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-
+                        <RowDefinition Height="64"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <!-- Name -->
-
-                    <TextBlock Margin="0, 0, 10, 0"
-                               Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"
-                               >
-                    Name:
+                    <TextBlock Grid.Column="0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16">
+                        Main Colour
                     </TextBlock>
-
-                    <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"
-                        HorizontalAlignment="Stretch" Height="20" x:Name="PainterName"
-                              Style="{StaticResource DefaultTextBox}"
-                             Text="{Binding Path=PainterName, Mode=TwoWay}"
-                             ></TextBox>
-
-                    <xctk:ColorCanvas Foreground="Black" Background="{StaticResource MediumGrayBrush}"
+                    <xctk:ColorCanvas Foreground="{StaticResource MyWhiteBrush}" 
+                                      Background="{StaticResource Blue2Brush}"
                                       BorderThickness="0"
-                                      Height="auto"
-                                      R="{Binding Path=Red, Mode=TwoWay}"
-                                      G="{Binding Path=Green, Mode=TwoWay}"
-                                      B="{Binding Path=Blue, Mode=TwoWay}"
-                        Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" Grid.ColumnSpan="2" 
-                                      SelectedColor="#FFB85555" UsingAlphaChannel="False"
-                                      VerticalAlignment="Center"/>
+                                      Grid.Row="1"
+                                      Grid.Column="0"
+                                      Width="250"
+                                      
+                                      SelectedColor="{Binding BasicPainterMainColour, Mode=TwoWay}" 
+                                      UsingAlphaChannel="False"
+                                      VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16">
+                        In-set Colour
+                    </TextBlock>
+                    <xctk:ColorCanvas Foreground="{StaticResource MyWhiteBrush}" 
+                                      Background="{StaticResource Blue2Brush}"
+                                      BorderThickness="0"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Width="250"
+                                      
+                                      SelectedColor="{Binding BasicPainterInSetColour, Mode=TwoWay}" 
+                                      UsingAlphaChannel="False"
+                                      VerticalAlignment="Center" />
+
+                    
+                </Grid>
 
 
+            </TabItem>
 
+            <TabItem Header="Basic Painter Dark"
+                     >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
 
+                    </Grid.ColumnDefinitions>
 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="64"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                    <!-- Description -->
-                    <Grid Grid.Row="1" Grid.Column="3"  Grid.RowSpan="2"
-              Margin="20,5,5,5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16">
+                        Main Colour
+                    </TextBlock>
+                    <xctk:ColorCanvas Foreground="{StaticResource MyWhiteBrush}" 
+                                      Background="{StaticResource Blue2Brush}"
+                                      BorderThickness="0"
+                                      Grid.Row="1"
+                                      Grid.Column="0"
+                                      Width="250"
+                                      
+                                      SelectedColor="{Binding BasicPainterMainColour, Mode=TwoWay}" 
+                                      UsingAlphaChannel="False"
+                                      VerticalAlignment="Center" />
 
-                        <Separator 
-                Background="{StaticResource BackgroundBrush}"
-                VerticalAlignment="Top" Margin="0 5 0 0">
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16">
+                        In-set Colour
+                    </TextBlock>
+                    <xctk:ColorCanvas Foreground="{StaticResource MyWhiteBrush}" 
+                                      Background="{StaticResource Blue2Brush}"
+                                      BorderThickness="0"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Width="250"
+                                      
+                                      SelectedColor="{Binding BasicPainterInSetColour, Mode=TwoWay}" 
+                                      UsingAlphaChannel="False"
+                                      VerticalAlignment="Center" />
 
-                            <Separator.RenderTransform>
-                                <ScaleTransform ScaleY="2" />
-                            </Separator.RenderTransform>
-                        </Separator>
-
-                        <TextBlock Grid.Row="0" Text="Basic Painter" 
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Background="{StaticResource MediumGrayBrush}"
-                       Padding="6 0"
-                       Margin="0 0"
-                       Height="12"
-                       Foreground="{StaticResource DarkGrayBrush}">
-
-                        </TextBlock>
-
-                        <TextBlock Grid.Row="1" Padding="10" 
-                       TextWrapping="WrapWithOverflow"
-                       Foreground="{StaticResource TextGrayBrush}"
-                       FontSize="12">
-                A very simple way to colour the fractal. Takes a red green and blue value, applying 
-                            that colour to each pixel depending on how many iterations that point
-                            got to. The higher the number, the more colour. Numbers in set are black.
-                        </TextBlock>
-                    </Grid>
-
-
-                    <Button Grid.Row="3" Grid.Column="3" Grid.RowSpan="2" 
-                            Style="{StaticResource AddInPopup}"
-                Width="70" Height="70"
-                Name="AddBasicPainter">
-                        add
-                    </Button>
 
                 </Grid>
 
+
             </TabItem>
-            <TabItem Header="Basic 2">
-                <Grid Background="#FFE5E5E5"/>
+
+            <TabItem Header="Log Painter"
+                     >
+
             </TabItem>
+
+
         </TabControl>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right" Margin="20,0,0,0">
+            <Button 
+                Background="Transparent"
+                Margin="15 0 10 0"
+                Style="{StaticResource PopupButton}"
+                x:Name="CloseWindow"
+                >
+                Canel
+            </Button>
+
+            <Button Grid.Row="2" 
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Margin="15 0 40 0"
+                Style="{StaticResource PopupButton}"
+                x:Name="AddPainter"
+                >
+                Add
+            </Button>
+        </StackPanel>
+
+
+        
     </Grid>
 
 

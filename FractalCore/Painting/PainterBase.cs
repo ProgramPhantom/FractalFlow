@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace FractalCore
+namespace FractalCore.Painting
 {
     public abstract class PainterBase
     {
@@ -20,8 +20,12 @@ namespace FractalCore
         }
 
 
-        public static FractalFrame ThumbnailPosition = new FractalFrame(-0.788596f, -0.5953322f, 0.479f, 0.315f, "Painter Thumbnail", 500, 2);
-        public static Fractal ThumbnailFractal = new Fractal(40, 40, ThumbnailPosition, new BasicIterator( "z^2 + c", "Painter Thumbnail"));
+
+
+        public PainterBase(string name)
+        {
+            _name = name;
+        }
 
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace FractalCore
             int arrayY = arr.GetLength(0);
 
             // Squash the array down into 1 dimension.
-            byte[] ?pixel1d = new byte[arrayX * arrayY * 4];
+            byte[]? pixel1d = new byte[arrayX * arrayY * 4];
             int index = 0;
             for (int y = 0; y < arrayY; y++)
             {
@@ -53,11 +57,6 @@ namespace FractalCore
 
             pixel1d = null;  // Make sure this is removed from memory.
 
-        }
-
-        public PainterBase(string name)
-        {
-            _name = name;
         }
     }
 }

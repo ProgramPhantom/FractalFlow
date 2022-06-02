@@ -18,9 +18,9 @@ namespace FractalGeneratorMVVM.Views.Models.Painters
     /// <summary>
     /// Interaction logic for FractalFrameView.xaml
     /// </summary>
-    public partial class BasicPainterView : UserControl
+    public partial class BasicPainterLightView : UserControl
     {
-        public BasicPainterView()
+        public BasicPainterLightView()
         {
             InitializeComponent();
         }
