@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FractalGeneratorMVVM.Views
+namespace FractalGeneratorMVVM.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for ConsolePageView.xaml
+    /// Interaction logic for DefaultPageView.xaml
     /// </summary>
-    public partial class ConsolePageView : UserControl
+    public partial class DefaultPageView : UserControl
     {
-        public ConsolePageView()
+        public DefaultPageView()
         {
             InitializeComponent();
         }

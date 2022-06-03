@@ -2,6 +2,7 @@
 using FractalCore;
 using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels.Windows;
+using FractalGeneratorMVVM.ViewModels.WinPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

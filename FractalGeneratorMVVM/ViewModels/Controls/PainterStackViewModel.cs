@@ -15,6 +15,7 @@ using FractalGeneratorMVVM.ViewModels.Windows;
 using FractalGeneratorMVVM.Views.Models;
 using FractalGeneratorMVVM.ViewModels.Models.Painters;
 using FractalCore.Painting;
+using FractalGeneratorMVVM.ViewModels.WinPages;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {

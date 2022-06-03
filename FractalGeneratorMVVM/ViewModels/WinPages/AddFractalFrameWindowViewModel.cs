@@ -8,8 +8,9 @@ using Caliburn.Micro;
 using FractalGeneratorMVVM.ViewModels.Controls;
 using FractalCore;
 using System.Windows.Media;
+using FractalGeneratorMVVM.ViewModels.Windows;
 
-namespace FractalGeneratorMVVM.ViewModels.Windows
+namespace FractalGeneratorMVVM.ViewModels.WinPages
 {
     public class AddFractalFrameWindowViewModel : Screen
     {

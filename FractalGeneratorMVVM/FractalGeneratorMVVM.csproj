@@ -63,7 +63,6 @@
     <Folder Include="Models\" />
     <Folder Include="Database\" />
     <Folder Include="Old\" />
-    <Folder Include="ViewModels\Pages\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,8 +10,9 @@ using FractalGeneratorMVVM.ViewModels.Controls;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using FractalCore.Painting;
+using FractalGeneratorMVVM.ViewModels.Windows;
 
-namespace FractalGeneratorMVVM.ViewModels.Windows
+namespace FractalGeneratorMVVM.ViewModels.WinPages
 {
     public class AddPainterWindowViewModel : Screen
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FractalCore;
 
-namespace FractalGeneratorMVVM.ViewModels
+namespace FractalGeneratorMVVM.ViewModels.Pages
 {
     public class ConsolePageViewModel : Screen
     {

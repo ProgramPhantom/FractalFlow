@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FractalGeneratorMVVM.Views.Windows
+namespace FractalGeneratorMVVM.Views.WinPages
 {
     /// <summary>
     /// Interaction logic for AddFractalFrameWindowView.xaml
@@ -24,9 +24,6 @@ namespace FractalGeneratorMVVM.Views.Windows
             InitializeComponent();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
     }
 }

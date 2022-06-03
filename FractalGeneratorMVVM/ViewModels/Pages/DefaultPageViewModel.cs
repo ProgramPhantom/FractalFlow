@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using FractalCore;
 using FractalCore.Painting;
 
-namespace FractalGeneratorMVVM.ViewModels
+namespace FractalGeneratorMVVM.ViewModels.Pages
 {
     public class DefaultPageViewModel : Screen
     {

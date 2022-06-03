@@ -12,6 +12,7 @@ using System.Diagnostics;
 using FractalCore;
 using System.Threading;
 using FractalCore.Painting;
+using FractalGeneratorMVVM.ViewModels.Pages;
 
 namespace FractalGeneratorMVVM
 {
