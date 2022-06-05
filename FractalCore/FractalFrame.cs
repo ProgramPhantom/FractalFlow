@@ -8,16 +8,14 @@ using System.Windows;
 
 namespace FractalCore
 {
-    public delegate void ComplexHovered(Complex c);
+
 
     /// <summary>
     /// This class presents a boundary and information on iterations for making a iterations array.
     /// </summary>
     public class FractalFrame : BaseScaffold
     {
-        #region Events
-        public event ComplexHovered? ComplexHoveredEvent;
-        #endregion
+
 
         #region Fields
         private float _left;
@@ -72,9 +70,9 @@ namespace FractalCore
             set { _bail = value; }
         }
 
-        public float RealWidth { get { return Math.Abs(_left) + Math.Abs(_right); } }
+        public float RealWidth { get { return Math.Abs(_left - _right); } }
 
-        public float ImaginaryHeight { get { return Math.Abs(_bottom) + Math.Abs(_top); } }
+        public float ImaginaryHeight { get { return Math.Abs(_bottom - _top); } }
         #endregion
 
         public FractalFrame()
@@ -127,7 +125,7 @@ namespace FractalCore
 
         
 
-        public void PxToComplex(Point p, double width, double height)
+        public Complex PxToComplex(Point p, double width, double height)
         {
             double xStep = RealWidth / width;
             double yStep = ImaginaryHeight / height;
@@ -137,8 +135,7 @@ namespace FractalCore
 
             Complex pos = new Complex(real, imaginary);
 
-            // Event trigger
-            ComplexHoveredEvent?.Invoke(pos);
+            return pos;
         }
     }
 }

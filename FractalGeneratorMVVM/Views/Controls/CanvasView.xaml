@@ -90,13 +90,15 @@
                             <i:EventTrigger EventName="MouseMove">
                                 <cal:ActionMessage MethodName="MouseOver">
                                     <cal:Parameter Value="$source"/>
-                                    <cal:Parameter Value="$eventArgs"/>
                                 </cal:ActionMessage>
                             </i:EventTrigger>
 
-
-
-                        </i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <cal:ActionMessage MethodName="LeftMouseDown">
+                                    <cal:Parameter Value="$source"/>
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     </Image>
             </Viewbox>
             

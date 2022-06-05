@@ -12,12 +12,13 @@ using System.Windows.Controls;
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public delegate void MouseOverCanvas(Point Pos, double width, double height);
+    public delegate void ClickedCanvas(Point Pos, double width, double height);
 
     public class CanvasViewModel : Screen
     {
         #region Events
         public event MouseOverCanvas? MouseOverCanvasEvent;  // Event
-
+        public event ClickedCanvas? LeftClickedCanvas;  // Event
         #endregion
 
         #region Fields
@@ -101,11 +102,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         }
 
         #region Mouse Position
-        public void MouseOver(Image sender, MouseEventArgs relative)
+        public void MouseOver(Image sender)
         {
-            Point Pos = Mouse.GetPosition(sender);
+            Point pos = Mouse.GetPosition(sender);
             
-            MouseOverCanvasEvent?.Invoke(Pos, sender.ActualWidth, sender.ActualHeight);
+            MouseOverCanvasEvent?.Invoke(pos, sender.ActualWidth, sender.ActualHeight);
         }
         #endregion
 
@@ -192,7 +193,13 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         }
         #endregion
 
-
+        #region Click
+        public void LeftMouseDown(Image sender)
+        {
+            Point pos = Mouse.GetPosition(sender);
+            LeftClickedCanvas?.Invoke(pos, sender.ActualWidth, sender.ActualHeight);
+        }
+        #endregion
 
 
     }

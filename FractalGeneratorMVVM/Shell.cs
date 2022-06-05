@@ -13,6 +13,7 @@ using FractalCore;
 using System.Threading;
 using FractalCore.Painting;
 using FractalGeneratorMVVM.ViewModels.Pages;
+using System.Numerics;
 
 namespace FractalGeneratorMVVM
 {
@@ -35,8 +36,7 @@ namespace FractalGeneratorMVVM
         private int _renders;
 
         private bool _consoleOpen = false;
-
-
+        private float _zoomDivisor = 2;
         #endregion
 
         #region Properties
@@ -51,9 +51,7 @@ namespace FractalGeneratorMVVM
             set { _consoleWindow = value; }
         }
 
-        /// <summary>
-        /// The page which is given to the main window to display
-        /// </summary>
+        
         public DefaultPageViewModel DefaultPage
         {
             get { return _defaultPage; }
@@ -110,6 +108,9 @@ namespace FractalGeneratorMVVM
         }
         #endregion
 
+        public FractalFrame? FakeFractalFrame = null;
+
+
         public int JobCount
         {
             get { return _renders; }
@@ -120,6 +121,13 @@ namespace FractalGeneratorMVVM
             get { return _consoleOpen; }
             set { _consoleOpen = value; }
         }
+
+        public float ZoomDivisor
+        {
+            get { return _zoomDivisor; }
+            set { _zoomDivisor = value; }
+        }
+
         #endregion
 
         #region Constructor
@@ -145,10 +153,11 @@ namespace FractalGeneratorMVVM
             #endregion
 
             #region Mouse hover event linking
-            // Send the mouse hover data over to the selected fractal frame so that it can be processed into a complex number
-            _defaultPage.CanvasVM.MouseOverCanvasEvent += _defaultPage.SelectedFractalFrame.PxToComplex;
-            // The fractal frame then fires the ComplexHoveredEvent event so everyone can have access to the complex number the mouse is hovering over
-            _defaultPage.SelectedFractalFrame.ComplexHoveredEvent += _defaultPage.StatusBarVM.UpdateHoverMessage;
+            _defaultPage.CanvasVM.MouseOverCanvasEvent += CanvasHovered;
+            #endregion
+
+            #region Left Mouse Clicked
+            _defaultPage.CanvasVM.LeftClickedCanvas += HardZoom;
             #endregion
 
             _defaultPage.StatusBarVM.ToggleConsoleEvent += ToggleConsoleWindowShow;
@@ -164,9 +173,16 @@ namespace FractalGeneratorMVVM
 
         #endregion
 
-        public void PreRender(object? sender, EventArgs e)
+        public void CanvasHovered(Point hoverLocation, double canvasWidth, double canvasHeight) 
         {
-            
+            Complex mousePos = SelectedFractalFrame.PxToComplex(hoverLocation, canvasWidth, canvasHeight);
+
+            _defaultPage.StatusBarVM.UpdateHoverMessage(mousePos);
+        }
+
+        public void PreRender(bool clearZoom)
+        {
+            if (clearZoom == true) { FakeFractalFrame = null; }
 
             if (DefaultPage.ToolRibbonVM.GPURender == true)
             {
@@ -177,8 +193,6 @@ namespace FractalGeneratorMVVM
             {
                 RenderAsync();
             }
-
-            
         }
 
         public void ToggleConsoleWindowShow()
@@ -208,12 +222,12 @@ namespace FractalGeneratorMVVM
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
 
-            Fractal fractal = new Fractal(RenderWidth, RenderHeight, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Fractal fractal = new Fractal(RenderWidth, RenderHeight, FakeFractalFrame ?? SelectedFractalFrame, SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
             JobCount++;
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage, JobCount);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter, fractalImage, JobCount);
             JobCount++;
 
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
@@ -244,7 +258,6 @@ namespace FractalGeneratorMVVM
             ConsolePage.NewLog(new Status($"Overall render duration: {elapsedTime}", NotificationType.RenderDuration));
             #endregion
         }
-
         public async void CLRenderAsync()
         {
             #region Timer start
@@ -257,12 +270,12 @@ namespace FractalGeneratorMVVM
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
-            Fractal fractal = new Fractal(RenderWidth, RenderHeight, DefaultPage.SelectedFractalFrame, DefaultPage.SelectedIterator);
+            Fractal fractal = new Fractal(RenderWidth, RenderHeight, FakeFractalFrame ?? SelectedFractalFrame, SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
             JobCount++;
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, DefaultPage.SelectedPainter, fractalImage, JobCount);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter, fractalImage, JobCount);
             JobCount++;
 
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
@@ -291,6 +304,27 @@ namespace FractalGeneratorMVVM
             ConsolePage.NewLog(new Status($"Overall render duration: {elapsedTime}", NotificationType.RenderDuration));
             #endregion
         }
+
+
+
+
+        public void HardZoom(Point clickLocation, double width, double height)
+        {
+            Complex centre = SelectedFractalFrame.PxToComplex(clickLocation, width, height);
+
+            FractalFrame referneceFrame = FakeFractalFrame ?? SelectedFractalFrame;
+
+            double newWidth = referneceFrame.RealWidth / 1.1;
+            double newHeight = referneceFrame.ImaginaryHeight / 1.1;
+
+            FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary, "Temporary Frame", 100, 2);
+
+            FakeFractalFrame = newFrame;
+
+            PreRender(false);
+        }
+
+
 
         public void CancelRender()
         {

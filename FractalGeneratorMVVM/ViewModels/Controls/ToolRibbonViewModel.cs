@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
-    public delegate void Render(object obj, EventArgs e);   // The method
+    public delegate void Render(bool ClearZoom);   // The method
 
     public class ToolRibbonViewModel : Screen
     {
@@ -69,7 +69,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         protected virtual void OnRenderClicked() 
         {
             // Send the word that a render has been ordered!
-            FireRenderEvent?.Invoke(this, EventArgs.Empty);
+            FireRenderEvent?.Invoke(true);
         }
 
         #endregion
