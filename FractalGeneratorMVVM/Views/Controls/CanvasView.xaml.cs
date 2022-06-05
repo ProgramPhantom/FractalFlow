@@ -24,5 +24,7 @@ namespace FractalGeneratorMVVM.Views.Controls
         {
             InitializeComponent();
         }
+
+
     }
 }

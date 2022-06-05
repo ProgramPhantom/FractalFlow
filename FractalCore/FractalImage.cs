@@ -29,12 +29,26 @@ namespace FractalCore
             get { return _fractalBitmap; }
         }
 
-
-
         public Fractal Fractal
         {
             get { return _fractal; }
             set { _fractal = value; }
+        }
+
+        public int Width
+        {
+            get
+            {
+                return Fractal.Width;
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return Fractal.Height;
+            }
         }
         #endregion
 

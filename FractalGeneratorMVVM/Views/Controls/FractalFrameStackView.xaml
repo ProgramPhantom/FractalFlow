@@ -32,6 +32,7 @@
         </TextBlock>
 
         <ScrollViewer 
+            
             Grid.Row="1" 
             HorizontalAlignment="Center" 
             VerticalScrollBarVisibility="Auto" Width="60"

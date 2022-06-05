@@ -7,23 +7,100 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Auto"
-                  Background="{StaticResource CanvasBrush}"
-                  Style="{StaticResource CanvasScrollViewer}"
-                  PanningMode="Both">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Focusable="True"
+             
+            >
 
-        <Image x:Name="DisplayedImage" Source="{Binding Path=Image.FractalBitmap}" Cursor="Cross" >
+    <i:Interaction.Triggers>
+
+
+        <i:EventTrigger EventName="SizeChanged">
+            <cal:ActionMessage MethodName="CanvasSizeChanged">
+                <cal:Parameter Value="$source"/>
+                <cal:Parameter Value="$eventArgs"/>
+                
+            </cal:ActionMessage>
+        </i:EventTrigger>
+
+
+    </i:Interaction.Triggers>
+
+    <Grid >
+        <ScrollViewer 
+                      
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      Background="{StaticResource CanvasBrush}"
+                      Style="{StaticResource CanvasScrollViewer}"
+                      
+                      >
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseMove">
-                    <cal:ActionMessage MethodName="MouseOver">
+
+
+                <i:EventTrigger EventName="PreviewMouseWheel">
+                    <cal:ActionMessage MethodName="Scrolled">
+                        <cal:Parameter Value="$eventArgs"/>
+                        <cal:Parameter Value="$source"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                    <cal:ActionMessage MethodName="RightMouseDown">
                         <cal:Parameter Value="$source"/>
                         <cal:Parameter Value="$eventArgs"/>
                     </cal:ActionMessage>
                 </i:EventTrigger>
+
+                <i:EventTrigger EventName="PreviewMouseRightButtonUp">
+                    <cal:ActionMessage MethodName="RightMouseUp">
+                        <cal:Parameter Value="$source"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="MouseMove">
+                    <cal:ActionMessage MethodName="MouseDrag">
+                        <cal:Parameter Value="$source"/>
+                        <cal:Parameter Value="$eventArgs"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+
             </i:Interaction.Triggers>
-        </Image>
-        
-    </ScrollViewer>
+
+
+            <Viewbox>
+                
+                    <Viewbox.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform x:Name="Zoom"
+                                    ScaleX="{Binding Zoom}"
+                                    ScaleY="{Binding Zoom}"
+                                    />
+
+                        </TransformGroup>
+                    </Viewbox.LayoutTransform>
+
+
+                    <Image x:Name="DisplayedImage" 
+                        Source="{Binding Path=Image.FractalBitmap}" 
+                        Cursor="Cross"
+                        Stretch="None"
+                        >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseMove">
+                                <cal:ActionMessage MethodName="MouseOver">
+                                    <cal:Parameter Value="$source"/>
+                                    <cal:Parameter Value="$eventArgs"/>
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+
+
+
+                        </i:Interaction.Triggers>
+                    </Image>
+            </Viewbox>
+            
+        </ScrollViewer>
+    </Grid>
+
 </UserControl>
