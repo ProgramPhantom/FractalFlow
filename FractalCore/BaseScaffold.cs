@@ -21,6 +21,27 @@ namespace FractalCore
         private static uint _iterationsDefault = 100;
         private static int _bailDefault = 2;
 
+        #region Universal
+        public static string NameDefault
+        {
+            get { return _nameDefault; }
+            set { _nameDefault = value; }
+        }
+
+        public static uint IterationsDefault
+        {
+            get { return _iterationsDefault; }
+            set { _iterationsDefault = value; }
+        }
+
+        public static int BailDefault
+        {
+            get { return _bailDefault; }
+            set { _bailDefault = value; }
+        }
+        #endregion
+
+        #region Sides
         public static float LeftDefault
         {
             get { return _leftDefault; }
@@ -44,24 +65,40 @@ namespace FractalCore
             get { return _topDefault; }
             set { _topDefault = value; }
         }
+        #endregion
 
-        public static string NameDefault
+        #region Centre
+        public static float WidthDefault
         {
-            get { return _nameDefault; }
-            set { _nameDefault = value; }
+            get
+            {
+                return Math.Abs(LeftDefault) + Math.Abs(RightDefault);
+            }
         }
 
-        public static uint IterationsDefault
+        public static float HeightDefault
         {
-            get { return _iterationsDefault; }
-            set { _iterationsDefault = value; }
+            get
+            {
+                return Math.Abs(TopDefault) + Math.Abs(BottomDefault);
+            }
         }
 
-        public static int BailDefault
+        public static float CentreRealDefault
         {
-            get { return _bailDefault; }
-            set { _bailDefault = value; }
+            get
+            {
+                return (float)Decimal.Divide((decimal)WidthDefault, 2) + LeftDefault;
+            }
         }
 
+        public static float CentreImagDefault
+        {
+            get
+            {
+                return (float)Decimal.Divide((decimal)HeightDefault, 2) + BottomDefault;
+            }
+        }
+        #endregion
     }
 }

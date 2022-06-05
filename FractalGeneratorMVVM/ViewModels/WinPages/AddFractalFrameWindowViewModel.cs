@@ -22,37 +22,52 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
 
         private NoMaxWindowViewModel _window;
 
-        private int _width = 1000;
+        private int _width = 1100;
         private int _height = 650;
 
         private Color _colour = Colors.AliceBlue;
+
+        private int _tabIndex = 0;
 
         #endregion
 
 
         #region Properties
+        #region Window Stuff
         public WindowManager WindowManager
         {
             get { return _windowManager; }
             set { _windowManager = value; }
         }
-
-
         public NoMaxWindowViewModel Window
         {
             get { return _window; }
             set { _window = value; }
         }
+        public int Width
+        {
+            get { return _width; }
+            set
+            {
+                _width = value;
+                NotifyOfPropertyChange(() => Width);
+            }
+        }
+        public int Height
+        {
+            get { return _height; }
+            set
+            {
+                _height = value;
+                NotifyOfPropertyChange(() => Height);
+            }
+        }
+        #endregion
 
-
+        #region Universal
         public string Name { get; set; } = BaseScaffold.NameDefault;
-        public float Top { get; set; } = BaseScaffold.TopDefault;
-        public float Bottom { get; set; } = BaseScaffold.BottomDefault;
-        public float Left { get; set; } = BaseScaffold.LeftDefault;
-        public float Right { get; set; } = BaseScaffold.RightDefault;
         public uint Iterations { get; set; } = BaseScaffold.IterationsDefault;
         public int Bail { get; set; } = BaseScaffold.BailDefault;
-
         public Color Colour
         {
             get
@@ -65,25 +80,37 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
                 NotifyOfPropertyChange(() => Colour);
             }
         }
+        #endregion
+
+        #region Sides
+        public float Top { get; set; } = BaseScaffold.TopDefault;
+        public float Bottom { get; set; } = BaseScaffold.BottomDefault;
+        public float Left { get; set; } = BaseScaffold.LeftDefault;
+        public float Right { get; set; } = BaseScaffold.RightDefault;
+        #endregion
+
+        #region Centre
+        public float FFHeight { get; set; } = BaseScaffold.HeightDefault;
+        public float FFWidth { get; set; } = BaseScaffold.WidthDefault;
+        public decimal RealCentre { get; set; } = (decimal)BaseScaffold.CentreRealDefault;
+        public float ImagCentre { get; set; } = BaseScaffold.CentreImagDefault;
+        #endregion
 
 
-        public int Width
+        public int TabIndex
         {
-            get { return _width; }
-            set 
-            { 
-                _width = value;
-                NotifyOfPropertyChange(() => Width);
-            }
+            get { return _tabIndex; }
+            set { _tabIndex = value; }
         }
-
-        public int Height
+        public FractalFrameStackViewModel FractalFrameStack
         {
-            get { return _height; }
-            set 
-            { 
-                _height = value;
-                NotifyOfPropertyChange(() => Height);
+            get
+            {
+                return _fractalFrameStack;
+            }
+            set
+            {
+                _fractalFrameStack = value;
             }
         }
         #endregion
@@ -93,7 +120,6 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
         public AddFractalFrameWindowViewModel(FractalFrameStackViewModel fractalFrameStack)
         {
             _fractalFrameStack = fractalFrameStack;
-
             _windowManager = new WindowManager();
             _window = new NoMaxWindowViewModel(this, "Add Fractal Frame", ResizeMode.NoResize, Width, Height);
         }
@@ -121,16 +147,30 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
         {
             _window.TryCloseAsync();
         }
-        
-        /// <summary>
-        /// When the add button is clicked
-        /// </summary>
+
         public void AddFractalFrame()
         {
-            System.Diagnostics.Trace.WriteLine("Add fractal frame!");
-            _fractalFrameStack.AddFractalFrame(new FractalFrame(Left, Right, Top, Bottom, Name, Iterations, Bail), Colour.R, Colour.G, Colour.B);
+            switch (TabIndex)
+            {
+                case 0:
+                    AddFractalFrameCentre();
+                    break;
+                case 1:
+                    AddFractalFrameSides();
+                    break;
+            }
+        }
+
+        public void AddFractalFrameSides()
+        {
+            FractalFrameStack.AddFractalFrame(new FractalFrame(Left, Right, Top, Bottom, Name, Iterations, Bail), Colour);
             _window.TryCloseAsync();
         }
 
+        public void AddFractalFrameCentre()
+        {
+            FractalFrameStack.AddFractalFrame(FractalFrame.FractalFrameCentre(FFWidth, FFHeight, (float)RealCentre, ImagCentre, Name, Iterations, Bail), Colour);
+            _window.TryCloseAsync();
+        }
     }
 }

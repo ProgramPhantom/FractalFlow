@@ -14,7 +14,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public class FractalFrameStackViewModel : Screen
     {
-        static Color DEFAULTCOLOUR = Colors.AliceBlue;
+        private static Color DEFAULTCOLOUR = Colors.AliceBlue;
 
         #region Fields
 
@@ -106,10 +106,10 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// Add a new fractal frame view model with connected fractal frame object
         /// </summary>
         /// <param name="newFF">The Fractal Frame to add</param>
-        public void AddFractalFrame(FractalFrame newFF, byte red=200, byte green=100, byte blue=100)
+        public void AddFractalFrame(FractalFrame newFF, Color? c = null)
         { 
             // Add the new fractal frame view model and attatch the fractal frame model
-            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF, red, green, blue));
+            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF, c ?? DEFAULTCOLOUR));
         }
 
 

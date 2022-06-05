@@ -110,6 +110,23 @@ namespace FractalCore
             _name = name;
         }
 
+        public static FractalFrame FractalFrameCentre(float width, float height, float r, float i, string name, uint iterations, int bail)
+        {
+            double halfWidth = width / 2;
+            double halfHeight = height / 2;
+
+            float left = r - (float)halfWidth;
+            float right = r + (float)halfWidth;
+            float top = i + (float)halfHeight;
+            float bottom = i - (float)halfHeight;
+
+            FractalFrame ff = new FractalFrame(left, right, top, bottom, name, iterations, bail);
+
+            return ff;
+        }
+
+        
+
         public void PxToComplex(Point p, double width, double height)
         {
             double xStep = RealWidth / width;

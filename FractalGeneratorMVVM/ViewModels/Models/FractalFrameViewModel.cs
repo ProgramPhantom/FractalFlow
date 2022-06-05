@@ -69,16 +69,16 @@ namespace FractalGeneratorMVVM.ViewModels.Models
 
         #endregion
 
-        public FractalFrameViewModel(int num, FractalFrame model, byte red=123, byte green=255, byte blue=0, string name="Untitled")
+        public FractalFrameViewModel(int num, FractalFrame model, Color colour, string name="Untitled")
         {
             _number = num;
             _name = name;
 
             _fractalFrameModel = model;
-            _colour = new SolidColorBrush(Color.FromRgb(red, green, blue));
+            _colour = new SolidColorBrush(colour);
 
             // Decide if the font colour should be black or white depending on the colour of the background
-            if (red * 0.299f + green * 0.587f + blue * 0.2f > 186)
+            if (colour.R * 0.299f + colour.G * 0.587f + colour.B * 0.2f > 186)
             {
                 _textColour = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             } else

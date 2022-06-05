@@ -7,16 +7,16 @@ using System.Windows;
 using FractalCore;
 using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels;
-
+using System.Windows.Media;
 
 namespace FractalGeneratorMVVM.Views.Models
 {
     public class FractalFrameDESIGN : FractalFrameViewModel
     {
-        public static FractalFrameDESIGN Instance => new FractalFrameDESIGN(2, 255, 255, 255);
+        public static FractalFrameDESIGN Instance => new FractalFrameDESIGN(2, Color.FromRgb(255, 255, 255));
         public static FractalFrame Frame => new FractalFrame();
 
-        public FractalFrameDESIGN(int num, byte red, byte green, byte blue) : base(num, Frame, red, green, blue)
+        public FractalFrameDESIGN(int num, Color c) : base(num, Frame, c)
         {
             
             IsSelected = false;
