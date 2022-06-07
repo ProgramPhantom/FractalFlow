@@ -19,7 +19,7 @@ namespace FractalGeneratorMVVM
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            Shell shell = new Shell();
+            Kernel shell = new Kernel();
             
         }
     }

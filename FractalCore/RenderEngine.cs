@@ -197,6 +197,10 @@ namespace FractalCore
             RenderProgressModel report = new RenderProgressModel();
 
             Complex point;
+
+            double realCoord;
+            double imaginaryCoord;
+            uint iterations;
             #endregion
 
             #region Timer start
@@ -212,12 +216,12 @@ namespace FractalCore
                 {
                     cancellationToken.ThrowIfCancellationRequested();  // CANCEL HERE IF TOKEN ACTIVATED
 
-                    double realCoord = (realStep * x) + fractal.Left;
-                    double imaginaryCoord = (imagStep * y) + fractal.Bottom;
+                    realCoord = (realStep * x) + fractal.Left;
+                    imaginaryCoord = fractal.Top - (imagStep * y) ;
 
                     point = new Complex(realCoord, imaginaryCoord);
 
-                    uint iterations = await Task.Run(() => fractal.Iterator.Iterate(point, fractal.Iterations, fractal.Bail));
+                    iterations = await Task.Run(() => fractal.Iterator.Iterate(point, fractal.Iterations, fractal.Bail));
 
                     fractal.IterationsArray[y, x] = iterations;
 
@@ -243,7 +247,6 @@ namespace FractalCore
             job.SetStatus($"{job.JobNum}: Finished iterations compute in {elapsedTime}", NotificationType.OperationComplete);
             #endregion
         }
-
 
         public async Task CLBitmapCompute(RenderBitmapJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
@@ -281,8 +284,8 @@ namespace FractalCore
             RenderProgressModel report = new RenderProgressModel();
             void Report(object sender, double e)
             {
-                report.PercentageComplete = (int)Math.Round(e * 100);
-                progress.Report(report);
+                //report.PercentageComplete = (int)Math.Round(e * 100);
+                //progress.Report(report);
 
             }
 
@@ -304,7 +307,7 @@ namespace FractalCore
             uint[] flatArray = new uint[width * height];
 
             CLEngine.SetParameter(flatArray, width, height, fractal.Left, fractal.Top, fractal.RealStep, fractal.ImagStep, fractal.Iterations, fractal.Bail);
-            CLEngine.ProgressChangedEvent += Report;
+            //CLEngine.ProgressChangedEvent += Report;
 
 
 
@@ -315,9 +318,9 @@ namespace FractalCore
             #endregion
 
             // The parts simply splits it into sections to be completed between which a progress report is sent
-            await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 100));
-            
-
+            // await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 2));
+            CLEngine.Invoke(0, flatArray.Length, 100);
+            await Task.Run(() => { });
 
             int pos = 0;
             // Write the flat array to the 2d array in fractal

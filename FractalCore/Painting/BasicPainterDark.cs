@@ -36,7 +36,7 @@ namespace FractalCore.Painting
                 for (int x = 0; x < fractal.Width; x++)
                 {  // Iterate through every pixel in the fractal, first check if
                    // the number of iterations at that pixel is equal to the max it was allowed to go to
-                    iterations = (float)fractal.IterationsArray[y, x];
+                    iterations = fractal.IterationsArray[y, x];
                     iterationRatio = (iterations / iterationCap);
 
 
@@ -44,19 +44,15 @@ namespace FractalCore.Painting
 
                     if (iterationCap == iterations)  // In the set
                     {  // ^^ Checking if iteration ratio is 1 will have the same effect
-                        // Paint it, black.
-                        pixels[y, x, 0] = InSetColour.B;
-                        pixels[y, x, 1] = InSetColour.G;
                         pixels[y, x, 2] = InSetColour.R;
+                        pixels[y, x, 1] = InSetColour.G;
+                        pixels[y, x, 0] = InSetColour.B;
                     }
                     else
                     {
-                        
-                        
+                        pixels[y, x, 2] = Convert.ToByte(iterationRatio * MainColour.R);
+                        pixels[y, x, 1] = Convert.ToByte(iterationRatio * MainColour.G);
                         pixels[y, x, 0] =  Convert.ToByte(iterationRatio * MainColour.B);
-                        pixels[y, x, 1] =  Convert.ToByte(iterationRatio * MainColour.G);
-                        pixels[y, x, 2] =  Convert.ToByte(iterationRatio * MainColour.R);
-                        
                     }
                 }
             }

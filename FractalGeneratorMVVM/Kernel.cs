@@ -20,7 +20,7 @@ namespace FractalGeneratorMVVM
     /// <summary>
     /// Shell
     /// </summary>
-    public class Shell : PropertyChangedBase
+    public class Kernel : PropertyChangedBase
     {
         CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -109,7 +109,13 @@ namespace FractalGeneratorMVVM
         #endregion
 
         public FractalFrame? FakeFractalFrame = null;
-
+        public FractalFrame ActiveFractalFrame
+        {
+            get
+            {
+                return FakeFractalFrame ?? SelectedFractalFrame;
+            }
+        }
 
         public int JobCount
         {
@@ -131,7 +137,7 @@ namespace FractalGeneratorMVVM
         #endregion
 
         #region Constructor
-        public Shell()
+        public Kernel()
         {
             _windowManager = new WindowManager();
 
@@ -175,7 +181,7 @@ namespace FractalGeneratorMVVM
 
         public void CanvasHovered(Point hoverLocation, double canvasWidth, double canvasHeight) 
         {
-            Complex mousePos = SelectedFractalFrame.PxToComplex(hoverLocation, canvasWidth, canvasHeight);
+            Complex mousePos = ActiveFractalFrame.PxToComplex(hoverLocation, canvasWidth, canvasHeight);
 
             _defaultPage.StatusBarVM.UpdateHoverMessage(mousePos);
         }
@@ -222,7 +228,7 @@ namespace FractalGeneratorMVVM
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
 
-            Fractal fractal = new Fractal(RenderWidth, RenderHeight, FakeFractalFrame ?? SelectedFractalFrame, SelectedIterator);
+            Fractal fractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame, SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
@@ -270,7 +276,7 @@ namespace FractalGeneratorMVVM
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
-            Fractal fractal = new Fractal(RenderWidth, RenderHeight, FakeFractalFrame ?? SelectedFractalFrame, SelectedIterator);
+            Fractal fractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame, SelectedIterator);
             FractalImage fractalImage = new FractalImage(ref fractal);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
@@ -305,17 +311,14 @@ namespace FractalGeneratorMVVM
             #endregion
         }
 
-
-
-
         public void HardZoom(Point clickLocation, double width, double height)
         {
-            Complex centre = SelectedFractalFrame.PxToComplex(clickLocation, width, height);
+            Complex centre = ActiveFractalFrame.PxToComplex(clickLocation, width, height);
 
-            FractalFrame referneceFrame = FakeFractalFrame ?? SelectedFractalFrame;
+            ConsolePage.NewLog(new Status($"Zooming into point {centre.Real} + {centre.Imaginary}i", NotificationType.Zoom));
 
-            double newWidth = referneceFrame.RealWidth / 1.1;
-            double newHeight = referneceFrame.ImaginaryHeight / 1.1;
+            double newWidth = ActiveFractalFrame.RealWidth / 3;
+            double newHeight = ActiveFractalFrame.ImaginaryHeight / 3;
 
             FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary, "Temporary Frame", 100, 2);
 
