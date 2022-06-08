@@ -67,42 +67,41 @@
             <Line X1="5" Y1="11" X2="5" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>
 
             <!-- Zoom IN -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 0 4" Width="36"
-                    Content="{StaticResource ZoomIn}">
+            <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36"
+                    Content="{StaticResource ZoomIn}"
+                    x:Name="ZoomInClicked">
             </Button>
 
             <!-- Zoom OUT -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 0 4" Width="36" 
-                     Content="{StaticResource ZoomOut}">
-            </Button>
-
-            <!-- Select Zoom -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 0 4" Width="36"
-                    Content="{StaticResource SelectZoom}">
+            <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36" 
+                     Content="{StaticResource ZoomOut}"
+                    x:Name="ZoomOutClicked">
             </Button>
 
             <!-- Reset Zoom -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 29 4" Width="36"
-                    Content="{StaticResource ResetZoom}">
+            <Button Style="{StaticResource Grow}" Margin="29 4 29 4" Width="36"
+                    Content="{StaticResource ResetZoom}"
+                    x:Name="ResetZoomClicked">
             </Button>
 
             <Line X1="0" Y1="11" X2="0" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>
 
             <!-- Open File -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 0 4" Width="36" 
+            <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36" 
                     Content="{StaticResource OpenFile}">
             </Button>
 
             <!-- Save -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 29 4" Width="36"
+            <Button Style="{StaticResource Grow}" Margin="29 4 29 4" Width="36"
                     Content="{StaticResource Save}">
             </Button>
 
             <Line X1="0" Y1="11" X2="0" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>
 
             <!-- Random Colour -->
-            <Button Style="{StaticResource RibbonButton}" Margin="29 4 0 4" Width="36" 
-                    Content="{StaticResource RandomColour}">
+            <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36" 
+                    Content="{StaticResource RandomColour}"
+                    x:Name="RandomPainterClicked">
             </Button>
 
 

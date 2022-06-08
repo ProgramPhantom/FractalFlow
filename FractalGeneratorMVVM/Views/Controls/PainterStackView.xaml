@@ -68,8 +68,8 @@
         <Button x:Name="NewPainterWindow" Grid.Row="2" 
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
-                Style="{StaticResource RibbonButton}" 
-                Content="{StaticResource Add}" Width="36" Height="36" />
+                Style="{StaticResource Grow}" 
+                Content="{StaticResource Add}" Width="36" />
 
     </Grid>
 </UserControl>

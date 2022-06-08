@@ -63,6 +63,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             set { _minScale = value; }
         }
         public int CanvasHeight { get; set; }
+        public int CanvasWidth { get; set; }
         public double ImageActualHeight
         {
             get
@@ -136,6 +137,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void CanvasSizeChanged(UserControl sender, EventArgs a)
         {
             CanvasHeight = Convert.ToInt32(sender.ActualHeight);
+            CanvasWidth = Convert.ToInt32(sender.ActualWidth);
 
             if (Image is null) { return; }
 

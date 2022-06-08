@@ -307,7 +307,7 @@ namespace FractalCore
             uint[] flatArray = new uint[width * height];
 
             CLEngine.SetParameter(flatArray, width, height, fractal.Left, fractal.Top, fractal.RealStep, fractal.ImagStep, fractal.Iterations, fractal.Bail);
-            //CLEngine.ProgressChangedEvent += Report;
+            CLEngine.ProgressChangedEvent += Report;
 
 
 
@@ -318,9 +318,9 @@ namespace FractalCore
             #endregion
 
             // The parts simply splits it into sections to be completed between which a progress report is sent
-            // await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 2));
-            CLEngine.Invoke(0, flatArray.Length, 100);
-            await Task.Run(() => { });
+            await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 2));
+            
+            
 
             int pos = 0;
             // Write the flat array to the 2d array in fractal

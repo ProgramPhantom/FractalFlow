@@ -322,6 +322,7 @@ namespace FormulaParser
 			#endregion
 
 
+
 			#region FIRST PASS
 			// FIRST ITERATION: split the infix expression crudely up into it's seconctions
 			while ((curr = textReader.Read()) != -1)

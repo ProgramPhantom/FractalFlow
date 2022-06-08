@@ -8,11 +8,18 @@ using System.Threading.Tasks;
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public delegate void Render(bool ClearZoom);   // The method
+    public delegate void ZoomOperation();   // The method
+    public delegate void PainterOperation();   // The method
 
     public class ToolRibbonViewModel : Screen
     {
         public event Render? FireRenderEvent;  // Event
 
+        public event ZoomOperation? ZoomInEvent;
+        public event ZoomOperation? ZoomOutEvent;
+        public event ZoomOperation? ResetZoomEvent;
+
+        public event PainterOperation? RandomPainterEvent;
 
         #region Fields
         private bool _gpuRender;
@@ -65,11 +72,48 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             OnRenderClicked();
         }
+        public void ZoomInClicked()
+        {
+            OnZoomInClicked();
+        }
+        public void ZoomOutClicked()
+        {
+            OnZoomOutClicked();
+        }
+        public void ResetZoomClicked()
+        {
+            OnResetZoomClicked();
+        }
+        public void RandomPainterClicked()
+        {
+            OnRandomPainterClicked();
+        }
 
         protected virtual void OnRenderClicked() 
         {
             // Send the word that a render has been ordered!
             FireRenderEvent?.Invoke(true);
+        }
+
+        protected virtual void OnZoomInClicked()
+        {
+            // Send the word that a render has been ordered!
+            ZoomInEvent?.Invoke();
+        }
+
+        protected virtual void OnZoomOutClicked()
+        {
+            ZoomOutEvent?.Invoke();
+        }
+
+        protected virtual void OnResetZoomClicked()
+        {
+            ResetZoomEvent?.Invoke();
+        }
+
+        protected virtual void OnRandomPainterClicked()
+        {
+            RandomPainterEvent?.Invoke();
         }
 
         #endregion

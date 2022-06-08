@@ -16,13 +16,14 @@ using FractalGeneratorMVVM.Views.Models;
 using FractalGeneratorMVVM.ViewModels.Models.Painters;
 using FractalCore.Painting;
 using FractalGeneratorMVVM.ViewModels.WinPages;
+using System.Windows.Media;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
     public class PainterStackViewModel : Screen
     {
         #region Fields
-       
+        private int _painterTypes = 2;
 
         private BindableCollection<IPainterViewModel> _painterViewModels;
 
@@ -99,11 +100,6 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
 
             NewBasicPainterLight(new BasicPainterLight());
-            NewBasicPainterLight(new BasicPainterLight());
-            NewBasicPainterLight(new BasicPainterLight());
-
-            
-
 
             _selectedPainterVM = PainterViewModels[0];
         }
@@ -126,9 +122,6 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             _painterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1));
         }
 
-
-
-
         /// <summary>
         /// Opens the new fractal frame WINDOW
         /// </summary>
@@ -137,6 +130,32 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void NewPainterWindow(object sender, EventArgs e)
         {
             _addPainterWindow.ShowWindow();
+        }
+
+        public void RandomPainter()
+        {
+            Random rnd = new Random();
+
+            int type = rnd.Next(_painterTypes);
+
+            switch (type)
+            {
+                case 0:
+                    // Basic Painter Light
+                    NewBasicPainterLight(new BasicPainterLight("Random", RandomColour(), RandomColour()));
+                    break;
+                case 1:
+
+                    NewBasicPainterDark(new BasicPainterDark("Random", RandomColour(), RandomColour()));
+                    break;
+            }
+
+        }
+
+        public static Color RandomColour()
+        {
+            Random rnd = new Random();
+            return Color.FromRgb((byte)rnd.Next(256), (byte)rnd.Next(256), (byte)rnd.Next(256));
         }
         #endregion
     }

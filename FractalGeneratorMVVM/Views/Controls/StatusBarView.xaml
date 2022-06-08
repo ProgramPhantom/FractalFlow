@@ -46,16 +46,16 @@
 
             <Button x:Name="CancelRender" 
                 Margin="6 0"
-                Style="{StaticResource Hoverless}" 
-                Content="{StaticResource CancelRender}"  Height="20">
+                Style="{StaticResource Grow}" 
+                Content="{StaticResource CancelRender}"  Height="17">
 
             </Button>
 
             <Button x:Name="ToggleConsole" 
                 Margin="6 0"
                 
-                Style="{StaticResource Hoverless}" 
-                Content="{StaticResource Console}" Height="20">
+                Style="{StaticResource Grow}" 
+                Content="{StaticResource Console}" Height="17">
 
             </Button>
 

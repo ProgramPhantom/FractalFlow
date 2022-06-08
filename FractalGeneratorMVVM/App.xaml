@@ -29,7 +29,7 @@
                 <!--<ResourceDictionary Source="Styles/Buttons/AddNewButton.xaml"/> -->
                 <ResourceDictionary Source="Styles/Buttons/Hoverless.xaml"/> 
                 <!--<ResourceDictionary Source="Styles/Buttons/RenderButton.xaml"/> -->
-                <ResourceDictionary Source="Styles/Buttons/RibbonButton.xaml"/>
+                <ResourceDictionary Source="Styles/Buttons/Grow.xaml"/>
                 
                 <ResourceDictionary Source="Styles/Buttons/SysIconButton.xaml"/>
                 <!--<ResourceDictionary Source="Styles/Buttons/WindowControlButton.xaml"/>-->

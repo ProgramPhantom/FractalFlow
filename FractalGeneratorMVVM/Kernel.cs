@@ -14,6 +14,7 @@ using System.Threading;
 using FractalCore.Painting;
 using FractalGeneratorMVVM.ViewModels.Pages;
 using System.Numerics;
+using System.Windows.Controls;
 
 namespace FractalGeneratorMVVM
 {
@@ -128,7 +129,7 @@ namespace FractalGeneratorMVVM
             set { _consoleOpen = value; }
         }
 
-        public float ZoomDivisor
+        public float ZoomFactor
         {
             get { return _zoomDivisor; }
             set { _zoomDivisor = value; }
@@ -166,7 +167,17 @@ namespace FractalGeneratorMVVM
             _defaultPage.CanvasVM.LeftClickedCanvas += HardZoom;
             #endregion
 
+            #region Toggle Console Window
             _defaultPage.StatusBarVM.ToggleConsoleEvent += ToggleConsoleWindowShow;
+            #endregion
+
+            #region Zooming Buttons
+            _defaultPage.ToolRibbonVM.ResetZoomEvent += ResetZoom;
+            _defaultPage.ToolRibbonVM.ZoomInEvent += DumbZoomIn;
+            _defaultPage.ToolRibbonVM.ZoomOutEvent += DumbZoomOut;
+            #endregion
+
+            _defaultPage.ToolRibbonVM.RandomPainterEvent += _defaultPage.PainterStackVM.RandomPainter;
 
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
@@ -317,16 +328,50 @@ namespace FractalGeneratorMVVM
 
             ConsolePage.NewLog(new Status($"Zooming into point {centre.Real} + {centre.Imaginary}i", NotificationType.Zoom));
 
-            double newWidth = ActiveFractalFrame.RealWidth / 3;
-            double newHeight = ActiveFractalFrame.ImaginaryHeight / 3;
+            double newWidth = ActiveFractalFrame.RealWidth / ZoomFactor;
+            double newHeight = ActiveFractalFrame.ImaginaryHeight / ZoomFactor;
 
-            FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary, "Temporary Frame", 100, 2);
+            FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary, 
+                "Temporary Frame", SelectedFractalFrame.Iterations, SelectedFractalFrame.Bail);
+
+            FakeFractalFrame = newFrame;
+
+            PreRender(false);
+        }
+        public void HardZoom(bool zoomOut=false)
+        {
+            int width = DefaultPage.CanvasVM.Image.Width;
+            int height = DefaultPage.CanvasVM.Image.Height;
+            Point clickLocation = new Point(width/2, height/2);
+            
+
+            Complex centre = ActiveFractalFrame.PxToComplex(clickLocation, width, height);
+
+            ConsolePage.NewLog(new Status($"Zooming into point {centre.Real} + {centre.Imaginary}i", NotificationType.Zoom));
+
+            double newWidth = zoomOut ? ActiveFractalFrame.RealWidth * ZoomFactor : ActiveFractalFrame.RealWidth / ZoomFactor;
+            double newHeight = zoomOut ? ActiveFractalFrame.ImaginaryHeight * ZoomFactor : ActiveFractalFrame.ImaginaryHeight / ZoomFactor;
+
+            FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary,
+                "Temporary Frame", SelectedFractalFrame.Iterations, SelectedFractalFrame.Bail);
 
             FakeFractalFrame = newFrame;
 
             PreRender(false);
         }
 
+        public void ResetZoom()
+        {
+            PreRender(true);
+        }
+        public void DumbZoomIn()
+        {
+            HardZoom();
+        }
+        public void DumbZoomOut()
+        {
+            HardZoom(true);
+        }
 
 
         public void CancelRender()

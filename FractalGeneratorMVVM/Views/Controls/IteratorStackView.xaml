@@ -8,6 +8,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
              d:DesignHeight="941"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              >
 
     
@@ -76,9 +77,22 @@
             <TextBox Style="{StaticResource FormulaInput}"
                      x:Name="FormulaBox"
                      Width="230"
-                     Margin="8 0 0 0"/>
+                     Margin="8 0 0 0">
 
-            <Button Style="{StaticResource RibbonButton}" Width="40"  Margin="10 0 0 0"
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="KeyDown">
+                        <cal:ActionMessage MethodName="Enter">
+                            <cal:Parameter Value="$eventArgs"/>
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+            </TextBox>
+                
+                  
+
+                
+
+            <Button Style="{StaticResource Grow}" Width="40"  Margin="10 0 0 0"
                     Content="{StaticResource AddFilled}" x:Name="AddIterator">
             </Button>
 

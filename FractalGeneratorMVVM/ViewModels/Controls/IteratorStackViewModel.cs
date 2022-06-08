@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
@@ -16,7 +17,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         private IteratorViewModel _selectedIteratorVM;
 
-        private string _formulaBox = "z^2+c";
+        private string _formulaBox = "z^2 + c";
         #endregion
 
         #region Properties
@@ -82,9 +83,8 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             _iteratorViewModels = new BindableCollection<IteratorViewModel>();
 
             AddIterator();
-            AddIterator();
-            AddIterator();
 
+            _formulaBox = "";
             _selectedIteratorVM = _iteratorViewModels[0];
         }
         #endregion
@@ -110,12 +110,24 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         public void AddIterator()
         {
+            if (string.IsNullOrEmpty(FormulaBox)) { return; }
+
             BasicIterator iterator = new BasicIterator(FormulaBox);
 
 
             _iteratorViewModels.Add(new IteratorViewModel(iterator, _iteratorViewModels.Count() + 1));
 
             _iteratorViewModels.Last().IteratorSelecetedEvent += OnIteratorSelected;
+
+            
+        }
+
+        public void Enter(KeyEventArgs k)
+        {
+            if (k.Key == Key.Return)
+            {
+                AddIterator();
+            }
         }
         #endregion
     }

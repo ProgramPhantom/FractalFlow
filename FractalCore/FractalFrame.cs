@@ -73,6 +73,9 @@ namespace FractalCore
         public float RealWidth { get { return Math.Abs(_left - _right); } }
 
         public float ImaginaryHeight { get { return Math.Abs(_bottom - _top); } }
+
+        public double RealCentre { get { return Left + RealWidth / 2; } }
+        public double ImaginaryCentre { get { return Bottom + ImaginaryHeight / 2; } }
         #endregion
 
         public FractalFrame()
