@@ -177,7 +177,10 @@ namespace FractalGeneratorMVVM
             _defaultPage.ToolRibbonVM.ZoomOutEvent += DumbZoomOut;
             #endregion
 
+            #region Random Painter
             _defaultPage.ToolRibbonVM.RandomPainterEvent += _defaultPage.PainterStackVM.RandomPainter;
+            _defaultPage.ToolRibbonVM.RandomPainterEvent += PreRender;
+            #endregion
 
             // Show the window
             _windowManager.ShowWindowAsync(_mainWindow);
@@ -197,7 +200,23 @@ namespace FractalGeneratorMVVM
             _defaultPage.StatusBarVM.UpdateHoverMessage(mousePos);
         }
 
-        public void PreRender(bool clearZoom)
+        public void PreRender()
+        {
+            bool clearZoom = false;
+            if (clearZoom == true) { FakeFractalFrame = null; }
+
+            if (DefaultPage.ToolRibbonVM.GPURender == true)
+            {
+
+
+                CLRenderAsync();
+            }
+            else
+            {
+                RenderAsync();
+            }
+        }
+        public void PreRender(bool clearZoom=false)
         {
             if (clearZoom == true) { FakeFractalFrame = null; }
 
@@ -211,6 +230,7 @@ namespace FractalGeneratorMVVM
                 RenderAsync();
             }
         }
+        
 
         public void ToggleConsoleWindowShow()
         {
@@ -324,6 +344,11 @@ namespace FractalGeneratorMVVM
 
         public void HardZoom(Point clickLocation, double width, double height)
         {
+            if (DefaultPage.CanvasVM.Image == null)
+            {
+                return;
+            }
+
             Complex centre = ActiveFractalFrame.PxToComplex(clickLocation, width, height);
 
             ConsolePage.NewLog(new Status($"Zooming into point {centre.Real} + {centre.Imaginary}i", NotificationType.Zoom));
@@ -340,6 +365,11 @@ namespace FractalGeneratorMVVM
         }
         public void HardZoom(bool zoomOut=false)
         {
+            if (DefaultPage.CanvasVM.Image == null)
+            {
+                return;
+            }
+
             int width = DefaultPage.CanvasVM.Image.Width;
             int height = DefaultPage.CanvasVM.Image.Height;
             Point clickLocation = new Point(width/2, height/2);
@@ -362,17 +392,23 @@ namespace FractalGeneratorMVVM
 
         public void ResetZoom()
         {
+            if (DefaultPage.CanvasVM.Image == null)
+            {
+                return;
+            }
+
             PreRender(true);
         }
         public void DumbZoomIn()
         {
+            
+
             HardZoom();
         }
         public void DumbZoomOut()
         {
             HardZoom(true);
         }
-
 
         public void CancelRender()
         {

@@ -92,7 +92,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         protected virtual void OnRenderClicked() 
         {
             // Send the word that a render has been ordered!
-            FireRenderEvent?.Invoke(true);
+            FireRenderEvent?.Invoke(false);
         }
 
         protected virtual void OnZoomInClicked()

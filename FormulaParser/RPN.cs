@@ -35,7 +35,7 @@ namespace FormulaParser
 		/// <summary>
 		/// A list of strings containing the names of functions that can be used in the infix string
 		/// </summary>
-		public static string[] Functions = new string[] { "sin", "cos", "tan", "sqrt", "ln", "log" };
+		public static string[] Functions = new string[] { "sin", "cos", "tan", "sqrt", "log", "log10", "abs", "pos", "arg", "conj", "exp", "sinh", "cosh", "tanh", "asin", "acos", "atan",};
 
 		/// <summary>
 		/// A dictionary containing names of mathematical constants that can be used in 
@@ -177,6 +177,8 @@ namespace FormulaParser
 				return string.Join(" ", RPNTokens.Select(t => t.Value));
             }
         }
+
+		public List<string> VariableNames = new List<string>();
 		#endregion
 
 		/// <summary>
@@ -199,6 +201,15 @@ namespace FormulaParser
 
 			_infixTokens = Tokenize(infix);
 			_RPNTokens = ShuntingYard();
+
+			// Generate a list of the variable names
+			foreach (Token token in _infixTokens)
+            {
+				if (token.Type == TokenType.Variable && !(VariableNames.Contains(token.Value)))
+                {
+					VariableNames.Add(token.Value);
+                }
+            }
 		}
 
 		/// <summary>
@@ -321,8 +332,6 @@ namespace FormulaParser
 			string readCharacters = "";
 			#endregion
 
-
-
 			#region FIRST PASS
 			// FIRST ITERATION: split the infix expression crudely up into it's seconctions
 			while ((curr = textReader.Read()) != -1)
@@ -367,7 +376,6 @@ namespace FormulaParser
 
 			}
 			#endregion
-
 
 			#region SECOND PASS
 			// SECOND ITERATION: Combine and add in operators where needed
@@ -563,19 +571,53 @@ namespace FormulaParser
 								valueStack.Push(Complex.Sqrt(valueStack.Pop()));
 								break;
 							}
-						case "ln":
+						case "log":
 							{
 								valueStack.Push(Complex.Log(valueStack.Pop()));
 								break;
 							}
-						case "log":
+						case "log10":
 							{
 								valueStack.Push(Complex.Log10(valueStack.Pop()));
 								break;
 							}
+						case "abs":
+                            {
+								valueStack.Push(Complex.Abs(valueStack.Pop()));
+								break;
+							}
+						case "arg":
+							valueStack.Push(valueStack.Pop().Phase);
+							break;
+						case "conj":
+							valueStack.Push(Complex.Conjugate(valueStack.Pop()));
+							break;
+						case "exp":
+							valueStack.Push(Complex.Exp(valueStack.Pop()));
+                            break;
+                        case "sinh":
+							valueStack.Push(Complex.Sinh(valueStack.Pop()));
+                            break;
+                        case "cosh":
+							valueStack.Push(Complex.Cosh(valueStack.Pop()));
+							break;
+						case "tanh":
+							valueStack.Push(Complex.Tanh(valueStack.Pop()));
+                            break;
+                        case "asin":
+							valueStack.Push(Complex.Asin(valueStack.Pop()));
+							break;
+						case "acos":
+							valueStack.Push(Complex.Acos(valueStack.Pop()));
+							break;
+						case "atan":
+							valueStack.Push(Complex.Atan(valueStack.Pop()));
+                            break;
+                       
 
-					}
-				}
+
+                    }
+                }
 				else if (tok.Type == TokenType.Operator)
 				{
 					switch (tok.Value)
@@ -625,5 +667,1036 @@ namespace FormulaParser
 
 		}
 
-	}
+		/// <summary>
+		/// Huge amount of repeated code in this method, fix please.
+		/// Can be optimised as new variables do not need to be created every time there is an operation on a non-subject variable
+		/// </summary>
+		/// <param name="formulaSubject">The subject variable name in the formula string</param>
+		/// <param name="codeSubject">The name of the subject variable expected in the C code</param>
+		/// <param name="cConstants">The names in the C code of the constants, eg "pi" in the formula is called M_PI in CL</param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
+        public List<string> GenerateOpenCLC(string formulaSubject, string codeSubject, Dictionary<string, string> cConstants)
+        {
+			List<string> otherVariables = VariableNames;
+			otherVariables.Remove(formulaSubject);  // Remove the formula subject to make this work
+
+			Token nextToken;  // Needed.
+            
+
+            List<string> lines = new List<string>();
+            Stack<Token> tokenStack = new Stack<Token>();
+
+			Dictionary<string, Tuple<string, int>> tempVariableCount = new Dictionary<string, Tuple<string, int>>();
+
+			foreach (string s in otherVariables)
+            {
+				tempVariableCount[s] = new Tuple<string, int>(s, 0);
+            }
+
+			// Shit, fix it immediately 
+			foreach (Token tok in RPNTokens)
+            {
+
+                if (tok.Type == TokenType.Number)
+                {
+                    tokenStack.Push(tok);
+                }
+                else if (tok.Type == TokenType.Constant)
+                {
+                    tokenStack.Push(tok);
+                }
+                else if (tok.Type == TokenType.Variable)
+                {
+                    if (otherVariables.Contains(tok.Value))
+                    {
+                        tokenStack.Push(tok);
+                    } else if (tok.Value == formulaSubject)
+                    {
+						tokenStack.Push(tok);
+                    }
+                    else
+                    {
+                        throw new Exception($"No variable {tok.Value} expected in CL code");
+                    }
+                }
+                else if (tok.Type == TokenType.Function)
+                {
+                    nextToken = tokenStack.Pop();
+
+                    
+
+                    switch (tok.Value)
+                    {
+                        case "sin":
+                            {
+                                if (nextToken.Value == formulaSubject)  // Subject operation
+                                {
+                                    // Return line of C code
+                                    lines.Add($"{codeSubject} = csin({codeSubject});");
+                                    tokenStack.Push(nextToken);
+                                    break;
+                                } else if (otherVariables.Contains(nextToken.Value)) // Variable operation without the subject
+                                {
+									// Increase this temp variable by one
+
+									string currentName = tempVariableCount[nextToken.Value].Item1;
+									int currentNumber = tempVariableCount[nextToken.Value].Item2;
+
+									// Set this new c as the working one 
+									tempVariableCount[nextToken.Value] = new Tuple<string, int>(currentName+currentNumber.ToString(), currentNumber++);
+
+									lines.Add($"cdouble {tempVariableCount[nextToken.Value].Item1} = csin({currentName});");
+									tokenStack.Push(nextToken);  // Put c back on the stack
+									break;
+                                }
+
+								// Else it is a statement that can be simlified here
+                                Token simplifiedTok = new Token(TokenType.Number, Math.Sin(double.Parse(nextToken.Value)).ToString());
+
+                                tokenStack.Push(simplifiedTok);
+                                break;
+                            }
+                        case "cos":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation
+								{
+									// Return line of C code
+									lines.Add($"{codeSubject} = ccos({codeSubject});");
+									tokenStack.Push(nextToken);
+									break;
+								}
+								else if (otherVariables.Contains(nextToken.Value)) // Variable operation without the subject
+								{
+									// Increase this temp variable by one
+
+									string currentName = tempVariableCount[nextToken.Value].Item1;
+									int currentNumber = tempVariableCount[nextToken.Value].Item2;
+
+									// Set this new c as the working one 
+									tempVariableCount[nextToken.Value] = new Tuple<string, int>(currentName + currentNumber.ToString(), currentNumber++);
+
+									lines.Add($"cdouble {tempVariableCount[nextToken.Value].Item1} = ccos({currentName});");
+									tokenStack.Push(nextToken);  // Put c back on the stack
+									break;
+								}
+
+								// Else it is a statement that can be simlified here
+								Token simplifiedTok = new Token(TokenType.Number, Math.Cos(double.Parse(nextToken.Value)).ToString());
+
+								tokenStack.Push(simplifiedTok);
+								break;
+							}
+                        case "tan":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation
+								{
+									// Return line of C code
+									lines.Add($"{codeSubject} = ctan({codeSubject});");
+									tokenStack.Push(nextToken);
+									break;
+								}
+								else if (otherVariables.Contains(nextToken.Value)) // Variable operation without the subject
+								{
+									// Increase this temp variable by one
+
+									string currentName = tempVariableCount[nextToken.Value].Item1;
+									int currentNumber = tempVariableCount[nextToken.Value].Item2;
+
+									// Set this new c as the working one 
+									tempVariableCount[nextToken.Value] = new Tuple<string, int>(currentName + currentNumber.ToString(), currentNumber++);
+
+									lines.Add($"cdouble {tempVariableCount[nextToken.Value].Item1} = ctan({currentName});");
+									tokenStack.Push(nextToken);  // Put c back on the stack
+									break;
+								}
+
+								// Else it is a statement that can be simlified here
+								Token simplifiedTok = new Token(TokenType.Number, Math.Tan(double.Parse(nextToken.Value)).ToString());
+
+								tokenStack.Push(simplifiedTok);
+								break;
+							}
+                        case "sqrt":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation
+								{
+									// Return line of C code
+									lines.Add($"{codeSubject} = csqrt({codeSubject});");
+									tokenStack.Push(nextToken);
+									break;
+								}
+								else if (otherVariables.Contains(nextToken.Value)) // Variable operation without the subject
+								{
+									// Increase this temp variable by one
+
+									string currentName = tempVariableCount[nextToken.Value].Item1;
+									int currentNumber = tempVariableCount[nextToken.Value].Item2;
+
+									// Set this new c as the working one 
+									tempVariableCount[nextToken.Value] = new Tuple<string, int>(currentName + currentNumber.ToString(), currentNumber++);
+
+									lines.Add($"cdouble {tempVariableCount[nextToken.Value].Item1} = csqrt({currentName});");
+									tokenStack.Push(nextToken);  // Put c back on the stack
+									break;
+								}
+
+								// Else it is a statement that can be simlified here
+								Token simplifiedTok = new Token(TokenType.Number, Math.Sqrt(double.Parse(nextToken.Value)).ToString());
+
+								tokenStack.Push(simplifiedTok);
+								break;
+							}
+                        case "log":  //ln
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation
+								{
+									// Return line of C code
+									lines.Add($"{codeSubject} = clog({codeSubject});");
+									tokenStack.Push(nextToken);
+									break;
+								}
+								else if (otherVariables.Contains(nextToken.Value)) // Variable operation without the subject
+								{
+									// Increase this temp variable by one
+
+									string currentName = tempVariableCount[nextToken.Value].Item1;
+									int currentNumber = tempVariableCount[nextToken.Value].Item2;
+
+									// Set this new c as the working one 
+									tempVariableCount[nextToken.Value] = new Tuple<string, int>(currentName + currentNumber.ToString(), currentNumber++);
+
+									lines.Add($"cdouble {tempVariableCount[nextToken.Value].Item1} = clog({currentName});");
+									tokenStack.Push(nextToken);  // Put c back on the stack
+									break;
+								}
+
+								// Else it is a statement that can be simlified here
+								Token simplifiedTok = new Token(TokenType.Number, Math.Log(double.Parse(nextToken.Value)).ToString());
+
+								tokenStack.Push(simplifiedTok);
+								break;
+							}
+                        case "log10":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation
+								{
+									// Return line of C code
+									lines.Add($"{codeSubject} = clog10({codeSubject});");
+									tokenStack.Push(nextToken);
+									break;
+								}
+								else if (otherVariables.Contains(nextToken.Value)) // Variable operation without the subject
+								{
+									// Increase this temp variable by one
+
+									string currentName = tempVariableCount[nextToken.Value].Item1;
+									int currentNumber = tempVariableCount[nextToken.Value].Item2;
+
+									// Set this new c as the working one 
+									tempVariableCount[nextToken.Value] = new Tuple<string, int>(currentName + currentNumber.ToString(), currentNumber++);
+
+									lines.Add($"cdouble {tempVariableCount[nextToken.Value].Item1} = clog10({currentName});");
+									tokenStack.Push(nextToken);  // Put c back on the stack
+									break;
+								}
+
+								// Else it is a statement that can be simlified here
+								Token simplifiedTok = new Token(TokenType.Number, Math.Log10(double.Parse(nextToken.Value)).ToString());
+
+								tokenStack.Push(simplifiedTok);
+								break;
+							}
+
+                    }
+
+
+                }
+                else if (tok.Type == TokenType.Operator)
+                {
+                    nextToken = tokenStack.Pop();  // Exponent
+                    Token nextNextToken = tokenStack.Pop();  // Base
+
+                    
+
+                    switch (tok.Value)
+                    {
+                        case "^":
+                            {
+                                if (nextToken.Value == formulaSubject)  // Subject operation, stuff to power of z
+                                {
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of z
+                                    {
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;  // Do not need to get new c name
+										lines.Add($"{codeSubject} = cpow({currentVarName}, {codeSubject});");
+                                    } 
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of z
+                                    {
+										lines.Add($"{codeSubject} = cpow(complex({nextNextToken.Value}, 0), {codeSubject});");
+										
+                                    } 
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to the power of z
+                                    {
+										lines.Add($"{codeSubject} = cpow(complex({cConstants[nextNextToken.Value]}, 0), {codeSubject});");
+										
+                                    }
+									else if (nextNextToken.Value == formulaSubject)  // z to power of z
+                                    {
+										lines.Add($"{codeSubject} = cpow({codeSubject}, {codeSubject});");
+                                    }
+
+									tokenStack.Push(nextToken);  // z gets put back onto the stack
+								}
+								else if (otherVariables.Contains(nextToken.Value))  // stuff to power of variable 
+                                {
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of variable
+                                    {
+										// Choose the base to be added back onto the stack
+
+										string baseVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int baseVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										string exponentVarName = tempVariableCount[nextToken.Value].Item1;
+
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + baseVarNumber++.ToString(), baseVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+										lines.Add($"cdoulbe {newVariableName} = cpow({baseVarName}, {exponentVarName});");
+										// Here, the variable which is the exponent gets consumed into the next rendition of the base variable
+
+										tokenStack.Push(nextNextToken);
+                                    } 
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of variable 
+                                    {
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Update the temp variable dictionary
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cpow(complex({nextNextToken.Value}, 0), {currentVarName});");
+										tokenStack.Push(nextToken);
+                                    }
+									else if (nextNextToken.Value == formulaSubject)  // z to power of variable
+                                    {
+										lines.Add($"{codeSubject} = cpow({codeSubject}, {tempVariableCount[nextToken.Value].Item1});");
+										tokenStack.Push(nextNextToken);
+                                    }
+									else if (nextNextToken.Type == TokenType.Constant) // Constant to power of variable
+                                    {
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+									    // Increment the name of the variable
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cpow(complex({cConstants[nextNextToken.Value]}, 0), {currentVarName});");
+										tokenStack.Push(nextToken);
+
+                                    }
+                                }
+								else if (nextToken.Type == TokenType.Constant)  // Stuff to power of constant
+                                {
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of constant
+                                    {
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"{newVariableName} = cpow({currentVarName}, complex({cConstants[nextToken.Value]}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of constant
+                                    {
+										lines.Add($"{codeSubject} = cpow({codeSubject}, complex({cConstants[nextToken.Value]}, 0));");
+										tokenStack.Push(nextNextToken);
+                                    }
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of constant
+                                    {
+										// Simplify 
+
+										double result = (double)Math.Pow(Constants[nextNextToken.Value], Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+                                    } 
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of constant
+                                    {
+										// Simplify
+										double result = (double)Math.Pow(double.Parse(nextNextToken.Value), Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+                                    }
+                                }
+								else if (nextToken.Type == TokenType.Number)  // Stuff to power of number
+                                {
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of number
+                                    {
+										// Get a new temp variable
+
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cpow({currentVarName}, complex({nextToken.Value}, 0));");
+										tokenStack.Push(nextNextToken);
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of number
+                                    {
+										lines.Add($"{codeSubject} = cpow({codeSubject}, complex({nextToken.Value}, 0));");
+										tokenStack.Push(nextNextToken);
+                                    }
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of number
+                                    {
+										// Simplify
+
+										double result = (double)Math.Pow(Constants[nextNextToken.Value], double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+
+                                    }
+									else if (nextNextToken.Type == TokenType.Number)  // number to power of number
+                                    {
+										// Simplify
+
+										double result = (double)Math.Pow(double.Parse(nextNextToken.Value), double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+                                    }
+                                }
+
+                                
+                                break;
+                            }
+                        case "*":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation, stuff to power of z
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of z
+									{
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;  // Do not need to get new c name
+										lines.Add($"{codeSubject} = cmul({currentVarName}, {codeSubject});");
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of z
+									{
+										lines.Add($"{codeSubject} = cmul(complex({nextNextToken.Value}, 0), {codeSubject});");
+
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to the power of z
+									{
+										lines.Add($"{codeSubject} = cmul(complex({cConstants[nextNextToken.Value]}, 0), {codeSubject});");
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of z
+									{
+										lines.Add($"{codeSubject} = cmul({codeSubject}, {codeSubject});");
+									}
+
+									tokenStack.Push(nextToken);  // z gets put back onto the stack
+								}
+								else if (otherVariables.Contains(nextToken.Value))  // stuff to power of variable 
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of variable
+									{
+										// Choose the base to be added back onto the stack
+
+										string baseVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int baseVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										string exponentVarName = tempVariableCount[nextToken.Value].Item1;
+
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + baseVarNumber++.ToString(), baseVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+										lines.Add($"cdoulbe {newVariableName} = cmul({baseVarName}, {exponentVarName});");
+										// Here, the variable which is the exponent gets consumed into the next rendition of the base variable
+
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of variable 
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Update the temp variable dictionary
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cmul(complex({nextNextToken.Value}, 0), {currentVarName});");
+										tokenStack.Push(nextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of variable
+									{
+										lines.Add($"{codeSubject} = cmul({codeSubject}, {tempVariableCount[nextToken.Value].Item1});");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant) // Constant to power of variable
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cmul(complex({cConstants[nextNextToken.Value]}, 0), {currentVarName});");
+										tokenStack.Push(nextToken);
+
+									}
+								}
+								else if (nextToken.Type == TokenType.Constant)  // Stuff to power of constant
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of constant
+									{
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"{newVariableName} = cmul({currentVarName}, complex({cConstants[nextToken.Value]}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of constant
+									{
+										lines.Add($"{codeSubject} = cmul({codeSubject}, complex({cConstants[nextToken.Value]}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of constant
+									{
+										// Simplify 
+
+										double result = (double)(Constants[nextNextToken.Value] * Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of constant
+									{
+										// Simplify
+										double result = (double)(double.Parse(nextNextToken.Value) * Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+								else if (nextToken.Type == TokenType.Number)  // Stuff to power of number
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of number
+									{
+										// Get a new temp variable
+
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cmul({currentVarName}, complex({nextToken.Value}, 0));");
+										tokenStack.Push(nextNextToken);
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of number
+									{
+										lines.Add($"{codeSubject} = cmul({codeSubject}, complex({nextToken.Value}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of number
+									{
+										// Simplify
+
+										double result = (double)(Constants[nextNextToken.Value] * double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // number to power of number
+									{
+										// Simplify
+
+										double result = (double)(double.Parse(nextNextToken.Value) + double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+
+
+								break;
+							}
+                        case "/":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation, stuff to power of z
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of z
+									{
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;  // Do not need to get new c name
+										lines.Add($"{codeSubject} = cdiv({currentVarName}, {codeSubject});");
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of z
+									{
+										lines.Add($"{codeSubject} = cdiv(complex({nextNextToken.Value}, 0), {codeSubject});");
+
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to the power of z
+									{
+										lines.Add($"{codeSubject} = cdiv(complex({cConstants[nextNextToken.Value]}, 0), {codeSubject});");
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of z
+									{
+										lines.Add($"{codeSubject} = cdiv({codeSubject}, {codeSubject});");
+									}
+
+									tokenStack.Push(nextToken);  // z gets put back onto the stack
+								}
+								else if (otherVariables.Contains(nextToken.Value))  // stuff to power of variable 
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of variable
+									{
+										// Choose the base to be added back onto the stack
+
+										string baseVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int baseVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										string exponentVarName = tempVariableCount[nextToken.Value].Item1;
+
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + baseVarNumber++.ToString(), baseVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+										lines.Add($"cdoulbe {newVariableName} = cdiv({baseVarName}, {exponentVarName});");
+										// Here, the variable which is the exponent gets consumed into the next rendition of the base variable
+
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of variable 
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Update the temp variable dictionary
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cdiv(complex({nextNextToken.Value}, 0), {currentVarName});");
+										tokenStack.Push(nextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of variable
+									{
+										lines.Add($"{codeSubject} = cdiv({codeSubject}, {tempVariableCount[nextToken.Value].Item1});");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant) // Constant to power of variable
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cdiv(complex({cConstants[nextNextToken.Value]}, 0), {currentVarName});");
+										tokenStack.Push(nextToken);
+
+									}
+								}
+								else if (nextToken.Type == TokenType.Constant)  // Stuff to power of constant
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of constant
+									{
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"{newVariableName} = cdiv({currentVarName}, complex({cConstants[nextToken.Value]}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of constant
+									{
+										lines.Add($"{codeSubject} = cdiv({codeSubject}, complex({cConstants[nextToken.Value]}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of constant
+									{
+										// Simplify 
+
+										double result = (double)Decimal.Divide((decimal)Constants[nextNextToken.Value], (decimal)Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of constant
+									{
+										// Simplify
+										double result = (double)Decimal.Divide((decimal)double.Parse(nextNextToken.Value), (decimal)Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+								else if (nextToken.Type == TokenType.Number)  // Stuff to power of number
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of number
+									{
+										// Get a new temp variable
+
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = cdiv({currentVarName}, complex({nextToken.Value}, 0));");
+										tokenStack.Push(nextNextToken);
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of number
+									{
+										lines.Add($"{codeSubject} = cdiv({codeSubject}, complex({nextToken.Value}, 0));");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of number
+									{
+										// Simplify
+
+										double result = (double)Decimal.Divide((decimal)Constants[nextNextToken.Value], (decimal)double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // number to power of number
+									{
+										// Simplify
+
+										double result = (double)Decimal.Divide((decimal)double.Parse(nextNextToken.Value), (decimal)double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+
+								break;
+							}
+                        case "+":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation, stuff to power of z
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of z
+									{
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;  // Do not need to get new c name
+										lines.Add($"{codeSubject} = {currentVarName} + {codeSubject};");
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of z
+									{
+										lines.Add($"{codeSubject} = complex({nextNextToken.Value}, 0) + {codeSubject};");
+
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to the power of z
+									{
+										lines.Add($"{codeSubject} = complex({cConstants[nextNextToken.Value]}, 0) + {codeSubject};");
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of z
+									{
+										lines.Add($"{codeSubject} = {codeSubject} + {codeSubject};");
+									}
+
+									tokenStack.Push(nextToken);  // z gets put back onto the stack
+								}
+								else if (otherVariables.Contains(nextToken.Value))  // stuff to power of variable 
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of variable
+									{
+										// Choose the base to be added back onto the stack
+
+										string baseVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int baseVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										string exponentVarName = tempVariableCount[nextToken.Value].Item1;
+
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + baseVarNumber++.ToString(), baseVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+										lines.Add($"cdoulbe {newVariableName} = {baseVarName} + {exponentVarName};");
+										// Here, the variable which is the exponent gets consumed into the next rendition of the base variable
+
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of variable 
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Update the temp variable dictionary
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = complex({nextNextToken.Value}, 0) + {currentVarName};");
+										tokenStack.Push(nextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of variable
+									{
+										lines.Add($"{codeSubject} = {codeSubject} + {tempVariableCount[nextToken.Value].Item1};");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant) // Constant to power of variable
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = complex({cConstants[nextNextToken.Value]}, 0) + {currentVarName};");
+										tokenStack.Push(nextToken);
+
+									}
+								}
+								else if (nextToken.Type == TokenType.Constant)  // Stuff to power of constant
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of constant
+									{
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"{newVariableName} = {currentVarName} + complex({cConstants[nextToken.Value]}, 0);");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of constant
+									{
+										lines.Add($"{codeSubject} = {codeSubject} + complex({cConstants[nextToken.Value]}, 0);");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of constant
+									{
+										// Simplify 
+
+										double result = (double)(Constants[nextNextToken.Value] + Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of constant
+									{
+										// Simplify
+										double result = (double)(double.Parse(nextNextToken.Value) + Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+								else if (nextToken.Type == TokenType.Number)  // Stuff to power of number
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of number
+									{
+										// Get a new temp variable
+
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = {currentVarName} + complex({nextToken.Value}, 0);");
+										tokenStack.Push(nextNextToken);
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of number
+									{
+										lines.Add($"{codeSubject} = {codeSubject} + complex({nextToken.Value}, 0);");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of number
+									{
+										// Simplify
+
+										double result = (double)(Constants[nextNextToken.Value] + double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // number to power of number
+									{
+										// Simplify
+
+										double result = (double)(double.Parse(nextNextToken.Value) + double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+
+								break;
+							}
+                        case "-":
+                            {
+								if (nextToken.Value == formulaSubject)  // Subject operation, stuff to power of z
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of z
+									{
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;  // Do not need to get new c name
+										lines.Add($"{codeSubject} = {currentVarName} - {codeSubject};");
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of z
+									{
+										lines.Add($"{codeSubject} = complex({nextNextToken.Value}, 0) - {codeSubject};");
+
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to the power of z
+									{
+										lines.Add($"{codeSubject} = complex({cConstants[nextNextToken.Value]}, 0) - {codeSubject};");
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of z
+									{
+										lines.Add($"{codeSubject} = {codeSubject} - {codeSubject};");
+									}
+
+									tokenStack.Push(nextToken);  // z gets put back onto the stack
+								}
+								else if (otherVariables.Contains(nextToken.Value))  // stuff to power of variable 
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of variable
+									{
+										// Choose the base to be added back onto the stack
+
+										string baseVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int baseVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										string exponentVarName = tempVariableCount[nextToken.Value].Item1;
+
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + baseVarNumber++.ToString(), baseVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+										lines.Add($"cdoulbe {newVariableName} = {baseVarName} - {exponentVarName};");
+										// Here, the variable which is the exponent gets consumed into the next rendition of the base variable
+
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of variable 
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Update the temp variable dictionary
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = complex({nextNextToken.Value}, 0) - {currentVarName};");
+										tokenStack.Push(nextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of variable
+									{
+										lines.Add($"{codeSubject} = {codeSubject} - {tempVariableCount[nextToken.Value].Item1};");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant) // Constant to power of variable
+									{
+										// Get a new temp variable
+										string currentVarName = tempVariableCount[nextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextToken.Value] = new Tuple<string, int>(nextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = complex({cConstants[nextNextToken.Value]}, 0) - {currentVarName};");
+										tokenStack.Push(nextToken);
+
+									}
+								}
+								else if (nextToken.Type == TokenType.Constant)  // Stuff to power of constant
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of constant
+									{
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"{newVariableName} = {currentVarName} - complex({cConstants[nextToken.Value]}, 0);");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of constant
+									{
+										lines.Add($"{codeSubject} = {codeSubject} - complex({cConstants[nextToken.Value]}, 0);");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of constant
+									{
+										// Simplify 
+
+										double result = (double)(Constants[nextNextToken.Value] - Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // Number to power of constant
+									{
+										// Simplify
+										double result = (double)(double.Parse(nextNextToken.Value) - Constants[nextToken.Value]);
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+								else if (nextToken.Type == TokenType.Number)  // Stuff to power of number
+								{
+									if (otherVariables.Contains(nextNextToken.Value))  // Variable to power of number
+									{
+										// Get a new temp variable
+
+										// Make a new temporary variable
+										string currentVarName = tempVariableCount[nextNextToken.Value].Item1;
+										int currentVarNumber = tempVariableCount[nextNextToken.Value].Item2;
+
+										// Increment the name of the variable
+										tempVariableCount[nextNextToken.Value] = new Tuple<string, int>(nextNextToken.Value + currentVarNumber++.ToString(), currentVarNumber++);
+										string newVariableName = tempVariableCount[nextNextToken.Value].Item1;
+
+										lines.Add($"cdouble {newVariableName} = {currentVarName} - complex({nextToken.Value}, 0);");
+										tokenStack.Push(nextNextToken);
+
+									}
+									else if (nextNextToken.Value == formulaSubject)  // z to power of number
+									{
+										lines.Add($"{codeSubject} = {codeSubject} - complex({nextToken.Value}, 0);");
+										tokenStack.Push(nextNextToken);
+									}
+									else if (nextNextToken.Type == TokenType.Constant)  // Constant to power of number
+									{
+										// Simplify
+
+										double result = (double)(Constants[nextNextToken.Value] - double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+
+									}
+									else if (nextNextToken.Type == TokenType.Number)  // number to power of number
+									{
+										// Simplify
+
+										double result = (double)(double.Parse(nextNextToken.Value) - double.Parse(nextToken.Value));
+										tokenStack.Push(new Token(TokenType.Number, result.ToString()));
+									}
+								}
+
+								break;
+							}
+                    }
+                }
+
+				
+            }
+
+			return lines;
+
+		}
+
+    }
 }

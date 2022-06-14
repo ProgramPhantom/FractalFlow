@@ -19,9 +19,6 @@
     <Reference Include="Cloo">
       <HintPath>OpenCl\Cloo.dll</HintPath>
     </Reference>
-    <Reference Include="OpenCLlib">
-      <HintPath>OpenCl\OpenCLlib.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

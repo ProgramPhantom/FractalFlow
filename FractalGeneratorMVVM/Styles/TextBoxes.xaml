@@ -53,8 +53,8 @@
                             BorderThickness="1"
                             Height="{TemplateBinding Height}"
                             BorderBrush="{StaticResource WindowButtonBorderBrush}">
-                        <ScrollViewer VerticalAlignment="Bottom" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                      Height="{TemplateBinding Height}"  x:Name="PART_ContentHost" Width="{TemplateBinding Width}"
+                        <ScrollViewer VerticalAlignment="Center" VerticalContentAlignment="Center" 
+                                       x:Name="PART_ContentHost" 
                                       Margin="5 0 0 0"/>
                     </Border>
 

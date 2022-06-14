@@ -68,13 +68,14 @@
             </i:Interaction.Triggers>
 
 
-            <Viewbox>
+            <Viewbox RenderTransformOrigin="0.5, 0.5">
                 
                     <Viewbox.LayoutTransform>
                         <TransformGroup>
                             <ScaleTransform x:Name="Zoom"
                                     ScaleX="{Binding Zoom}"
                                     ScaleY="{Binding Zoom}"
+                                            
                                     />
 
                         </TransformGroup>

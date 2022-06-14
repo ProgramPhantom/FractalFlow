@@ -23,7 +23,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
     public class PainterStackViewModel : Screen
     {
         #region Fields
-        private int _painterTypes = 2;
+        private int _painterTypes;
 
         private BindableCollection<IPainterViewModel> _painterViewModels;
 
@@ -87,12 +87,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         #endregion
 
 
-
         #region Constructor
         // Constructor
         public PainterStackViewModel()
         {
-            
+            _painterTypes = 2;
             _painterViewModels = new BindableCollection<IPainterViewModel>();
 
             _addPainterWindow = new AddPainterWindowViewModel(this);
@@ -114,12 +113,13 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
            
             // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
             _painterViewModels.Add(new BasicPainterLightViewModel(newPainter, 1));
-
+            SelectedPainterVM = PainterViewModels.Last();
         }
 
         public void NewBasicPainterDark(BasicPainterDark newPainter)
         {
             _painterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1));
+            SelectedPainterVM = PainterViewModels.Last();
         }
 
         /// <summary>

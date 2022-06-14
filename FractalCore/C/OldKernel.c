@@ -1,85 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using FormulaParser;
+﻿//---------------------------------------------------------------------------//
+// MIT License
+//
+// Copyright (c) 2017 StreamComputing
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//---------------------------------------------------------------------------//
 
-namespace FractalCore
-{
-    /// <summary>
-    /// This class holds the method that is used to iterate a point on the compelx plane to see if it diverges or converges
-    /// </summary>
-    public class BasicIterator : IIterator
-    {
-        Dictionary<string, string> constantTranslation = new Dictionary<string, string>()
-        {
-            ["pi"] = "M_PI",
-            ["e"] = "M_E"
-        };
-
-        Dictionary<string, string> variableTranslation = new Dictionary<string, string>()
-        {
-            ["z"] = "z1",
-            ["c"] = "c"
-        };
-
-        Dictionary<string, string> functionTranslation = new Dictionary<string, string>()
-        {
-            
-            ["log"] = "clog",
-            ["log10"] = "clog10",
-            ["exp"] = "cexp",
-
-            ["pos"] = "cpos",
-            ["arg"] = "carg",
-            ["arg"] = "carg",
-            ["conj"] = "cconj",
-            ["abs"] = "cabs",
-
-            ["sqrt"] = "csqrt",
-
-            ["sin"] = "csin",
-            ["cos"] = "ccos",
-            ["tan"] = "ctan",
-
-            ["sinh"] = "csinh",
-            ["cosh"] = "ccosh",
-            ["tanh"] = "ctanh",
-
-            ["asin"] = "casin",
-            ["acos"] = "cacos",
-            ["atan"] = "catan",
-
-            ["asinh"] = "casinh",
-            ["acosh"] = "cacosh",
-            ["atanh"] = "catanh",
-
-
-        };
-
-        Dictionary<string, string> operatorTranslation = new Dictionary<string, string>()
-        {
-            ["+"] = "cadd",
-            ["-"] = "csub",
-            ["*"] = "cmul",
-            ["/"] = "cdiv",
-            ["^"] = "cpow"
-
-        };
-
-        public static string PreCode
-        {
-            get
-            {
-                return @"
 #ifndef OPENCL_COMPLEX_MATH
 #define OPENCL_COMPLEX_MATH
 
 #define CONCAT(x, y) x##y
-//                        LETTER C + function name + f if float version
 #define FNAME(name, sufix) c##name##sufix
 
 // float2
@@ -118,13 +64,13 @@ namespace FractalCore
     \
     real_type FNAME(abs, func_sufix)(complex_type z) \
     { \
-        return sqrt(pow(z.x, 2) + pow(z.y, 2)); \
+        return length(z); \
     } \
     \
-    complex_type FNAME(pos, func_sufix)(complex_type z) \
+    real_type FNAME(pos, func_sufix)(complex_type z) \
     { \
-        real_type r = z.x > 0 ? z.x : z.x * -1; \
-        real_type i = z.y > 0  ? z.y : z.y * -1; \
+        real_type r = z.x ? z > 0 : z.x * -1;
+        real_type i = z.y ? z > 0 : z.y * -1;
         return (complex_type)(r, i); \
     } \
     \
@@ -367,7 +313,7 @@ OPENCL_COMPLEX_MATH_FUNCS(float2, float, f, _F)
 
 // double complex
 
-#pragma OPENCL EXTENSION cl_khr_fp64 : enable
+#       pragma OPENCL EXTENSION cl_khr_fp64 : enable
 typedef double2 cdouble;
 OPENCL_COMPLEX_MATH_FUNCS(double2, double, , )
 
@@ -376,152 +322,85 @@ OPENCL_COMPLEX_MATH_FUNCS(double2, double, , )
 #undef CONCAT
 #endif // OPENCL_COMPLEX_MATH
 
-                        
-                        kernel void Mandelbrot(global int *message, int width, int height, float left, float top, double realStep, double imagStep, int iterations, int bail)
-                        {
-                            int pixNum = get_global_id(0);
+kernel void Mandelbrot(global int* message, int width, int height, float left, float top, double realStep, double imagStep, int iterations, int bail)
+{
+    int pixNum = get_global_id(0);
 
-                            //printf("" % d"",pixNum);
+    //printf("" % d"",pixNum);
 
-                            int x = pixNum % width;
-                            int y = pixNum / width;
-            
-                            double real = left + x * realStep;
-                            double imag = top - y * imagStep;
+    int x = pixNum % width;
+    int y = pixNum / width;
 
-                            
-                            
-                           //printf("" % d % d"",x,y);
+    double real = left + x * realStep;
+    double imag = top - y * imagStep;
 
-            
-                            //cfloat f;
-                            //printf(""Value of r = % lf\n"",real);
-                            // printf(""Value of i = % lf\n"", top);
-                            
-                            
-                            // -------------- Iterate Point -----------------
-                            // c
-                            cdouble c = complex(real, imag);
 
-                            // this z
-                            cdouble z1 = c;
-                            
-                            
-                            int completedIterations = 0;
 
-                            // printf(""Value of r = % lf Value of i = % lf\n"",real, imag);
-                            //printf(""Value of i = % lf\n"", top);
+    //printf("" % d % d"",x,y);
 
-                            
-                            
-                            for (int iter = 0; iter < iterations; iter++) {
-                                
-                                
 
-                                ";
-            }
+     //cfloat f;
+     //printf(""Value of r = % lf\n"",real);
+     // printf(""Value of i = % lf\n"", top);
+
+
+     // -------------- Iterate Point -----------------
+     // c
+    double cr = real;
+    double ci = imag;
+
+    cdouble d;
+
+    
+
+    // next z
+    double z1r = 0;
+    double z1i = 0;
+
+    // this z
+    double znr = 0;
+    double zni = 0;
+
+    cdouble b = complex(3, 1);
+    cdouble f = complex(1, 2);
+
+    cdouble m = cmul(b, f);
+
+    int completedIterations = 0;
+
+    cadd(cadd(cmul(c, cpow(z1, 2)), 1), cpow(cadd(cmul(c, cpow(z1, 2)), 1), -1));
+
+    // printf(""Value of r = % lf Value of i = % lf\n"",real, imag);
+    //printf(""Value of i = % lf\n"", top);
+
+
+
+    for (int iter = 0; iter < iterations; iter++) {
+
+        // z1r
+        z1r = (znr * znr - zni * zni) + cr;
+
+        // z1i
+        z1i = (2 * znr * zni) + ci;
+
+        if (sqrt(z1r * z1r + z1i * z1i) > bail) {
+            // Not in set
+
+            completedIterations = iter;
+            break;
         }
 
-        public static string PostCode
-        {
-            get
-            {
-                return @"       if (cabs(z1) >= bail) {
-                                    // Not in set
-                                    
-                                    completedIterations = iter;
-                                    break;
-                                }
+        completedIterations++;
 
-                                completedIterations ++;    
-                                
-                                
-
-                            }
-
-                            
-
-                            // printf("" % d"",completedIterations);
-
-                            message[pixNum] = completedIterations;
-
-                        }";
-            }
-        }
-
-        private string _formulaString;
-        private string _name;
-        private RPN _formulaObject;
-
-        public string FormulaString
-        {
-            get { return _formulaString; }
-            set { _formulaString = value; }
-        }
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-
-        public RPN FormulaObject
-        {
-            get { return _formulaObject; }
-            set { _formulaObject = value; }
-        }
-
-        public List<string> IterationsCode { get; set; }
-
-        public string FullIterationScript
-        {
-            get
-            {
-                return PreCode + string.Join("\n", IterationsCode) + "\n" + PostCode;
-            }
-        }
-
-
-        public BasicIterator(string formulaString, string name="Unitiled")
-        {
-            _formulaString = Regex.Replace(formulaString, @"\s+", "");
-            _name = name;
-
-            _formulaObject = new RPN(_formulaString);
-
-            IterationsCode = new List<string>();
-            // IterationsCode = _formulaObject.GenerateOpenCLC("z", "z1", new Dictionary<string, string>() { ["pi"] = "M_PI", ["e"] = "M_E" });
-            RPNToCL RPNToCLObj = new RPNToCL(_formulaObject, "z1", constantTranslation, variableTranslation, functionTranslation, operatorTranslation);
-            IterationsCode.Add(RPNToCLObj.CCode);
-        }
-
-        public uint Iterate(Complex c, uint maxIterations, int bail)
-        {
-            uint currentIterations = 0;
-            Complex z = Complex.Zero;
-            Dictionary<string, Complex> variables = new Dictionary<string, Complex>()
-            {
-                ["z"] = z,
-                ["c"] = c
-            };
-
-            for (int i = 0; i < maxIterations; i++)
-            {
-                if (Complex.Abs(z) > bail)
-                {
-                    break;
-                } else
-                {
-                    currentIterations++; // Increment current iterations!
-                }
-
-                variables["z"] = z;
-
-                z = FormulaObject.ComputeComplex(variables);  // Calculate the next z value!!!
-            }
-
-            return currentIterations;
-        }
+        // Shift them back
+        znr = z1r;
+        zni = z1i;
     }
+
+
+
+    // printf("" % d"",completedIterations);
+
+    message[pixNum] = completedIterations;
+
 }

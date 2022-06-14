@@ -41,4 +41,7 @@ namespace FormulaParser
 			RightAssociative = rightAssociative;
 		}
 	}
+
+
+
 }

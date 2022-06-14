@@ -16,5 +16,8 @@ namespace FractalCore
 
         string Name { get; set; }
         string FormulaString { get; set; }
+
+        // No
+        public string FullIterationScript { get; }
     }
 }
