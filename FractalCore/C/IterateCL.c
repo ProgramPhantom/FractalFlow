@@ -315,6 +315,8 @@ kernel void Mandelbrot(global int* message, int width, int height, float left, f
 
     for (int iter = 0; iter < iterations; iter++) {
 
+        // INSERT CODE
+
 
         if (cabs(z1) >= bail) {
             // Not in set

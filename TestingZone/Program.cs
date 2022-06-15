@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FormulaParser;
 using System.Numerics;
+using FractalCore;
 
 namespace TestingZone
 {
@@ -54,8 +55,10 @@ namespace TestingZone
             List<string> list = test.GenerateOpenCLC("z", "z1", new Dictionary<string, string>() { ["pi"] = "M_PI", ["e"] = "M_E" });
 
             RPNToCL clCode = new RPNToCL(test, "z1", constantTranslation, variableTranslation, functionTranslation, operatorTranslation);
+
             
-            
+             
+
         }
     }
 }

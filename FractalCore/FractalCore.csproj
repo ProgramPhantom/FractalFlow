@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="C\IterateCL.c" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Cloo.clSharp" Version="1.0.1" />
   </ItemGroup>
 
@@ -19,6 +23,12 @@
     <Reference Include="Cloo">
       <HintPath>OpenCl\Cloo.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="C\IterateCL.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
