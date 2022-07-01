@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenCL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace FractalCore.Painting
     {
         void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal);
 
-       
+        public string PaintCLScript { get; set; }
+        public void SetKernelParameters(ref MultiCL kernel, ref byte[] pixels, ref uint[] iterations, uint iterationsCap);
     }
 }

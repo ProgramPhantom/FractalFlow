@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="C\BasicPainterDark.c" />
+    <None Remove="C\BasicPainterLight.c" />
     <None Remove="C\IterateCL.c" />
   </ItemGroup>
 
@@ -26,6 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="C\BasicPainterLight.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="C\BasicPainterDark.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="C\IterateCL.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

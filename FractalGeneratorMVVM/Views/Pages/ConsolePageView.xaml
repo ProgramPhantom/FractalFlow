@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ScrollViewer Style="{StaticResource IteratorStackScroll}">
+        <ScrollViewer Style="{StaticResource IteratorStackScroll}"
+                      >
             <TextBox IsReadOnly="True" x:Name="LogString" FontFamily="Courier New"
                  Background="{StaticResource PopupWindowBackgroundBrush}" Foreground="{StaticResource MyWhiteBrush}" BorderThickness="0">
 

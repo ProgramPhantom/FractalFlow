@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FractalCore.Painting;
 using OpenCL;
 
 namespace FractalCore
@@ -161,14 +162,43 @@ namespace FractalCore
             await CLIterationsCompute(job.ComputeIterationsJob, progress);
             // ---------------------------------------------------------------------------------------------------
 
+
+            // Colour 
+            // job.FractalImage.Render(job.Painter);  // TODO: the paint is becoming computationally important at large images
+
+
+            CLEngine.SetKernel(job.Painter.PaintCLScript, "Paint");
+            Fractal fractal = job.Fractal;
+            FractalImage fractalImage = job.FractalImage;
+
+
+            // Set up variables
+            byte[] pixels = new byte[fractal.Height * fractal.Width * 4];
+
+            // Flatten iterations array
+            uint[] flatIterations = new uint[fractal.Height * fractal.Width];
+            for (int i = 0; i < fractal.IterationsArray.Length; i++)
+            {
+                int x = i % fractal.Width;
+                int y = i / fractal.Height;
+
+                flatIterations[i] = fractal.IterationsArray[y, x];
+            }
+
+            // Set the parameters 
+            job.Painter.SetKernelParameters(ref _cLEngine, ref pixels, ref flatIterations, job.FractalFrame.Iterations);
+            
+
+
             #region Timer start
             job.SetStatus($"CL-{job.JobNum}: Starting bitmap render", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
 
-            // Colour 
-            job.FractalImage.Render(job.Painter);  // TODO: the paint is becoming computationally important at large images
+            await Task.Run(() => CLEngine.Invoke(0, pixels.Length, 100));  // Colour pixels 
+
+            PainterBase.WriteArrToBM(ref pixels, fractal.Width, fractal.Height, fractalImage.FractalBitmap);  // Write pixels to writable bitmap
 
             #region Timer end
             timer.Stop();
@@ -189,8 +219,8 @@ namespace FractalCore
             RenderProgressModel report = new RenderProgressModel();
             void Report(object sender, double e)
             {
-                //report.PercentageComplete = (int)Math.Round(e * 100);
-                //progress.Report(report);
+                report.PercentageComplete = (int)Math.Round(e * 100);
+                progress.Report(report);
 
             }
 
@@ -200,9 +230,6 @@ namespace FractalCore
             CLEngine.SetKernel(job.Fractal.Iterator.FullIterationScript, "Mandelbrot");
             // ----------------------------------------------------------------------------
 
-
-            
-            
             Fractal fractal = job.Fractal;
 
             int height = fractal.Height;
@@ -210,6 +237,7 @@ namespace FractalCore
 
             // Create new array as OpenCL kernel only accepts 1D array
             uint[] flatArray = new uint[width * height];
+
 
             CLEngine.SetParameter(flatArray, width, height, fractal.Left, fractal.Top, fractal.RealStep, fractal.ImagStep, fractal.Iterations, fractal.Bail);
             CLEngine.ProgressChangedEvent += Report;
@@ -222,7 +250,7 @@ namespace FractalCore
             #endregion
 
             // The parts simply splits it into sections to be completed between which a progress report is sent
-            await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 2));
+            await Task.Run(() => CLEngine.Invoke(0, flatArray.Length, 100));
             
             
 

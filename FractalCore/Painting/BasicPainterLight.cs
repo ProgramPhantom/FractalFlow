@@ -8,17 +8,34 @@ using System.Numerics;
 using System.Windows;
 using FractalCore;
 using System.Windows.Media;
+using System.IO;
+using OpenCL;
 
 namespace FractalCore.Painting
 {
     public class BasicPainterLight : BasicPainterBase, IPainter
     {
-        
+        #region Fields
 
-        public BasicPainterLight() : base("Default", Color.FromRgb(255, 0, 0), Color.FromRgb(0, 0, 0)) { }
+        private string PaintCLPath = @"C/BasicPainterLight.c";
+
+        #endregion
+
+        #region Properties 
+        public override string PaintCLScript { get; set; }
+
+        #endregion
+
+        public BasicPainterLight() : base("Default", Color.FromRgb(255, 0, 0), Color.FromRgb(0, 0, 0)) 
+        {
+            PaintCLScript = File.ReadAllText(PaintCLPath);
+        }
 
 
-        public BasicPainterLight(string name, Color mainColour, Color inSetColour) : base(name, mainColour, inSetColour) { }
+        public BasicPainterLight(string name, Color mainColour, Color inSetColour) : base(name, mainColour, inSetColour) 
+        {
+            PaintCLScript = File.ReadAllText(PaintCLPath);
+        }
 
 
         public override void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal)
@@ -68,9 +85,12 @@ namespace FractalCore.Painting
             #endregion
 
             // Then write the array to the WriteableBitmap
-            WriteArrToBM(ref pixels, ref fractalBitmap);
+            WriteArrToBM(ref pixels, fractalBitmap);
         }
 
-        
+        public override void SetKernelParameters(ref MultiCL kernel, ref byte[] pixels, ref uint[] iterations, uint iterationsCap)
+        {
+            kernel.SetParameter(pixels, iterations, iterationsCap, MainColour.R, MainColour.G, MainColour.B, InSetColour.R, InSetColour.G, InSetColour.B);
+        }
     }
 }

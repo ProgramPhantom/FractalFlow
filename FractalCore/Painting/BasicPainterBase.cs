@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenCL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,7 @@ namespace FractalCore.Painting
             set { _mainColour = value; }
         }
 
+        public abstract string PaintCLScript { get; set; }
         #endregion
 
         public BasicPainterBase(string name, Color mainColour, Color inSetColour) : base(name)
@@ -48,5 +50,7 @@ namespace FractalCore.Painting
         /// <param name="fractalBitmap"></param>
         /// <param name="fractal"></param>
         public abstract void Paint(ref WriteableBitmap fractalBitmap, ref Fractal fractal);
+
+        public abstract void SetKernelParameters(ref MultiCL kernel, ref byte[] pixels, ref uint[] iterations, uint iterationsCap);
     }
 }

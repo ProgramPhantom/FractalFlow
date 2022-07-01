@@ -33,7 +33,7 @@ namespace FractalCore.Painting
         /// </summary>
         /// <param name="arr">A 2d array with pixel values reprisented by 4 bytes</param>
         /// <param name="bm">The bitmap object that is to be written to</param>
-        public void WriteArrToBM(ref byte[,,] arr, ref WriteableBitmap bm)
+        public static void WriteArrToBM(ref byte[,,] arr, WriteableBitmap bm)
         {
             int arrayX = arr.GetLength(1);  // This might be breaking it plz double check
             int arrayY = arr.GetLength(0);
@@ -57,6 +57,19 @@ namespace FractalCore.Painting
 
             pixel1d = null;  // Make sure this is removed from memory.
 
+        }
+
+        /// <summary>
+        /// Does the same thing but takes a 1d array
+        /// </summary>
+        /// <param name="arr">A 2d array with pixel values reprisented by 4 bytes</param>
+        /// <param name="bm">The bitmap object that is to be written to</param>
+        public static void WriteArrToBM(ref byte[] arr, int width, int height, WriteableBitmap bm)
+        {
+            Int32Rect rect = new Int32Rect(0, 0, width, height);
+            int stride = 4 * width;
+
+            bm.WritePixels(rect, arr, stride, 0);
         }
     }
 }

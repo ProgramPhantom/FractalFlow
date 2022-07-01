@@ -117,6 +117,7 @@ namespace FractalCore
         #endregion
 
         #region Methods
+
         public uint IteratePoint(Complex p)
         {
             return Iterator.Iterate(p, Iterations, Bail);

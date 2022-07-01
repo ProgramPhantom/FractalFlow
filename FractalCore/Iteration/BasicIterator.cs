@@ -117,7 +117,8 @@ namespace FractalCore
 
             // Open IterateCL file
             IterateCLLines = File.ReadAllLinesAsync(IterateCLPath).Result;
-            IterateCLLines[InsertLine - 1] = IterationsCode[0];
+            IterateCLLines[InsertLine - 1] = IterationsCode[0];  // Put the computation line at the special line
+            // It would be better to search for a specific string and replace it so if lines are changed it does not completely break
 
             FullIterationScript = String.Join("\n", IterateCLLines);
 
