@@ -7,68 +7,45 @@
              mc:Ignorable="d" 
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]">
+             xmlns:LaTEX="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]"
+             
+             cal:Bind.AtDesignTime="True"
+             xmlns:VM="clr-namespace:FractalGeneratorMVVM.ViewModels.Models"
+             d:DataContext="{d:DesignInstance VM:IteratorViewModel, IsDesignTimeCreatable=True}">
     
     <UserControl.Resources>
         <Style TargetType="{x:Type ContentControl}" x:Name="IteratorButton">
-            <Setter Property="Width" Value="285"></Setter>
-            <Setter Property="Height" Value="65"></Setter>
-            <Setter Property="Background" Value="Green"/>
-
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border CornerRadius="5" x:Name="OuterBorder" >
-
-
-                            
-
-
+                        <Grid Background="Transparent">
 
                             <!-- Formula -->
 
-                            <TextBlock HorizontalAlignment="Center"
+                            <!--<TextBlock HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Text="{Binding FormulaString}"
                                     Foreground="White"
                                     Grid.Row="1"
-                                    FontSize="60"/>
+                                    FontSize="60"/>-->
+
+                            <LaTEX:FormulaControl
+                                Margin="0 7 0 4"
+                                
+                                Scale="35"
+                                Formula="{Binding LaTEX}"
+                                Foreground="White"
+                                VerticalAlignment="Center"
+                                
+                                HorizontalAlignment="Center">
+
+                            </LaTEX:FormulaControl>
+
                             
-                            <!--
-                            <Border.Style>
-
-                                
-                                <Style>
-                                    <Style.Triggers>
-                                        <EventTrigger RoutedEvent="Border.MouseEnter">
-
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation To="Gray"
-                                                                    Duration="0:0:0.1"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-
-                                        </EventTrigger>
-
-                                        <EventTrigger RoutedEvent="Border.MouseLeave">
-
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation To="Transparent"
-                                                                    Duration="0:0:0.1"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-
-                                        </EventTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                                
-                                
-                            </Border.Style>-->
-                        </Border>
+                            
+                           
+                        </Grid>
 
                         
                     </ControlTemplate>
@@ -81,9 +58,8 @@
         </Style>
     </UserControl.Resources>
 
-    <ContentControl 
-        d:DataContext="{x:Static local:IteratorDESIGN.INSTANCE}"
-        d:Background="Green">
-        
+    <ContentControl>
+
+
     </ContentControl>
 </UserControl>

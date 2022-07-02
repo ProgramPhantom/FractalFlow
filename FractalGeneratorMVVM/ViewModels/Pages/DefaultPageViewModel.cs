@@ -84,7 +84,7 @@ namespace FractalGeneratorMVVM.ViewModels.Pages
 
         // Exposes selected models on fractal frame, painter and iterator stack.
 
-        public FractalFrame SelectedFractalFrame
+        public FractalFrame? SelectedFractalFrame
         {
             get
             {
@@ -92,7 +92,7 @@ namespace FractalGeneratorMVVM.ViewModels.Pages
             }
         }
 
-        public IPainter SelectedPainter
+        public IPainter? SelectedPainter
         {
             get
             {
@@ -100,7 +100,7 @@ namespace FractalGeneratorMVVM.ViewModels.Pages
             }
         }
 
-        public IIterator SelectedIterator
+        public IIterator? SelectedIterator
         {
             get
             {

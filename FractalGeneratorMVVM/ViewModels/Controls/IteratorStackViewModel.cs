@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
@@ -15,7 +16,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         #region Fields
         private BindableCollection<IteratorViewModel> _iteratorViewModels;
 
-        private IteratorViewModel _selectedIteratorVM;
+        private IteratorViewModel? _selectedIteratorVM;
 
         private string _formulaBox = "z^2 + c";
         #endregion
@@ -53,7 +54,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// The selected Iterator View Model
         /// </summary>
-        public IteratorViewModel SelectedIteratorVM
+        public IteratorViewModel? SelectedIteratorVM
         {
             get { return _selectedIteratorVM; }
             set
@@ -67,11 +68,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// Presents the IteratorModel under the SelectedIterator ViewModel
         /// </summary>
-        public IIterator SelectedIterator
+        public BasicIterator? SelectedIterator
         {
             get
             {
-                return SelectedIteratorVM.IteratorModel;
+                return SelectedIteratorVM == null ? null : SelectedIteratorVM.IteratorModel;
             }
         }
         #endregion
@@ -128,6 +129,14 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             {
                 AddIterator();
             }
+        }
+
+        public void DeleteIterator()
+        {
+            
+            IteratorViewModels.Remove(SelectedIteratorVM!);
+            SelectedIteratorVM = IteratorViewModels.FirstOrDefault();
+            
         }
         #endregion
     }

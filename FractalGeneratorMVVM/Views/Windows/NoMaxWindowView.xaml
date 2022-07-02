@@ -18,7 +18,7 @@
         Style="{StaticResource NoResizeWindowChrome}"
         ResizeMode="{Binding CanWindowResize}"
         cal:Message.Attach="[Event StateChanged] = [Action UpdateProperties($view)]"
-        cal:Bind.AtDesignTime="True"
+        
         >
 
     <WindowChrome.WindowChrome>

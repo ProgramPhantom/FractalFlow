@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <StartupObject>FractalGeneratorMVVM.App</StartupObject>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <Authors>Henry Varley</Authors>
+    <Product>Fractal Flow</Product>
+    <Description>An app for rendering fractals</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,7 +50,6 @@
   
 
   <ItemGroup>
-    <ProjectReference Include="..\FormulaParser\FormulaParser.csproj" />
     <ProjectReference Include="..\FractalCore\FractalCore.csproj" />
   </ItemGroup>
 
@@ -57,6 +61,7 @@
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="DotNetProjects.WpfToolkit.DataVisualization" Version="6.1.94" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
+    <PackageReference Include="WpfMath" Version="0.11.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Numerics;
 
+using Exversion.Analytics;
 
 namespace FormulaParser
 {
@@ -179,6 +180,8 @@ namespace FormulaParser
         }
 
 		public List<string> VariableNames = new List<string>();
+
+		public string LaTEX { get; set; }
 		#endregion
 
 		/// <summary>
@@ -210,6 +213,18 @@ namespace FormulaParser
 					VariableNames.Add(token.Value);
                 }
             }
+
+			
+			AnalyticsConverter translator = new AnalyticsTeXConverter();
+			try
+            {
+				LaTEX = translator.Convert(InfixString);
+            }
+			catch
+            {
+				throw new Exception("Could not parse infix string to LaTEX");
+            }
+
 		}
 
 		/// <summary>

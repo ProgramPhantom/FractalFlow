@@ -71,7 +71,10 @@ namespace FractalCore
 
         };
 
-        public string[] IterateCLLines;
+        /// <summary>
+        /// Lines of C code
+        /// </summary>
+        public string[]? IterateCLLines;
         public int InsertLine = 319;
         public string IterateCLPath = @"C/IterateCL.c";
 
@@ -98,8 +101,14 @@ namespace FractalCore
             set { _formulaObject = value; }
         }
 
-        public List<string> IterationsCode { get; set; }
+        /// <summary>
+        /// The lines of C to be added
+        /// </summary>
+        public List<string>? IterationsCode { get; set; }
 
+        /// <summary>
+        /// The file containing the C code as a single string.
+        /// </summary>
         public string FullIterationScript { get; set; }
 
 
@@ -122,6 +131,15 @@ namespace FractalCore
 
             FullIterationScript = String.Join("\n", IterateCLLines);
 
+        }
+
+        public BasicIterator()
+        {
+            _formulaString = "z^2 + c";
+            _name = "singleton";
+
+            _formulaObject = new RPN(_formulaString);
+            FullIterationScript = "";
         }
 
         public uint Iterate(Complex c, uint maxIterations, int bail)

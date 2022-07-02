@@ -12,16 +12,17 @@ namespace FractalGeneratorMVVM.ViewModels.Models
 
     public class IteratorViewModel : Screen
     {
+        public event IteratorSelected IteratorSelecetedEvent;
+
         #region Fields
-        private IIterator _iteratorModel;
-
+        private BasicIterator _iteratorModel;
         private int _number;
-
         private bool _isSelected;
+        
         #endregion
 
         #region Properties
-        public IIterator IteratorModel
+        public BasicIterator IteratorModel
         {
             get { return _iteratorModel; }
             set { _iteratorModel = value; }
@@ -57,15 +58,27 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             }
         }
 
-        public event IteratorSelected IteratorSelecetedEvent;
+
+        public string LaTEX
+        {   
+            get { return IteratorModel.FormulaObject.LaTEX; }
+        }
+
         #endregion
 
-        public IteratorViewModel(IIterator iteratorModel, int num)
+        public IteratorViewModel()
+        {
+            _iteratorModel = new BasicIterator();
+            _number = 0;
+            _isSelected = false;
+            
+        }
+
+        public IteratorViewModel(BasicIterator iteratorModel, int num)
         {
             _iteratorModel = iteratorModel;
             _number = num;
             _isSelected = false;
-            
         }
 
         public void SelectButton()
@@ -80,6 +93,8 @@ namespace FractalGeneratorMVVM.ViewModels.Models
 
             IteratorSelecetedEvent?.Invoke(this);
         }
+
+
 
 
     }

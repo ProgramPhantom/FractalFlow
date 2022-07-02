@@ -55,15 +55,29 @@
                     
                      >
 
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="DeleteIterator">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
                 <ListBox.ItemTemplate >
                     <DataTemplate>
 
                         <mv:IteratorView/>
 
-                    </DataTemplate>
 
-                    
+                    </DataTemplate>
                 </ListBox.ItemTemplate>
+
+                
                 
                 
 

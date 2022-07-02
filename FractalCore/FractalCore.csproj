@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\OpenCL\OpenCLlib\OpenCLlib.csproj" />
-    <ProjectReference Include="..\FormulaParser\FormulaParser.csproj" />
+    <ProjectReference Include="..\..\projects\LaTEXTest\FormulaParser\FormulaParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>

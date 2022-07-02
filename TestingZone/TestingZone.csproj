@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FormulaParser\FormulaParser.csproj" />
-    <ProjectReference Include="..\FractalCore\FractalCore.csproj" />
+    <ProjectReference Include="..\..\projects\LaTEXTest\FormulaParser\FormulaParser.csproj" />
   </ItemGroup>
 
 </Project>

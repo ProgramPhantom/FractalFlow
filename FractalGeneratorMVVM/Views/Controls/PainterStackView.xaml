@@ -7,7 +7,11 @@
              xmlns:mv="clr-namespace:FractalGeneratorMVVM.Views.Models.Painters"
              xmlns:vm="clr-namespace:FractalGeneratorMVVM.ViewModels.Models.Painters"
              mc:Ignorable="d" 
-             d:DesignHeight="450">
+             d:DesignHeight="450"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             >
+    
     <UserControl.Resources>
 
         <DataTemplate DataType="{x:Type vm:BasicPainterLightViewModel}" >
@@ -59,6 +63,19 @@
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 
                      SelectedItem="{Binding SelectedPainterVM}"
                      >
+
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="DeletePainter">
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
 
             </ListBox>
         </ScrollViewer>

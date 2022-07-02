@@ -10,11 +10,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FractalGeneratorMVVM", "Fra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FractalCore", "FractalCore\FractalCore.csproj", "{AF420D34-19CB-46D7-B5B6-A963A1803256}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaParser", "FormulaParser\FormulaParser.csproj", "{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingZone", "TestingZone\TestingZone.csproj", "{A8F183D3-88F8-403C-B16F-70D105E10479}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCLlib", "..\OpenCL\OpenCLlib\OpenCLlib.csproj", "{72FEF2DF-D7FC-4843-A793-9BDFB75C1FEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingZone", "TestingZone\TestingZone.csproj", "{77D3D1D2-C3E1-46C7-A01F-A6790E5EF5E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaParser", "..\projects\LaTEXTest\FormulaParser\FormulaParser.csproj", "{AFD25582-AF78-4DF6-9A8F-FCE1635F7660}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestSetup", "TestSetup\TestSetup.vdproj", "{DEFCD6DD-F416-438E-8B11-04BE5714E160}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,18 +32,20 @@ Global
 		{AF420D34-19CB-46D7-B5B6-A963A1803256}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF420D34-19CB-46D7-B5B6-A963A1803256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF420D34-19CB-46D7-B5B6-A963A1803256}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB48833B-A59A-4EAA-89D3-F9F5B63AABF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8F183D3-88F8-403C-B16F-70D105E10479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8F183D3-88F8-403C-B16F-70D105E10479}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8F183D3-88F8-403C-B16F-70D105E10479}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8F183D3-88F8-403C-B16F-70D105E10479}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72FEF2DF-D7FC-4843-A793-9BDFB75C1FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72FEF2DF-D7FC-4843-A793-9BDFB75C1FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72FEF2DF-D7FC-4843-A793-9BDFB75C1FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72FEF2DF-D7FC-4843-A793-9BDFB75C1FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77D3D1D2-C3E1-46C7-A01F-A6790E5EF5E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77D3D1D2-C3E1-46C7-A01F-A6790E5EF5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77D3D1D2-C3E1-46C7-A01F-A6790E5EF5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77D3D1D2-C3E1-46C7-A01F-A6790E5EF5E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFD25582-AF78-4DF6-9A8F-FCE1635F7660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFD25582-AF78-4DF6-9A8F-FCE1635F7660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFD25582-AF78-4DF6-9A8F-FCE1635F7660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFD25582-AF78-4DF6-9A8F-FCE1635F7660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEFCD6DD-F416-438E-8B11-04BE5714E160}.Debug|Any CPU.ActiveCfg = Debug
+		{DEFCD6DD-F416-438E-8B11-04BE5714E160}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

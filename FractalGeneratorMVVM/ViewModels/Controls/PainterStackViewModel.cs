@@ -29,7 +29,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         private AddPainterWindowViewModel _addPainterWindow;
 
-        private IPainterViewModel _selectedPainterVM;
+        private IPainterViewModel? _selectedPainterVM;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// The painter view model which is selected
         /// </summary>
-        public IPainterViewModel SelectedPainterVM
+        public IPainterViewModel? SelectedPainterVM
         {
             get
             {
@@ -59,7 +59,6 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             set
             {
                 _selectedPainterVM = value;
-                System.Diagnostics.Trace.WriteLine($"New painter selected: {_selectedPainterVM.PainterModel.GetType()}");
                 NotifyOfPropertyChange(() => SelectedPainterVM);
             }
 
@@ -77,7 +76,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// Exposes the model housed in the SelectedPainter View Model.
         /// </summary>
-        public IPainter SelectedPainter
+        public IPainter? SelectedPainter
         {
             get
             {
@@ -156,6 +155,12 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             Random rnd = new Random();
             return Color.FromRgb((byte)rnd.Next(256), (byte)rnd.Next(256), (byte)rnd.Next(256));
+        }
+
+        public void DeletePainter()
+        {
+            PainterViewModels.Remove(SelectedPainterVM!);
+            SelectedPainterVM = PainterViewModels.FirstOrDefault();
         }
         #endregion
     }

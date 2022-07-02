@@ -5,4 +5,46 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Analytics">
+      <HintPath>Libraries\Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Analytics.Real">
+      <HintPath>Libraries\Analytics.Real.dll</HintPath>
+    </Reference>
+    <Reference Include="Exversion">
+      <HintPath>Libraries\Exversion.dll</HintPath>
+    </Reference>
+    <Reference Include="Mathematics">
+      <HintPath>Libraries\Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="NRTE">
+      <HintPath>Libraries\NRTE.dll</HintPath>
+    </Reference>
+    <Reference Include="Physics">
+      <HintPath>Libraries\Physics.dll</HintPath>
+    </Reference>
+    <Reference Include="WpfMath">
+      <HintPath>Libraries\WpfMath.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Libraries\Analytics.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Libraries\Exversion.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Libraries\NRTE.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

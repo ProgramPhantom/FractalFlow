@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:FractalGeneratorMVVM.Views.Controls"
              xmlns:mv="clr-namespace:FractalGeneratorMVVM.Views.Models"
              mc:Ignorable="d"
-             
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cal="http://www.caliburnproject.org"
              d:DesignHeight="450" >
 
 
@@ -47,6 +48,19 @@
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 
                      SelectedItem="{Binding SelectedFractalFrameVM}"
                      >
+
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="DeleteFractalFrame"/>
+
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
 
                 <ListBox.ItemTemplate >
                     <DataTemplate >

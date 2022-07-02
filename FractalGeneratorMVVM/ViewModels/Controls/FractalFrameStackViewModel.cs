@@ -21,7 +21,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         private BindableCollection<FractalFrameViewModel> _fractalFrameViewModels;
 
 
-        private FractalFrameViewModel _selectedFractalFrameVM;
+        private FractalFrameViewModel? _selectedFractalFrameVM;
 
 
         private AddFractalFrameWindowViewModel _addFractalFrameWindow;
@@ -46,28 +46,23 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// <summary>
         /// The view model of the selected fractal frame
         /// </summary>
-        public FractalFrameViewModel SelectedFractalFrameVM
+        public FractalFrameViewModel? SelectedFractalFrameVM
         {
             get { return _selectedFractalFrameVM; }
             set
             {
                 _selectedFractalFrameVM = value;
-
-                System.Diagnostics.Trace.WriteLine("NEW FRACTAL FRAME");
-
-                System.Diagnostics.Trace.WriteLine($"{_selectedFractalFrameVM.FractalFrameModel.Iterations}");
-
             }
         }
 
         /// <summary>
         /// The model of the selected fractal frame
         /// </summary>
-        public FractalFrame SelectedFractalFrame
+        public FractalFrame? SelectedFractalFrame
         {
             get
             {
-                return _selectedFractalFrameVM.FractalFrameModel;
+                return _selectedFractalFrameVM == null ? null : _selectedFractalFrameVM.FractalFrameModel;
             }
 
         }
@@ -119,6 +114,13 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void NewFractalFrameWindow(object sender, EventArgs e)
         {
             _addFractalFrameWindow.ShowWindow();
+        }
+
+        public void DeleteFractalFrame()
+        {
+            FractalFrameViewModels.Remove(SelectedFractalFrameVM!);  // Use null forgiving operator to shut the compiler up
+            SelectedFractalFrameVM = FractalFrameViewModels.FirstOrDefault();
+ 
         }
         #endregion
     }

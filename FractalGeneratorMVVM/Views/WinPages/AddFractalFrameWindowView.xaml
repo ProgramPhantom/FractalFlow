@@ -11,8 +11,8 @@
              d:Height="650"
              d:Width="1100"
         cal:Bind.AtDesignTime="True"
-        xmlns:VM="clr-namespace:FractalGeneratorMVVM.ViewModels.Windows">
-        <!--d:DataContext="{d:DesignInstance VM:AddFractalFrameWindowViewModel, IsDesignTimeCreatable=True}"-->
+        xmlns:VM="clr-namespace:FractalGeneratorMVVM.ViewModels.WinPages"
+        d:DataContext="{d:DesignInstance VM:AddFractalFrameWindowViewModel, IsDesignTimeCreatable=True}">
         
 
 
