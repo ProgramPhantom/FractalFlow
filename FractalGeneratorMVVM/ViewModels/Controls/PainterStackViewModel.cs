@@ -80,7 +80,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             get
             {
-                return SelectedPainterVM.PainterModel;
+                return SelectedPainterVM == null ? null : SelectedPainterVM.PainterModel;
             }
         }
         #endregion

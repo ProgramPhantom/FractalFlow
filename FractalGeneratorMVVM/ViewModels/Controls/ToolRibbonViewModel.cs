@@ -114,6 +114,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         protected virtual void OnRandomPainterClicked()
         {
             RandomPainterEvent?.Invoke();
+            FireRenderEvent?.Invoke(false);
         }
 
         #endregion

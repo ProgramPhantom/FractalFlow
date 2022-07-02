@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
@@ -113,14 +115,20 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             if (string.IsNullOrEmpty(FormulaBox)) { return; }
 
-            BasicIterator iterator = new BasicIterator(FormulaBox);
+            try
+            {
+                BasicIterator iterator = new BasicIterator(FormulaBox);
 
+                _iteratorViewModels.Add(new IteratorViewModel(iterator, _iteratorViewModels.Count() + 1));
 
-            _iteratorViewModels.Add(new IteratorViewModel(iterator, _iteratorViewModels.Count() + 1));
+                _iteratorViewModels.Last().IteratorSelecetedEvent += OnIteratorSelected;
+            } catch
+            {
+                MessageBox.Show($"Error parsing: {FormulaBox}", "Parse Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            _iteratorViewModels.Last().IteratorSelecetedEvent += OnIteratorSelected;
+                return;
+            }
 
-            
         }
 
         public void Enter(KeyEventArgs k)

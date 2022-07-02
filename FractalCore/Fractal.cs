@@ -12,7 +12,7 @@ namespace FractalCore
     {
         #region Fields
         private IIterator _iterator;
-        private uint[,]? _iterationsArray;
+        private uint[,] _iterationsArray;
 
         private int _height;
         private int _width;
@@ -41,7 +41,7 @@ namespace FractalCore
             set { _fractalFrame = value; }
         }
 
-        public uint[,]? IterationsArray
+        public uint[,] IterationsArray
         {
             get { return _iterationsArray; }
             set { _iterationsArray = value; }
@@ -105,6 +105,7 @@ namespace FractalCore
             _width = width;
             _height = height;
             _iterator = iterator;
+            _iterationsArray = new uint[height, width];
 
             _fractalFrame = fractalFrame;
 

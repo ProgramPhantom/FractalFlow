@@ -81,6 +81,15 @@ namespace FractalGeneratorMVVM
                 return DefaultPage.SelectedFractalFrame;
             }
         }
+        public FractalFrame? FakeFractalFrame = null;
+        public FractalFrame? ActiveFractalFrame
+        {
+            get
+            {
+                return SelectedFractalFrame == null ? null : FakeFractalFrame ?? SelectedFractalFrame;  // Beautiful
+                // Ternary conditional operator and null-coalescing operator in one line!!
+            }
+        }
         public IPainter? SelectedPainter
         {
             get
@@ -95,6 +104,7 @@ namespace FractalGeneratorMVVM
                 return DefaultPage.SelectedIterator;
             }
         }
+
         public ushort RenderHeight
         {
             get
@@ -111,23 +121,21 @@ namespace FractalGeneratorMVVM
         }
         #endregion
 
-        public FractalFrame? FakeFractalFrame = null;
-        public FractalFrame? ActiveFractalFrame
+
+
+
+        /// <summary>
+        /// Active Fractal is to be null until a render or save
+        /// </summary>
+        public Fractal? ActiveFractal;
+        public bool NoObjectNull
         {
             get
             {
-                return SelectedFractalFrame == null ? null : FakeFractalFrame ?? SelectedFractalFrame;  // Beautiful
-                // Ternary conditional operator and null-coalescing operator in one line!!
+                return !(ActiveFractalFrame == null || SelectedPainter == null || SelectedIterator == null);
             }
         }
 
-
-
-        public Fractal? ActiveFractal
-        {
-            get { return _activeFractal; }
-            set { _activeFractal = value; }
-        }
 
 
         public int JobCount
@@ -191,7 +199,6 @@ namespace FractalGeneratorMVVM
 
             #region Random Painter
             _defaultPage.ToolRibbonVM.RandomPainterEvent += _defaultPage.PainterStackVM.RandomPainter;
-            _defaultPage.ToolRibbonVM.RandomPainterEvent += PreRender;
             #endregion
 
             // Show the window
@@ -201,41 +208,42 @@ namespace FractalGeneratorMVVM
             _consolePage.NewLog(new Status("Done", NotificationType.OperationComplete));
 
             _renderEngine = new RenderEngine();
+
+            
         }
 
         #endregion
 
         public void CanvasHovered(Point hoverLocation, double canvasWidth, double canvasHeight) 
         {
-            Complex mousePos = ActiveFractalFrame.PxToComplex(hoverLocation, canvasWidth, canvasHeight);
+            Complex mousePos;
+        
+            mousePos = ActiveFractal.FractalFrame.PxToComplex(hoverLocation, canvasWidth, canvasHeight);
+          
+            
 
             _defaultPage.StatusBarVM.UpdateHoverMessage(mousePos);
         }
 
-        public void PreRender()
-        {
-            bool clearZoom = false;
-            if (clearZoom == true) { FakeFractalFrame = null; }
 
-            if (DefaultPage.ToolRibbonVM.GPURender == true)
-            {
-
-
-                CLRenderAsync();
-            }
-            else
-            {
-                RenderAsync();
-            }
-        }
         public void PreRender(bool clearZoom=false)
         {
-            if (clearZoom == true) { FakeFractalFrame = null; }
+            if (!NoObjectNull)  // IF one of the key objects is missing, complain.
+            {
+                MessageBox.Show($"Please select: {(ActiveFractalFrame == null ? "Fractal Frame, " : "")} " +
+                    $"{(SelectedIterator == null ? "Iterator, " : "")}" +
+                    $"{(SelectedPainter == null ? "Painter, " : "")}", "Render Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (clearZoom == true) { FakeFractalFrame = null; }  // Remove the fake fractal
+            // Make sure this happens before the Fractal is created
+
+            // Create the space in memory 
+            ActiveFractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame!, SelectedIterator!);
 
             if (DefaultPage.ToolRibbonVM.GPURender == true)
             {
-                
-
                 CLRenderAsync();
             } else
             {
@@ -271,10 +279,10 @@ namespace FractalGeneratorMVVM
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
 
-            Fractal fractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame, SelectedIterator);
-            FractalImage fractalImage = new FractalImage(ref fractal);
+            
+            FractalImage fractalImage = new FractalImage(ref ActiveFractal!);
 
-            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
+            ComputeIterationsJob computeJob = new ComputeIterationsJob(ActiveFractal, JobCount);
             JobCount++;
             RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter, fractalImage, JobCount);
             JobCount++;
@@ -321,10 +329,10 @@ namespace FractalGeneratorMVVM
             Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
             progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
 
-            Fractal fractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame, SelectedIterator);
-            FractalImage fractalImage = new FractalImage(ref fractal);
+            
+            FractalImage fractalImage = new FractalImage(ref ActiveFractal);
 
-            ComputeIterationsJob computeJob = new ComputeIterationsJob(fractal, JobCount);
+            ComputeIterationsJob computeJob = new ComputeIterationsJob(ActiveFractal, JobCount);
             JobCount++;
             RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter, fractalImage, JobCount);
             JobCount++;
@@ -415,8 +423,6 @@ namespace FractalGeneratorMVVM
         }
         public void DumbZoomIn()
         {
-            
-
             HardZoom();
         }
         public void DumbZoomOut()
