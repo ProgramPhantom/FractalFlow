@@ -104,7 +104,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public void AddFractalFrame(FractalFrame newFF, Color? c = null)
         { 
             // Add the new fractal frame view model and attatch the fractal frame model
-            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF, c ?? DEFAULTCOLOUR));
+            _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF, c ?? DEFAULTCOLOUR, newFF.Name));
         }
 
 

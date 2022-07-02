@@ -53,7 +53,11 @@ namespace FractalGeneratorMVVM.ViewModels.Models.Painters
             set { _inSetColourBrush = value; }
         }
 
-
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }  
+        }
 
         #endregion
 

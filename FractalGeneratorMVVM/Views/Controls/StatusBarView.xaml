@@ -45,6 +45,7 @@
                     Margin="0 0 3 0">
 
             <Button x:Name="CancelRender" 
+                    ToolTip="Cancel Render"
                 Margin="6 0"
                 Style="{StaticResource Grow}" 
                 Content="{StaticResource CancelRender}"  Height="17">
@@ -53,7 +54,7 @@
 
             <Button x:Name="ToggleConsole" 
                 Margin="6 0"
-                
+                ToolTip="Open Console"
                 Style="{StaticResource Grow}" 
                 Content="{StaticResource Console}" Height="17">
 

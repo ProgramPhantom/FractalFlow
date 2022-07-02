@@ -69,7 +69,7 @@ namespace FractalGeneratorMVVM.ViewModels.Models
 
         #endregion
 
-        public FractalFrameViewModel(int num, FractalFrame model, Color colour, string name="Untitled")
+        public FractalFrameViewModel(int num, FractalFrame model, Color colour, string name="Untitled Fractal Frame")
         {
             _number = num;
             _name = name;

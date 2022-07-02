@@ -36,6 +36,8 @@ namespace FractalGeneratorMVVM
         private RenderEngine _renderEngine;
         private int _renders;
 
+        private Fractal? _activeFractal;
+
         private bool _consoleOpen = false;
         private float _zoomDivisor = 2;
         #endregion
@@ -72,21 +74,21 @@ namespace FractalGeneratorMVVM
         }
 
         #region Exposers
-        public FractalFrame SelectedFractalFrame
+        public FractalFrame? SelectedFractalFrame
         {
             get
             {
                 return DefaultPage.SelectedFractalFrame;
             }
         }
-        public IPainter SelectedPainter
+        public IPainter? SelectedPainter
         {
             get
             {
                 return DefaultPage.SelectedPainter;
             }
         }
-        public IIterator SelectedIterator
+        public BasicIterator? SelectedIterator
         {
             get
             {
@@ -110,13 +112,23 @@ namespace FractalGeneratorMVVM
         #endregion
 
         public FractalFrame? FakeFractalFrame = null;
-        public FractalFrame ActiveFractalFrame
+        public FractalFrame? ActiveFractalFrame
         {
             get
             {
-                return FakeFractalFrame ?? SelectedFractalFrame;
+                return SelectedFractalFrame == null ? null : FakeFractalFrame ?? SelectedFractalFrame;  // Beautiful
+                // Ternary conditional operator and null-coalescing operator in one line!!
             }
         }
+
+
+
+        public Fractal? ActiveFractal
+        {
+            get { return _activeFractal; }
+            set { _activeFractal = value; }
+        }
+
 
         public int JobCount
         {
@@ -301,6 +313,8 @@ namespace FractalGeneratorMVVM
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
+
+            
 
             cts = new CancellationTokenSource();  // Set up the cancel thing
 

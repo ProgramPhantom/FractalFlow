@@ -53,7 +53,7 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
             set { _window = value; }
         }
 
-        public string PainterName { get; set; } = "Untitled";
+        
 
         public int Width
         {
@@ -76,7 +76,9 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
         }
         #endregion
 
-        
+        public string PainterName { get; set; } = "Untitled Painter";
+
+
 
         public int TabIndex
         {
@@ -87,7 +89,6 @@ namespace FractalGeneratorMVVM.ViewModels.WinPages
                 NotifyOfPropertyChange(() => TabIndex);
             }
         }
-
 
         // This is cringe, if I had unlimited time I would make controls for each tab so I did not have to have every
         // property in this single view model

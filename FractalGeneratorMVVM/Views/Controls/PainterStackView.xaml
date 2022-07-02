@@ -82,7 +82,7 @@
 
 
 
-        <Button x:Name="NewPainterWindow" Grid.Row="2" 
+        <Button x:Name="NewPainterWindow" Grid.Row="2" ToolTip="Add new Painter"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Style="{StaticResource Grow}" 

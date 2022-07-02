@@ -109,15 +109,13 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         /// </summary>
         public void NewBasicPainterLight(BasicPainterLight newPainter)
         {
-           
-            // ADD THE ACTUAL VISUAL REPRESENTATION OF THE FRACTAL FRAME
-            _painterViewModels.Add(new BasicPainterLightViewModel(newPainter, 1));
+            _painterViewModels.Add(new BasicPainterLightViewModel(newPainter, 1, newPainter.Name));
             SelectedPainterVM = PainterViewModels.Last();
         }
 
         public void NewBasicPainterDark(BasicPainterDark newPainter)
         {
-            _painterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1));
+            _painterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1, newPainter.Name));
             SelectedPainterVM = PainterViewModels.Last();
         }
 

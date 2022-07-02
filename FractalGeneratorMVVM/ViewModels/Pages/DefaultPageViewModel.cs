@@ -100,7 +100,7 @@ namespace FractalGeneratorMVVM.ViewModels.Pages
             }
         }
 
-        public IIterator? SelectedIterator
+        public BasicIterator? SelectedIterator
         {
             get
             {

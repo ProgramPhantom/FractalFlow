@@ -18,7 +18,7 @@
                     <ControlTemplate TargetType="{x:Type ContentControl}">
 
 
-                        <Grid  Width="40" Height="40">
+                        <Grid  Width="40" Height="40" ToolTip="{Binding Name}" Background="Transparent">
 
 
 

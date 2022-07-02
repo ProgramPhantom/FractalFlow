@@ -18,7 +18,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContentControl}">
 
-                        <Grid Width="40" Height="40">
+                        <Grid Width="40" Height="40" Background="Transparent">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

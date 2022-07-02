@@ -77,7 +77,8 @@
 
 
 
-        <Button x:Name="NewFractalFrameWindow" Grid.Row="2" 
+        <Button x:Name="NewFractalFrameWindow" Grid.Row="2"
+                ToolTip="Add new Fractal Frame"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Style="{StaticResource Grow}" 

@@ -19,7 +19,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Grid Background="Transparent">
+                        <Grid Background="Transparent"
+                              ToolTip="{Binding Name}">
 
                             <!-- Formula -->
 

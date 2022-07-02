@@ -19,7 +19,7 @@
         <!-- Title -->
 
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" ToolTip="plz giv A* sir"
                     VerticalAlignment="Top" Margin="0,9,0,0" Height="52" Width="248">
             <TextBlock
                    HorizontalAlignment="Center"
@@ -69,31 +69,37 @@
             <!-- Zoom IN -->
             <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36"
                     Content="{StaticResource ZoomIn}"
-                    x:Name="ZoomInClicked">
+                    x:Name="ZoomInClicked"
+                    ToolTip="Zoom In">
             </Button>
 
             <!-- Zoom OUT -->
             <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36" 
                      Content="{StaticResource ZoomOut}"
-                    x:Name="ZoomOutClicked">
+                    x:Name="ZoomOutClicked"
+                    ToolTip="Zoom Out">
             </Button>
 
             <!-- Reset Zoom -->
             <Button Style="{StaticResource Grow}" Margin="29 4 29 4" Width="36"
                     Content="{StaticResource ResetZoom}"
-                    x:Name="ResetZoomClicked">
+                    x:Name="ResetZoomClicked"
+                    ToolTip="Reset Zoom">
             </Button>
 
             <Line X1="0" Y1="11" X2="0" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>
 
             <!-- Open File -->
             <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36" 
-                    Content="{StaticResource OpenFile}">
+                    Content="{StaticResource OpenFile}"
+                    ToolTip="Open File"
+                    >
             </Button>
 
             <!-- Save -->
             <Button Style="{StaticResource Grow}" Margin="29 4 29 4" Width="36"
-                    Content="{StaticResource Save}">
+                    Content="{StaticResource Save}"
+                    ToolTip="Save">
             </Button>
 
             <Line X1="0" Y1="11" X2="0" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>
@@ -101,7 +107,8 @@
             <!-- Random Colour -->
             <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36" 
                     Content="{StaticResource RandomColour}"
-                    x:Name="RandomPainterClicked">
+                    x:Name="RandomPainterClicked"
+                    ToolTip="Random Painter">
             </Button>
 
 
@@ -142,7 +149,9 @@
             </Grid>
         </StackPanel>
 
-        <Border Background="{StaticResource Blue2Brush}" Margin="7,7,7,7" CornerRadius="4" Grid.Column="4">
+        <Border Background="{StaticResource Blue2Brush}" Margin="7,7,7,7" CornerRadius="4" 
+                Grid.Column="4"
+                ToolTip="Render with GPU">
             <StackPanel Orientation="Vertical" >
                 <TextBlock Foreground="{StaticResource MyWhiteBrush}"
                        VerticalAlignment="Center"
@@ -155,7 +164,8 @@
                       VerticalAlignment="Center" 
                       HorizontalAlignment="Center"
                       Margin="0 6 0 0"
-                      IsChecked="False">
+                      IsChecked="False"
+                          >
 
                 </CheckBox>
             </StackPanel>
@@ -163,6 +173,7 @@
 
         <Button Style="{StaticResource RenderButton}" Grid.Column="5" 
             x:Name="RenderClicked" 
+                ToolTip="Render"
                 >
             RENDER
         </Button>

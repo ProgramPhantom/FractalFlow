@@ -112,7 +112,7 @@ namespace FractalCore
         public string FullIterationScript { get; set; }
 
 
-        public BasicIterator(string formulaString, string name="Unitiled")
+        public BasicIterator(string formulaString, string name="Unitiled Iterator")
         {
             _formulaString = Regex.Replace(formulaString, @"\s+", "");
             _name = name;

@@ -107,7 +107,8 @@
                 
 
             <Button Style="{StaticResource Grow}" Width="40"  Margin="10 0 0 0"
-                    Content="{StaticResource AddFilled}" x:Name="AddIterator">
+                    Content="{StaticResource AddFilled}" x:Name="AddIterator"
+                    ToolTip="Add new Iterator">
             </Button>
 
         </StackPanel>
