@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FractalCore;
 using FractalCore.Painting;
+using FractalGeneratorMVVM.ViewModels.Models;
+using FractalGeneratorMVVM.ViewModels.Models.Painters;
 
 namespace FractalGeneratorMVVM.ViewModels.Pages
 {
@@ -126,6 +128,43 @@ namespace FractalGeneratorMVVM.ViewModels.Pages
             _fractalFrameStackVM = new FractalFrameStackViewModel();
             _iteratorStackVM = new IteratorStackViewModel();
             _painterStackVM = new PainterStackViewModel();
+            _toolRibbonVM = new ToolRibbonViewModel();
+            _statusBarVM = new StatusBarViewModel();
+            _canvasVM = new CanvasViewModel();
+        }
+
+        public DefaultPageViewModel(BindableCollection<FractalFrameViewModel> fractalFrameViewModels,
+            BindableCollection<IPainterViewModel> painterViewModels, BindableCollection<IteratorViewModel> iteratorViewModels)
+        {
+            if (fractalFrameViewModels.Count > 0)
+            {
+                _fractalFrameStackVM = new FractalFrameStackViewModel(fractalFrameViewModels);
+            } 
+            else
+            {
+                _fractalFrameStackVM = new FractalFrameStackViewModel();
+            }
+
+            if (iteratorViewModels.Count > 0)
+            {
+                _iteratorStackVM = new IteratorStackViewModel(iteratorViewModels);
+            }
+            else
+            {
+                _iteratorStackVM = new IteratorStackViewModel();
+            }
+
+            if (painterViewModels.Count > 0)
+            {
+                _painterStackVM = new PainterStackViewModel(painterViewModels);
+            }
+            else
+            {
+                _painterStackVM = new PainterStackViewModel();
+            }
+
+            
+            
             _toolRibbonVM = new ToolRibbonViewModel();
             _statusBarVM = new StatusBarViewModel();
             _canvasVM = new CanvasViewModel();

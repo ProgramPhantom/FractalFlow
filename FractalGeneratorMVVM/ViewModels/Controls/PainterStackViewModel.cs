@@ -101,6 +101,16 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
             _selectedPainterVM = PainterViewModels[0];
         }
+
+        public PainterStackViewModel(BindableCollection<IPainterViewModel> initialPainters)
+        {
+            _painterTypes = 2;
+            _painterViewModels = initialPainters;
+
+            _addPainterWindow = new AddPainterWindowViewModel(this);
+
+            _selectedPainterVM = PainterViewModels[0];
+        }
         #endregion
 
         #region Methods

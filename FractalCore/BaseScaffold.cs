@@ -11,7 +11,7 @@ namespace FractalCore
     /// <summary>
     /// Holds the default value for the Fractal Scaffold class
     /// </summary>
-    public class BaseScaffold
+    public class BaseScaffold 
     {
         private static float _leftDefault = -3.1f;
         private static float _rightDefault = 1.1f;
@@ -100,5 +100,7 @@ namespace FractalCore
             }
         }
         #endregion
+
+        public BaseScaffold() : base() { }
     }
 }

@@ -8,8 +8,6 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:LaTEX="clr-namespace:WpfMath.Controls;assembly=WpfMath"
-             cal:Message.Attach="[Event MouseDown] = [Action SelectButton()]"
-             
              cal:Bind.AtDesignTime="True"
              xmlns:VM="clr-namespace:FractalGeneratorMVVM.ViewModels.Models"
              d:DataContext="{d:DesignInstance VM:IteratorViewModel, IsDesignTimeCreatable=True}">

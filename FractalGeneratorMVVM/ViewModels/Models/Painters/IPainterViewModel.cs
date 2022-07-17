@@ -11,5 +11,7 @@ namespace FractalGeneratorMVVM.ViewModels.Models.Painters
     public interface IPainterViewModel
     {
         public IPainter PainterModel { get; set; }
+        public string Name { get; set; }
+        public Guid ID { get; }
     }
 }

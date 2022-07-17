@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace FractalCore.Painting
 {
-    public abstract class PainterBase
+    public abstract class PainterBase 
     {
 
         private string _name;
@@ -19,14 +19,10 @@ namespace FractalCore.Painting
             set { _name = value; }
         }
 
-
-
-
         public PainterBase(string name)
         {
             _name = name;
         }
-
 
         /// <summary>
         /// Writes a 2d array of pixels each with 4 bytes to hold R, G, B, A values, to a WriteableBitmap

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FormulaParser;
+using System.Xml.Serialization;
 
 namespace FractalCore
 {
@@ -71,12 +72,13 @@ namespace FractalCore
 
         };
 
+        [XmlIgnore]
         /// <summary>
-        /// Lines of C code
+        /// Lines of C code in the Iterate file
         /// </summary>
         public string[]? IterateCLLines;
-        public int InsertLine = 319;
-        public string IterateCLPath = @"C/IterateCL.c";
+        public static  int InsertLine = 319;
+        public static string IterateCLPath = @"C/IterateCL.c";
 
         private string _formulaString;
         private string _name;
@@ -94,18 +96,20 @@ namespace FractalCore
             set { _name = value; }
         }
 
-
+        [XmlIgnore]
         public RPN FormulaObject
         {
             get { return _formulaObject; }
             set { _formulaObject = value; }
         }
 
+        [XmlIgnore]
         /// <summary>
-        /// The lines of C to be added
+        /// The lines of C containing the operation done by the iterator
         /// </summary>
         public List<string>? IterationsCode { get; set; }
 
+        [XmlIgnore]
         /// <summary>
         /// The file containing the C code as a single string.
         /// </summary>

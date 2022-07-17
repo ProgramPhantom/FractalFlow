@@ -67,6 +67,7 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             set { _textColour = value; }
         }
 
+        public Guid ID = Guid.NewGuid();
         #endregion
 
         public FractalFrameViewModel(int num, FractalFrame model, Color colour, string name="Untitled Fractal Frame")

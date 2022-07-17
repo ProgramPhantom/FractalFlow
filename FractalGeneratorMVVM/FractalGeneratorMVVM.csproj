@@ -46,6 +46,7 @@
     <None Remove="Images\ico\ZoomIn2.png" />
     <None Remove="Images\ico\ZoomIn3.svg" />
     <None Remove="Images\temp\simulide.png" />
+    <None Remove="Splash.png" />
   </ItemGroup>
   
 
@@ -65,7 +66,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="Old\" />
   </ItemGroup>
 
@@ -152,13 +152,30 @@
     </Resource>
   </ItemGroup>
 
+    
   <ItemGroup>
+    <Resource Include="Splash.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Settings1.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings1.settings</DependentUpon>
+    </Compile>
     <Compile Update="Views\Models\Painters\BasicPainterDarkView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Models\Painters\BasicPainterLightView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Settings1.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

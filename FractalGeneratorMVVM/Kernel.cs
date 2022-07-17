@@ -15,6 +15,12 @@ using FractalCore.Painting;
 using FractalGeneratorMVVM.ViewModels.Pages;
 using System.Numerics;
 using System.Windows.Controls;
+using System.Xml.Serialization;
+using System.IO;
+using System.Data.SqlClient;
+using System.Data;
+using FractalGeneratorMVVM.ViewModels.Models;
+using FractalGeneratorMVVM.ViewModels.Models.Painters;
 
 namespace FractalGeneratorMVVM
 {
@@ -40,6 +46,10 @@ namespace FractalGeneratorMVVM
 
         private bool _consoleOpen = false;
         private float _zoomDivisor = 2;
+
+        //private List<FractalFrame> fractalFrames;
+        //private List<BasicIterator> basicIterators;
+        //private List<IPainter> painters;
         #endregion
 
         #region Properties
@@ -54,7 +64,6 @@ namespace FractalGeneratorMVVM
             set { _consoleWindow = value; }
         }
 
-        
         public DefaultPageViewModel DefaultPage
         {
             get { return _defaultPage; }
@@ -65,7 +74,6 @@ namespace FractalGeneratorMVVM
             get { return _consolePage; }
             set { _consolePage = value; }
         }
-
 
         public RenderEngine RenderEngine
         {
@@ -122,8 +130,6 @@ namespace FractalGeneratorMVVM
         #endregion
 
 
-
-
         /// <summary>
         /// Active Fractal is to be null until a render or save
         /// </summary>
@@ -135,8 +141,6 @@ namespace FractalGeneratorMVVM
                 return !(ActiveFractalFrame == null || SelectedPainter == null || SelectedIterator == null);
             }
         }
-
-
 
         public int JobCount
         {
@@ -169,6 +173,42 @@ namespace FractalGeneratorMVVM
             _mainWindow = new DefaultWindowViewModel(_defaultPage, "Untitled", ResizeMode.CanResizeWithGrip);
             _consoleWindow = new DefaultWindowViewModel(_consolePage, "Console", ResizeMode.CanResizeWithGrip);
 
+
+            WireEvents();
+
+
+            _consolePage.NewLog(new Status("Done", NotificationType.OperationComplete));
+
+            _renderEngine = new RenderEngine();
+
+            
+        }
+
+        public Kernel(BindableCollection<FractalFrameViewModel> fractalFrameViewModels,
+            BindableCollection<IPainterViewModel> painterViewModels, BindableCollection<IteratorViewModel> iteratorViewModels)
+        {
+            _windowManager = new WindowManager();
+
+            _consolePage = new ConsolePageViewModel();
+            _defaultPage = new DefaultPageViewModel(fractalFrameViewModels, painterViewModels, iteratorViewModels);
+
+            // Create the main window
+            _mainWindow = new DefaultWindowViewModel(_defaultPage, "Untitled", ResizeMode.CanResizeWithGrip);
+            _consoleWindow = new DefaultWindowViewModel(_consolePage, "Console", ResizeMode.CanResizeWithGrip);
+
+
+            WireEvents();
+
+
+            _consolePage.NewLog(new Status("Done", NotificationType.OperationComplete));
+
+            _renderEngine = new RenderEngine();
+
+
+        }
+
+        public void WireEvents()
+        {
             #region Render Button Event
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
             _defaultPage.ToolRibbonVM.FireRenderEvent += PreRender;
@@ -200,18 +240,7 @@ namespace FractalGeneratorMVVM
             #region Random Painter
             _defaultPage.ToolRibbonVM.RandomPainterEvent += _defaultPage.PainterStackVM.RandomPainter;
             #endregion
-
-            // Show the window
-            _windowManager.ShowWindowAsync(_mainWindow);
-
-
-            _consolePage.NewLog(new Status("Done", NotificationType.OperationComplete));
-
-            _renderEngine = new RenderEngine();
-
-            
         }
-
         #endregion
 
         public void CanvasHovered(Point hoverLocation, double canvasWidth, double canvasHeight) 
@@ -224,7 +253,6 @@ namespace FractalGeneratorMVVM
 
             _defaultPage.StatusBarVM.UpdateHoverMessage(mousePos);
         }
-
 
         public void PreRender(bool clearZoom=false)
         {
@@ -250,7 +278,6 @@ namespace FractalGeneratorMVVM
                 RenderAsync();
             }
         }
-        
 
         public void ToggleConsoleWindowShow()
         {
@@ -340,6 +367,8 @@ namespace FractalGeneratorMVVM
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
             job.StatusUpdateEvent += _consolePage.NewLog;
 
+
+            
             try
             {
                 await RenderEngine.CLBitmapCompute(job, progress, cts.Token);
@@ -444,5 +473,9 @@ namespace FractalGeneratorMVVM
 
         }
 
+        public void ShowMainWindow()
+        {
+            _windowManager.ShowWindowAsync(_mainWindow);
+        }
     }
 }

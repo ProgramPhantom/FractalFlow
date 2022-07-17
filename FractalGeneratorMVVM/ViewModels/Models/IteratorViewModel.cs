@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FractalGeneratorMVVM.ViewModels.Models
 {
-    public delegate void IteratorSelected(IteratorViewModel sender);
+
 
     public class IteratorViewModel : Screen
     {
-        public event IteratorSelected IteratorSelecetedEvent;
+
 
         #region Fields
         private BasicIterator _iteratorModel;
@@ -58,12 +58,12 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             }
         }
 
-
         public string LaTEX
         {   
             get { return IteratorModel.FormulaObject.LaTEX; }
         }
 
+        public Guid ID = Guid.NewGuid();
         #endregion
 
         public IteratorViewModel()
@@ -79,19 +79,6 @@ namespace FractalGeneratorMVVM.ViewModels.Models
             _iteratorModel = iteratorModel;
             _number = num;
             _isSelected = false;
-        }
-
-        public void SelectButton()
-        {
-            IsSelected = true;
-
-            SelectedEvent();
-        }
-
-        protected virtual void SelectedEvent()
-        {
-
-            IteratorSelecetedEvent?.Invoke(this);
         }
 
 

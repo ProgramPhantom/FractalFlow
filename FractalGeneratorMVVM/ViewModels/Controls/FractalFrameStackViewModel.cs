@@ -94,6 +94,25 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             _selectedFractalFrameVM = FractalFrameViewModels[0];
             FractalFrameViewModels[0].IsSelected = true;  // Select it 
         }
+
+        public FractalFrameStackViewModel(BindableCollection<FractalFrameViewModel> initialFrames)
+        {
+            _fractalFrameViewModels = new BindableCollection<FractalFrameViewModel>();
+
+            // _fractalFrameViewModels.OrderByDescending(x => x.Number);
+
+            var sort = initialFrames.OrderBy(f => f.Number);
+            foreach (FractalFrameViewModel ffvm in sort)
+            {
+                _fractalFrameViewModels.Add(ffvm);
+            }
+
+            // Create the window for adding a new Fractal Frame, passing in this object so
+            // the window knows where to put the new fractal frame
+            _addFractalFrameWindow = new AddFractalFrameWindowViewModel(this);
+
+            _selectedFractalFrameVM = FractalFrameViewModels[0];
+        }
         #endregion
 
         #region Methods

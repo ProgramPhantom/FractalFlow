@@ -5,19 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using System.Threading;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace FractalCore
 {
+
+    [Serializable]
     public class Fractal : FractalFrame
     {
         #region Fields
-        private IIterator _iterator;
-        private uint[,] _iterationsArray;
+        private BasicIterator _iterator;
+
+        [XmlIgnore]
+        private uint[,]? _iterationsArray;
 
         private int _height;
         private int _width;
 
-        private bool _rendered = false;
 
         private FractalFrame _fractalFrame;
 
@@ -29,7 +34,7 @@ namespace FractalCore
 
 
         #region Properties
-        public IIterator Iterator
+        public BasicIterator Iterator
         {
             get { return _iterator; }
             set { _iterator = value; }
@@ -41,7 +46,8 @@ namespace FractalCore
             set { _fractalFrame = value; }
         }
 
-        public uint[,] IterationsArray
+        [XmlIgnore]
+        public uint[,]? IterationsArray
         {
             get { return _iterationsArray; }
             set { _iterationsArray = value; }
@@ -59,13 +65,6 @@ namespace FractalCore
             set { _width = value; }
         }
 
-        public bool Rendered
-        {
-            get { return _rendered; }
-            set { _rendered = value; }
-        }
-
-
         public double RealStep
         {
             get { return _realStep; }
@@ -77,14 +76,17 @@ namespace FractalCore
             get { return _imagStep; }
             set { _imagStep = value; }
         }
-
-
-
         #endregion
 
 
         #region Constructors
-        public Fractal(int width, int height, IIterator iterator) : base(new FractalFrame())
+        internal Fractal()
+        {
+            _iterator = new BasicIterator();
+            _fractalFrame = new FractalFrame();
+        }
+
+        public Fractal(int width, int height, BasicIterator iterator) : base(new FractalFrame())
         {
             _iterator = iterator;
             _iterationsArray = new uint[height, width];
@@ -99,9 +101,8 @@ namespace FractalCore
             _imagStep = _fractalFrame.ImaginaryHeight / height;
         }
 
-        public Fractal(int width, int height, FractalFrame fractalFrame, IIterator iterator) : base(fractalFrame)
+        public Fractal(int width, int height, FractalFrame fractalFrame, BasicIterator iterator) : base(fractalFrame)
         {
-
             _width = width;
             _height = height;
             _iterator = iterator;
@@ -113,6 +114,7 @@ namespace FractalCore
             _imagStep = _fractalFrame.ImaginaryHeight / height;
 
 
+         
         }
         #endregion
 
@@ -121,6 +123,22 @@ namespace FractalCore
         public uint IteratePoint(Complex p)
         {
             return Iterator.Iterate(p, Iterations, Bail);
+        }
+
+
+        public static void Save(Fractal f)
+        {
+            string xml;
+            XmlSerializer s = new XmlSerializer(f.GetType());
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                s.Serialize(memoryStream, f);
+                memoryStream.Position = 0;
+                xml = new StreamReader(memoryStream).ReadToEnd();
+            }
+
+            System.Diagnostics.Debug.WriteLine(xml);
         }
         #endregion
     }

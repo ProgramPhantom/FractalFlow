@@ -19,6 +19,7 @@ namespace FractalGeneratorMVVM.ViewModels.Models.Painters
         private IPainter _painterModel;
         private string _name;
         private int _number;
+        private bool _type;
 
         private SolidColorBrush _mainColourBrush;
         private SolidColorBrush _inSetColourBrush;
@@ -58,11 +59,21 @@ namespace FractalGeneratorMVVM.ViewModels.Models.Painters
             get { return _name; }
             set { _name = value; }  
         }
+        
+        public bool Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
 
+
+        public Guid ID { get; } = Guid.NewGuid();
         #endregion
 
-        public BasicPainterBaseViewModelAbstract(BasicPainterBase painter, int num, string name = "Untitled")
+        public BasicPainterBaseViewModelAbstract(BasicPainterBase painter, int num, bool type, string name = "Untitled")
         {
+            _type = type;
+
             _painterModel = painter;
             _number = num;
             _name = name;

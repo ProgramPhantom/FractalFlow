@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
+using System.Data;
+using System.Data.SqlClient;
+
 
 namespace FractalCore
 {
@@ -109,6 +114,7 @@ namespace FractalCore
             _iterations = iterations;
             _bail = bail;
             _name = name;
+
         }
 
         public static FractalFrame FractalFrameCentre(float width, float height, float r, float i, string name, uint iterations, int bail)
@@ -126,8 +132,6 @@ namespace FractalCore
             return ff;
         }
 
-        
-
         public Complex PxToComplex(Point p, double width, double height)
         {
             double xStep = RealWidth / width;
@@ -140,5 +144,7 @@ namespace FractalCore
 
             return pos;
         }
+
+        
     }
 }

@@ -87,7 +87,17 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
             AddIterator();
 
-            _formulaBox = "";
+            _formulaBox = "z ^ 2 + c";
+            _selectedIteratorVM = _iteratorViewModels[0];
+        }
+
+        public IteratorStackViewModel(BindableCollection<IteratorViewModel> initialIterators)
+        {
+            _iteratorViewModels = initialIterators;
+
+
+            _formulaBox = "z ^ 2 + c";
+
             _selectedIteratorVM = _iteratorViewModels[0];
         }
         #endregion
@@ -121,13 +131,15 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
                 _iteratorViewModels.Add(new IteratorViewModel(iterator, _iteratorViewModels.Count() + 1));
 
-                _iteratorViewModels.Last().IteratorSelecetedEvent += OnIteratorSelected;
-            } catch
+                
+            } catch (Exception e)
             {
-                MessageBox.Show($"Error parsing: {FormulaBox}", "Parse Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error parsing: {FormulaBox} {e}", "Parse Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return;
             }
+
+            SelectedIteratorVM = IteratorViewModels.LastOrDefault();
 
         }
 

@@ -15,7 +15,7 @@ namespace FractalGeneratorMVVM.ViewModels.Models.Painters
     public class BasicPainterDarkViewModel : BasicPainterBaseViewModelAbstract
     {
 
-        public BasicPainterDarkViewModel(BasicPainterDark painter, int num, string name = "Untitled") : base(painter, num, name) { }
+        public BasicPainterDarkViewModel(BasicPainterDark painter, int num, string name = "Untitled") : base(painter, num, false, name) { }
 
     }
 }
