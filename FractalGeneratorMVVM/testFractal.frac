@@ -1,0 +1,13 @@
+## FRACTALFRAME
+Left: -3.1
+Right: 1.1
+Bottom: -2.1
+Top: 2.1
+Iterations: 100
+Bail: 2
+## ITERATOR
+FormulaString: z^2+c
+## BASICPAINTER
+InSetColour: #FFFFFFFF
+MainColour: #AAAAAAAA
+Type: 1

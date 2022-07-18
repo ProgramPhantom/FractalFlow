@@ -149,5 +149,6 @@ namespace FractalGeneratorMVVM.Views.Windows
             };
         }
 
+
     }
 }

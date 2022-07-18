@@ -125,8 +125,21 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         public void NewBasicPainterDark(BasicPainterDark newPainter)
         {
-            _painterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1, newPainter.Name));
+            PainterViewModels.Add(new BasicPainterDarkViewModel(newPainter, 1, newPainter.Name));
             SelectedPainterVM = PainterViewModels.Last();
+        }
+
+        public void AddPainter(IPainter painter)
+        {
+            if (painter.GetType() == typeof(BasicPainterLight))
+            {
+                PainterViewModels.Add(new BasicPainterLightViewModel((BasicPainterLight)painter, 1, ((BasicPainterLight)painter).Name));
+                SelectedPainterVM = PainterViewModels.Last();
+            } else if (painter.GetType() == typeof(BasicPainterDark))
+            {
+                PainterViewModels.Add(new BasicPainterDarkViewModel((BasicPainterDark)painter, 1, ((BasicPainterDark)painter).Name));
+                SelectedPainterVM = PainterViewModels.Last();
+            }
         }
 
         /// <summary>

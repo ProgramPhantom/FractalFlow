@@ -52,6 +52,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             set
             {
                 _selectedFractalFrameVM = value;
+                NotifyOfPropertyChange(() => SelectedFractalFrameVM);
             }
         }
 
@@ -124,6 +125,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         { 
             // Add the new fractal frame view model and attatch the fractal frame model
             _fractalFrameViewModels.Add(new FractalFrameViewModel(_fractalFrameViewModels.Count() + 1, newFF, c ?? DEFAULTCOLOUR, newFF.Name));
+            SelectedFractalFrameVM = FractalFrameViewModels.LastOrDefault();
         }
 
 

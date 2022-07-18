@@ -46,7 +46,7 @@
     <None Remove="Images\ico\ZoomIn2.png" />
     <None Remove="Images\ico\ZoomIn3.svg" />
     <None Remove="Images\temp\simulide.png" />
-    <None Remove="Splash.png" />
+    <None Remove="SplashScreen1.png" />
   </ItemGroup>
   
 
@@ -152,9 +152,8 @@
     </Resource>
   </ItemGroup>
 
-    
   <ItemGroup>
-    <Resource Include="Splash.png" />
+    <SplashScreen Include="splash.png" />
   </ItemGroup>
 
   <ItemGroup>

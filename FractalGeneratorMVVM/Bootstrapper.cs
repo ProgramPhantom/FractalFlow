@@ -41,7 +41,7 @@ namespace FractalGeneratorMVVM
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            SplashScreen splash = new SplashScreen(@"\Splash.png");
+            SplashScreen splash = new SplashScreen(@"\splash.png");
             splash.Show(false);
 
             FractalObjectPackage fromDb = LoadFromDatabase().Result;

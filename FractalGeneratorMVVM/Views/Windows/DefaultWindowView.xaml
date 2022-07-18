@@ -12,14 +12,16 @@
         x:Name="MainWindow"
         Title="{Binding WindowTitle}"
         WindowStartupLocation="CenterScreen"
-        Width="{Binding Width, Mode=TwoWay}"
-        Height="{Binding Height, Mode=TwoWay}" 
+        Width="{Binding Width, Mode=OneWay}"
+        Height="{Binding Height, Mode=OneWay}" 
         d:Height="650"
         d:Width="1000"
-
+        
+   
         Style="{StaticResource DefaultChromeWindow}"
         ResizeMode="{Binding CanWindowResize}"
-        cal:Message.Attach="[Event StateChanged] = [Action UpdateProperties($view)]"
+        cal:Message.Attach="[Event StateChanged] = [Action UpdateProperties($view)];
+                            [Event KeyDown] = [Action WindowKeyDown($view, $eventArgs)]"
         
         >
 

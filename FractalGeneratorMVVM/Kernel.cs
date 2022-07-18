@@ -21,6 +21,9 @@ using System.Data.SqlClient;
 using System.Data;
 using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels.Models.Painters;
+using System.Windows.Media;
+using System.Text.RegularExpressions;
+using Microsoft.Win32;
 
 namespace FractalGeneratorMVVM
 {
@@ -240,6 +243,13 @@ namespace FractalGeneratorMVVM
             #region Random Painter
             _defaultPage.ToolRibbonVM.RandomPainterEvent += _defaultPage.PainterStackVM.RandomPainter;
             #endregion
+
+            #region File Operations
+            _defaultPage.ToolRibbonVM.OpenFileEvent += OpenFrac;
+            _defaultPage.ToolRibbonVM.SaveFractalEvent += SaveFrac;
+
+            MainWindow.CTRL_S += SaveFrac;
+            #endregion
         }
         #endregion
 
@@ -256,6 +266,7 @@ namespace FractalGeneratorMVVM
 
         public void PreRender(bool clearZoom=false)
         {
+
             if (!NoObjectNull)  // IF one of the key objects is missing, complain.
             {
                 MessageBox.Show($"Please select: {(ActiveFractalFrame == null ? "Fractal Frame, " : "")} " +
@@ -476,6 +487,174 @@ namespace FractalGeneratorMVVM
         public void ShowMainWindow()
         {
             _windowManager.ShowWindowAsync(_mainWindow);
+        }
+
+        public void OpenFrac()
+        {
+
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "Fractal Definition File (*.frac)|*.frac";
+
+            string text;
+            if (openFile.ShowDialog() == true)
+            {
+                text = File.ReadAllText(openFile.FileName);
+            } else
+            {
+                return;
+            }
+
+            MainWindow.WindowTitle = openFile.SafeFileName;
+
+            text = text.Trim();
+            List<string> lines = text.Split("\n").ToList();
+
+
+            // Remove whitespace
+            for (int l = 0; l < lines.Count; l++)
+            {
+                lines[l] = Regex.Replace(lines[l], @"\s+", "");
+            }
+
+            lines.ForEach(o => Console.WriteLine(o));
+
+            #region Fractal Frame Parse
+            int ffDefLines = 6;
+            int ffIndex = lines.IndexOf("##FRACTALFRAME");
+            List<string> ffDef = new List<string>();
+            for (int index = ffIndex + 1; index < ffIndex + ffDefLines + 1; index++)
+            {
+                ffDef.Add(lines[index]);
+            }
+
+            Dictionary<string, string> ffDic = new Dictionary<string, string>();
+            foreach (string defLine in ffDef)
+            {
+                string propName = defLine.Split(":")[0];
+                string val = defLine.Split(":")[1];
+                ffDic.Add(propName, val);
+            }
+
+            float left = float.Parse(ffDic["Left"]);
+            float right = float.Parse(ffDic["Right"]);
+            float top = float.Parse(ffDic["Top"]);
+            float bottom = float.Parse(ffDic["Bottom"]);
+            uint iterations = uint.Parse(ffDic["Iterations"]);
+            int bail = int.Parse(ffDic["Bail"]);
+
+            FractalFrame fractalFrame = new FractalFrame(left, right, top, bottom, "Untitled", iterations, bail);
+            #endregion
+
+            #region Iterator Parse
+            int iterDefLines = 1;
+            int iterIndex = lines.IndexOf("##ITERATOR");
+            List<string> iterDef = new List<string>();
+            for (int index = iterIndex + 1; index < iterIndex + iterDefLines + 1; index++)
+            {
+                iterDef.Add(lines[index]);
+            }
+
+            Dictionary<string, string> iterDic = new Dictionary<string, string>();
+            foreach (string defLine in iterDef)
+            {
+                string propName = defLine.Split(":")[0];
+                string val = defLine.Split(":")[1];
+                iterDic.Add(propName, val);
+            }
+
+            string formulaString = iterDic["FormulaString"];
+
+            BasicIterator iterator = new BasicIterator(formulaString);
+            #endregion
+
+            #region Painter
+            IPainter painter;
+
+            if (lines.Contains("##BASICPAINTER"))
+            {
+                // This fractal is using a basic painter
+                int bpDefLines = 3;
+                int bpIndex = lines.IndexOf("##BASICPAINTER");
+                List<string> bpDef = new List<string>();
+                for (int index = bpIndex + 1; index < bpIndex + bpDefLines + 1; index++)
+                {
+                    bpDef.Add(lines[index]);
+                }
+
+                Dictionary<string, string> bpDic = new Dictionary<string, string>();
+                foreach (string defLine in bpDef)
+                {
+                    string propName = defLine.Split(":")[0];
+                    string val = defLine.Split(":")[1];
+                    bpDic.Add(propName, val);
+                }
+
+                string inSetColourString = bpDic["InSetColour"];
+                Color inSetColour = (Color)ColorConverter.ConvertFromString(inSetColourString);
+                string mainColourString = bpDic["MainColour"];
+                Color mainColour = (Color)ColorConverter.ConvertFromString(mainColourString);
+
+                bool type = (bpDic["Type"] == "1");
+
+                painter = type == true ? new BasicPainterLight("Untitled", mainColour, inSetColour) : new BasicPainterDark("Untitled", mainColour, inSetColour);
+            } else
+            {
+                throw new Exception("Cannot find painter definition");
+            }
+
+            #endregion
+
+            DefaultPage.FractalFrameStackVM.AddFractalFrame(fractalFrame);
+            DefaultPage.IteratorStackVM.AddIterator(iterator);
+            DefaultPage.PainterStackVM.AddPainter(painter);
+
+        }
+
+        public void SaveFrac()
+        {
+            if (!NoObjectNull)  // IF one of the key objects is missing, complain.
+            {
+                MessageBox.Show($"Please select: {(ActiveFractalFrame == null ? "Fractal Frame, " : "")} " +
+                    $"{(SelectedIterator == null ? "Iterator, " : "")}" +
+                    $"{(SelectedPainter == null ? "Painter, " : "")}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string fileString = "";
+
+            #region Fractal Frame Stuff
+            fileString += "## FRACTALFRAME\n";
+            fileString += $"Left: {ActiveFractalFrame!.Left}\n";
+            fileString += $"Right: {ActiveFractalFrame!.Right}\n";
+            fileString += $"Bottom: {ActiveFractalFrame!.Bottom}\n";
+            fileString += $"Top: {ActiveFractalFrame!.Top}\n";
+            fileString += $"Iterations: {ActiveFractalFrame!.Iterations}\n";
+            fileString += $"Bail: {ActiveFractalFrame!.Bail}\n";
+            #endregion
+
+            #region Iterator
+            fileString += "## ITERATOR\n";
+            fileString += $"FormulaString: {SelectedIterator!.FormulaString}\n";
+            #endregion
+
+            #region Painter
+            if (SelectedPainter is BasicPainterBase)
+            {
+                fileString += "## BASICPAINTER\n";
+                fileString += $"InSetColour: {((BasicPainterBase)SelectedPainter).InSetColour}\n";
+                fileString += $"MainColour: {((BasicPainterBase)SelectedPainter).MainColour}\n";
+                fileString += $"Type: {(SelectedPainter.GetType() == typeof(BasicPainterLight) ? 1 : 0)}\n";
+            }
+            #endregion
+
+            SaveFileDialog saveFile = new SaveFileDialog();
+
+            saveFile.Filter = "Fractal Definition File (*.frac)|*.frac";
+
+            if (saveFile.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFile.FileName, fileString);
+            }
         }
     }
 }

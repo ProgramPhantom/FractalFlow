@@ -10,6 +10,8 @@ using System.Windows.Input;
 
 namespace FractalGeneratorMVVM.ViewModels.Windows
 {
+    public delegate void Save();
+
     public class DefaultWindowViewModel : Conductor<object>
     {
         #region Fields
@@ -44,6 +46,8 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         #endregion
 
         #region Properties
+
+        public event Save? CTRL_S;
 
         /// <summary>
         /// The size of the region around the window where the resize handles appear.
@@ -149,7 +153,11 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
         public string WindowTitle
         {
             get { return _windowTitle; }
-            set { _windowTitle = value; }
+            set 
+            { 
+                _windowTitle = value;
+                NotifyOfPropertyChange(() => WindowTitle);
+            }
         }
 
 
@@ -229,6 +237,14 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
             NotifyOfPropertyChange(() => TitleHeightGridLength);
         }
 
+        public void WindowKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                CTRL_S?.Invoke();
+            }
+        }
+
         #region Commands
         /// <summary>
         /// Close the window
@@ -283,6 +299,8 @@ namespace FractalGeneratorMVVM.ViewModels.Windows
 
             
         }
+
+        
         #endregion
         #endregion
     }

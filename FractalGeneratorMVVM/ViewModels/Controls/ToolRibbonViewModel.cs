@@ -10,6 +10,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
     public delegate void Render(bool ClearZoom);   // The method
     public delegate void ZoomOperation();   // The method
     public delegate void PainterOperation();   // The method
+    public delegate void FileOperation();
 
     public class ToolRibbonViewModel : Screen
     {
@@ -20,6 +21,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         public event ZoomOperation? ResetZoomEvent;
 
         public event PainterOperation? RandomPainterEvent;
+
+        public event FileOperation? OpenFileEvent;
+        public event FileOperation? SaveFractalEvent;
 
         #region Fields
         private bool _gpuRender;
@@ -88,33 +92,45 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             OnRandomPainterClicked();
         }
+        public void OpenFileClicked()
+        {
+            OnOpenFileClicekd();
+        }
+        public void SaveFractalClicked()
+        {
+            OnSaveFractalClicked();
+        }
 
         protected virtual void OnRenderClicked() 
         {
             // Send the word that a render has been ordered!
             FireRenderEvent?.Invoke(false);
         }
-
         protected virtual void OnZoomInClicked()
         {
             // Send the word that a render has been ordered!
             ZoomInEvent?.Invoke();
         }
-
         protected virtual void OnZoomOutClicked()
         {
             ZoomOutEvent?.Invoke();
         }
-
         protected virtual void OnResetZoomClicked()
         {
             ResetZoomEvent?.Invoke();
         }
-
         protected virtual void OnRandomPainterClicked()
         {
             RandomPainterEvent?.Invoke();
             FireRenderEvent?.Invoke(false);
+        }
+        protected virtual void OnOpenFileClicekd()
+        {
+            OpenFileEvent?.Invoke();
+        }
+        protected virtual void OnSaveFractalClicked()
+        {
+            SaveFractalEvent?.Invoke();
         }
 
         #endregion

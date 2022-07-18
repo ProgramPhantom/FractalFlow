@@ -140,7 +140,12 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             }
 
             SelectedIteratorVM = IteratorViewModels.LastOrDefault();
+        }
 
+        public void AddIterator(BasicIterator iterator) 
+        {
+            IteratorViewModels.Add(new IteratorViewModel(iterator, IteratorViewModels.Count() + 1));
+            SelectedIteratorVM = IteratorViewModels.LastOrDefault();
         }
 
         public void Enter(KeyEventArgs k)

@@ -46,7 +46,7 @@
                      ItemsSource="{Binding FractalFrameViewModels}"
                      BorderThickness="0"
                      ItemContainerStyle="{StaticResource ItemStyleVertical}" 
-                     SelectedItem="{Binding SelectedFractalFrameVM}"
+                     SelectedItem="{Binding SelectedFractalFrameVM, Mode=TwoWay}"
                      >
 
                 <ListBox.ContextMenu>
