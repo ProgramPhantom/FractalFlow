@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace FractalGeneratorMVVM
 {
@@ -28,21 +29,16 @@ namespace FractalGeneratorMVVM
         Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();
 
         #region Feilds
-
         private readonly IWindowManager _windowManager;
-
         private DefaultWindowViewModel _mainWindow;
         private DefaultWindowViewModel _consoleWindow;
         private DefaultPageViewModel _defaultPage;
         private ConsolePageViewModel _consolePage;
         private RenderEngine _renderEngine;
         private int _renders;
-
         public Fractal? ActiveFractal;
         public FractalImage? ActiveFractalImage;
-
         private float _zoomDivisor = 2;
-
         private FullRenderJob? _fullJob;
         private PaintJob? _paintJob;
         #endregion
@@ -105,7 +101,6 @@ namespace FractalGeneratorMVVM
                 return DefaultPage.SelectedIterator;
             }
         }
-
         public ushort RenderHeight
         {
             get
@@ -146,7 +141,6 @@ namespace FractalGeneratorMVVM
                 _paintJob.StatusUpdateEvent += ConsolePage.NewLog;
             }
         }
-
         public bool NoObjectNull
         {
             get
@@ -166,7 +160,6 @@ namespace FractalGeneratorMVVM
                 return fractalTheSame && (SelectedPainter != ActiveFractalImage.CurrentPaint);
             }
         }
-
         public int JobCount
         {
             get
@@ -208,7 +201,6 @@ namespace FractalGeneratorMVVM
 
 
         }
-
         public Kernel(BindableCollection<FractalFrameViewModel> fractalFrameViewModels,
             BindableCollection<IPainterViewModel> painterViewModels, BindableCollection<IteratorViewModel> iteratorViewModels)
         {
@@ -270,6 +262,7 @@ namespace FractalGeneratorMVVM
             #region File Operations
             _defaultPage.ToolRibbonVM.OpenFileEvent += OpenFrac;
             _defaultPage.ToolRibbonVM.SaveFractalEvent += SaveFrac;
+            _defaultPage.ToolRibbonVM.SaveFractalImageEvent += SaveImage;
 
             MainWindow.CTRL_S += SaveFrac;
             #endregion
@@ -316,7 +309,6 @@ namespace FractalGeneratorMVVM
                 RenderAsync();
             }
         }
-
         public async void RenderAsync()
         {
 
@@ -419,7 +411,6 @@ namespace FractalGeneratorMVVM
             ConsolePage.NewLog(new Status($"Overall render duration: {timer.Elapsed.Milliseconds}ms", NotificationType.RenderDuration));
             #endregion
         }
-
         public void HardZoom(Point clickLocation, double width, double height)
         {
             if (DefaultPage.CanvasVM.Image == null)
@@ -467,7 +458,6 @@ namespace FractalGeneratorMVVM
 
             PreRender(false);
         }
-
         public void ResetZoom()
         {
             if (DefaultPage.CanvasVM.Image == null)
@@ -679,6 +669,26 @@ namespace FractalGeneratorMVVM
             if (saveFile.ShowDialog() == true)
             {
                 File.WriteAllText(saveFile.FileName, fileString);
+            }
+        }
+        public void SaveImage()
+        {
+            if (ActiveFractalImage == null) { return; }
+
+            SaveFileDialog saveImage = new SaveFileDialog();
+            saveImage.Filter = "PNG (*.png)|*.png";
+
+            if (saveImage.ShowDialog() == true)
+            {
+                if (saveImage.FileName != String.Empty)
+                {
+                    using (FileStream stream = new FileStream(saveImage.FileName, FileMode.Create))
+                    {
+                        PngBitmapEncoder encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(ActiveFractalImage!.FractalBitmap.Clone()));
+                        encoder.Save(stream);
+                    }
+                }
             }
         }
     }

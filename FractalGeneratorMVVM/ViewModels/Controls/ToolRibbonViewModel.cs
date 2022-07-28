@@ -24,6 +24,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         public event FileOperation? OpenFileEvent;
         public event FileOperation? SaveFractalEvent;
+        public event FileOperation? SaveFractalImageEvent;
 
         #region Fields
         private bool _gpuRender;
@@ -100,6 +101,10 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             OnSaveFractalClicked();
         }
+        public void SaveFractalImageClicked()
+        {
+            OnSaveFractalImageClicked();
+        }
 
         protected virtual void OnRenderClicked() 
         {
@@ -132,7 +137,10 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         {
             SaveFractalEvent?.Invoke();
         }
-
+        protected virtual void OnSaveFractalImageClicked()
+        {
+            SaveFractalImageEvent?.Invoke();
+        }
         #endregion
     }
 }
