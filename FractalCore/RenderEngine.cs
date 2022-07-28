@@ -25,6 +25,8 @@ namespace FractalCore
         private MultiCL _iterateCLEngine;
         private string? _currentIterScript = null;
         private string? _currentPaintScript = null;
+
+        public RenderProgressModel EngineReport;
         #endregion
 
 
@@ -55,6 +57,8 @@ namespace FractalCore
                 _currentIterScript = value;
             }
         }
+
+        
         #endregion
 
         #region Constructor
@@ -62,9 +66,7 @@ namespace FractalCore
         {
             _paintCLEngine = new MultiCL();
             _iterateCLEngine = new MultiCL();
-            
-
-            
+            EngineReport = new RenderProgressModel();
         }
         #endregion
 
@@ -77,17 +79,15 @@ namespace FractalCore
         /// <param name="progress"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task BitmapComputeAsync(RenderBitmapJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
+        public void Paint(PaintJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
-            await IterationsComputeAsync(job.ComputeIterationsJob, progress, cancellationToken);
-
             #region Timer start
             job.SetStatus($"{job.JobNum}: Starting bitmap render", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
 
-            job.FractalImage.Render(job.Painter);
+            job.FractalImage.Render(ref job.Painter, ref job.Fractal);
             
             #region Timer end
             timer.Stop();
@@ -103,8 +103,9 @@ namespace FractalCore
             job.SetStatus($"{job.JobNum}: Finished bitmap render in {elapsedTime}", NotificationType.OperationComplete);
             #endregion
         }
-        public async Task IterationsComputeAsync(ComputeIterationsJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
+        public async Task FullRenderAsync(FullRenderJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
         {
+            EngineReport = new RenderProgressModel();
 
             #region Variables
             Fractal fractal = job.Fractal;
@@ -112,8 +113,6 @@ namespace FractalCore
             double imagStep = job.Fractal.ImagStep;
             int height = job.Fractal.Height;
             int width = job.Fractal.Width;
-
-            RenderProgressModel report = new RenderProgressModel();
 
             Complex point;
 
@@ -123,7 +122,6 @@ namespace FractalCore
             #endregion
 
             #region Timer start
-            job.SetStatus($"{job.JobNum}: Beginning iterations compute", NotificationType.Initialization);
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
@@ -148,34 +146,23 @@ namespace FractalCore
                 }
 
                 // Add one as y starts at 0
-                report.PercentageComplete = ((y + 1) * 100) / height;
-                progress.Report(report);
+                EngineReport.PercentageComplete = ((y + 1) * 100) / height;
+                progress.Report(EngineReport);
 
             }
 
             #region Timer end
             timer.Stop();
-
-            TimeSpan ts = timer.Elapsed;
-
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-
-            job.SetStatus($"{job.JobNum}: Finished iterations compute in {elapsedTime}", NotificationType.OperationComplete);
+            job.SetStatus($"{job.JobNum}: Finished iterations compute in {timer.Elapsed.Milliseconds}ms", NotificationType.OperationComplete);
             #endregion
+
+            Paint(job.PaintJob, progress, cancellationToken);
         }
 
 
 
-        public async Task CLBitmapCompute(RenderBitmapJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
+        public async Task CLPaintAsync(PaintJob job, IProgress<RenderProgressModel> progress)
         {
-            // First, compute the iterations array in Fractal
-
-            // ------------ This is where a check is needed to see if this fractal already exists ----------------
-            await CLIterationsCompute(job.ComputeIterationsJob, progress, cancellationToken);
-            // ---------------------------------------------------------------------------------------------------
 
             #region Initialize PaintCLEngine
             #region Start timer
@@ -185,6 +172,11 @@ namespace FractalCore
             if (!(job.Painter.PaintCLScript == CurrentPaintScript))
             {
                 PaintCLEngine.SetKernel(job.Painter.PaintCLScript, "Paint");
+                PaintCLEngine.ProgressChangedEvent += (object? sender, double e) =>
+                {
+                    EngineReport.PercentageComplete = (int)Math.Round(e * 100);
+                    progress.Report(EngineReport);
+                }; 
                 CurrentPaintScript = job.Painter.PaintCLScript;
             }
             #region Timer end
@@ -209,7 +201,7 @@ namespace FractalCore
             }
 
             // Set the parameters 
-            job.Painter.SetKernelParameters(ref _paintCLEngine, ref pixels, ref flatIterations, job.FractalFrame.Iterations);
+            job.Painter.SetKernelParameters(ref _paintCLEngine, ref pixels, ref flatIterations, job.Fractal.FractalFrame.Iterations);
             #endregion
 
             #region Timer start
@@ -218,9 +210,10 @@ namespace FractalCore
             #endregion
 
             // Execute
-            await Task.Run(() => PaintCLEngine.Invoke(0, pixels.Length, 100, cancellationToken));  // Colour pixels 
+            await Task.Run(() => PaintCLEngine.Invoke(0, pixels.Length, 100));  // Colour pixels 
 
             #region Write to Fractal Image
+            job.FractalImage.CurrentPaint = job.Painter;  // Very important 
             PainterBase.WriteArrToBM(ref pixels, fractal.Width, fractal.Height, fractalImage.FractalBitmap);  // Write pixels to writable bitmap
             #endregion
 
@@ -229,18 +222,10 @@ namespace FractalCore
             job.SetStatus($"CL-{job.JobNum}: Finished bitmap render in {timer.Elapsed.Milliseconds}ms", NotificationType.OperationComplete);
             #endregion
         }
-        public async Task CLIterationsCompute(ComputeIterationsJob job, IProgress<RenderProgressModel> progress, CancellationToken cancellationToken)
+        public async Task CLFullRenderAsync(FullRenderJob job, IProgress<RenderProgressModel> progress)
         {
-            RenderProgressModel report = new RenderProgressModel();
-            void Report(object? sender, double e)
-            {
-                
-
-                report.PercentageComplete = (int)Math.Round(e * 100);
-                progress.Report(report);
-
-            }
-
+            EngineReport = new RenderProgressModel();
+           
             #region Initialize CLEngine
 
             #region Timer start
@@ -251,7 +236,11 @@ namespace FractalCore
             if (!(job.Fractal.Iterator.FullIterationScript == CurrentIterScript))
             {
                 IterateCLEngine.SetKernel(job.Fractal.Iterator.FullIterationScript, "Mandelbrot");
-                IterateCLEngine.ProgressChangedEvent += Report;
+                IterateCLEngine.ProgressChangedEvent += (object? sender, double e) =>
+                {
+                    EngineReport.PercentageComplete = (int)Math.Round(e * 100);
+                    progress.Report(EngineReport);
+                };
                 CurrentIterScript = job.Fractal.Iterator.FullIterationScript;
             }
             // ----------------------------------------------------------------------------
@@ -279,7 +268,7 @@ namespace FractalCore
             #endregion
 
             // Execute
-            await Task.Run(() => IterateCLEngine.Invoke(0, flatArray.Length, 100, cancellationToken));
+            await Task.Run(() => IterateCLEngine.Invoke(0, flatArray.Length, 100));
 
             #region Write 1d array to 2d
             int pos = 0;
@@ -298,7 +287,14 @@ namespace FractalCore
             timer.Stop();
             job.SetStatus($"CL-{job.JobNum}: Finished iterations compute in {timer.Elapsed.Milliseconds}ms", NotificationType.OperationComplete);
             #endregion
+
+
+            // Paint
+            await CLPaintAsync(job.PaintJob, progress);
         }
+
+
+
         #endregion
     }
 }

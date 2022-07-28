@@ -20,7 +20,7 @@ namespace FractalCore
         #region Fields
         private WriteableBitmap _fractalBitmap;
 
-        private Fractal _fractal;
+
         #endregion
 
         #region Properties
@@ -29,41 +29,31 @@ namespace FractalCore
             get { return _fractalBitmap; }
         }
 
-        public Fractal Fractal
-        {
-            get { return _fractal; }
-            set { _fractal = value; }
-        }
+        public IPainter? CurrentPaint = null;
 
-        public int Width
-        {
-            get
-            {
-                return Fractal.Width;
-            }
-        }
+        public int Width;
 
-        public int Height
-        {
-            get
-            {
-                return Fractal.Height;
-            }
-        }
+        public int Height;
         #endregion
 
-        public FractalImage(ref Fractal fractal)
+        public FractalImage(int width, int height)
         {
             // Need to now create the writeable bitmap with the colours
-            _fractalBitmap = new WriteableBitmap(fractal.Width, fractal.Height, 96, 96, PixelFormats.Bgr32, null);  // Set up an empty WriteableBitmap with the correct dimensions
-            // painter.Paint(ref _fractalBitmap, ref fractal);  // Paint the 
+            _fractalBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr32, null);  // Set up an empty WriteableBitmap with the correct dimensions
 
-            _fractal = fractal;
+            Width = width;
+            Height = height;
         }
 
-        public void Render(IPainter painter)
+        public void Render(ref IPainter painter, ref Fractal fractal)
         {
-            painter.Paint(ref _fractalBitmap, ref _fractal);
+            if (!(fractal.Width == Width && fractal.Height == Height))
+            {
+                throw new Exception("Cannot draw that fractal to this fractal image");
+            }
+
+            CurrentPaint = painter;
+            painter.Paint(ref _fractalBitmap, ref fractal);
         }
 
         public void SaveImage(string filename)

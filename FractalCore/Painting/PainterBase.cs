@@ -55,6 +55,7 @@ namespace FractalCore.Painting
 
         }
 
+
         /// <summary>
         /// Does the same thing but takes a 1d array
         /// </summary>

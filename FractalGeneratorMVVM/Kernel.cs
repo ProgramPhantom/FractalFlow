@@ -1,29 +1,21 @@
 ﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using FractalGeneratorMVVM.Views;
-using FractalGeneratorMVVM.ViewModels;
-using FractalGeneratorMVVM.ViewModels.Windows;
-using System.Diagnostics;
 using FractalCore;
-using System.Threading;
 using FractalCore.Painting;
-using FractalGeneratorMVVM.ViewModels.Pages;
-using System.Numerics;
-using System.Windows.Controls;
-using System.Xml.Serialization;
-using System.IO;
-using System.Data.SqlClient;
-using System.Data;
 using FractalGeneratorMVVM.ViewModels.Models;
 using FractalGeneratorMVVM.ViewModels.Models.Painters;
-using System.Windows.Media;
-using System.Text.RegularExpressions;
+using FractalGeneratorMVVM.ViewModels.Pages;
+using FractalGeneratorMVVM.ViewModels.Windows;
 using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Numerics;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows;
+using System.Windows.Media;
 
 namespace FractalGeneratorMVVM
 {
@@ -46,11 +38,13 @@ namespace FractalGeneratorMVVM
         private RenderEngine _renderEngine;
         private int _renders;
 
-        private Fractal? _activeFractal;
+        public Fractal? ActiveFractal;
+        public FractalImage? ActiveFractalImage;
 
-        private bool _consoleOpen = false;
         private float _zoomDivisor = 2;
 
+        private FullRenderJob? _fullJob;
+        private PaintJob? _paintJob;
         #endregion
 
         #region Properties
@@ -64,7 +58,6 @@ namespace FractalGeneratorMVVM
             get { return _consoleWindow; }
             set { _consoleWindow = value; }
         }
-
         public DefaultPageViewModel DefaultPage
         {
             get { return _defaultPage; }
@@ -75,7 +68,6 @@ namespace FractalGeneratorMVVM
             get { return _consolePage; }
             set { _consolePage = value; }
         }
-
         public RenderEngine RenderEngine
         {
             get { return _renderEngine; }
@@ -130,10 +122,31 @@ namespace FractalGeneratorMVVM
         }
         #endregion
 
-        /// <summary>
-        /// Active Fractal is to be null until a render or save
-        /// </summary>
-        public Fractal? ActiveFractal;
+        public FullRenderJob? FullJob
+        {
+            get
+            {
+                return _fullJob;
+            }
+            set
+            {
+                _fullJob = value;
+                _fullJob.StatusUpdateEvent += ConsolePage.NewLog;
+            }
+        }
+        public PaintJob? PaintJob
+        {
+            get
+            {
+                return _paintJob;
+            }
+            set
+            {
+                _paintJob = value;
+                _paintJob.StatusUpdateEvent += ConsolePage.NewLog;
+            }
+        }
+
         public bool NoObjectNull
         {
             get
@@ -141,18 +154,28 @@ namespace FractalGeneratorMVVM
                 return !(ActiveFractalFrame == null || SelectedPainter == null || SelectedIterator == null);
             }
         }
+        public bool IsJustPainterChanged
+        {
+            get
+            {
+                if (ActiveFractal == null || ActiveFractalImage == null) { return false; }
+
+                bool fractalTheSame = ActiveFractal.Iterator == SelectedIterator && ActiveFractal.FractalFrame == ActiveFractalFrame &&
+                    ActiveFractal.Width == RenderWidth && ActiveFractal.Height == RenderHeight;
+
+                return fractalTheSame && (SelectedPainter != ActiveFractalImage.CurrentPaint);
+            }
+        }
 
         public int JobCount
         {
-            get { return _renders; }
+            get
+            {
+                _renders++;
+                return _renders;
+            }
             set { _renders = value; }
         }
-        public bool ConsoleOpen
-        {
-            get { return _consoleOpen; }
-            set { _consoleOpen = value; }
-        }
-
         public float ZoomFactor
         {
             get { return _zoomDivisor; }
@@ -164,6 +187,8 @@ namespace FractalGeneratorMVVM
         #region Constructor
         public Kernel()
         {
+
+
             _windowManager = new WindowManager();
 
             _consolePage = new ConsolePageViewModel();
@@ -181,7 +206,7 @@ namespace FractalGeneratorMVVM
 
             _renderEngine = new RenderEngine();
 
-            
+
         }
 
         public Kernel(BindableCollection<FractalFrameViewModel> fractalFrameViewModels,
@@ -212,7 +237,7 @@ namespace FractalGeneratorMVVM
             #region Render Button Event
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
             _defaultPage.ToolRibbonVM.FireRenderEvent += PreRender;
-            
+
             #endregion
 
             #region Cancel Render Event
@@ -251,20 +276,19 @@ namespace FractalGeneratorMVVM
         }
         #endregion
 
-        public void CanvasHovered(Point hoverLocation, double canvasWidth, double canvasHeight) 
+        public void CanvasHovered(Point hoverLocation, double canvasWidth, double canvasHeight)
         {
             Complex mousePos;
-        
+
             mousePos = ActiveFractal.FractalFrame.PxToComplex(hoverLocation, canvasWidth, canvasHeight);
-          
-            
+
+
 
             _defaultPage.StatusBarVM.UpdateHoverMessage(mousePos);
         }
-
-        public void PreRender(bool clearZoom=false)
+        public void PreRender(bool clearZoom = false)
         {
-            
+
 
             if (!NoObjectNull)  // IF one of the key objects is missing, complain.
             {
@@ -277,11 +301,6 @@ namespace FractalGeneratorMVVM
             if (clearZoom == true) { FakeFractalFrame = null; }  // Remove the fake fractal
             // Make sure this happens before the Fractal is created
 
-            // Create the space in memory 
-            ActiveFractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame!, SelectedIterator!);
-
-            
-
 
             cts = new CancellationTokenSource();  // Set up the cancel thing
             progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
@@ -291,53 +310,64 @@ namespace FractalGeneratorMVVM
             if (DefaultPage.ToolRibbonVM.GPURender == true)
             {
                 CLRenderAsync();
-            } else
+            }
+            else
             {
                 RenderAsync();
             }
         }
 
-        
         public async void RenderAsync()
         {
+
+
             #region Timer start
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
-            
-            FractalImage fractalImage = new FractalImage(ref ActiveFractal!);
 
-            ComputeIterationsJob computeJob = new ComputeIterationsJob(ActiveFractal, JobCount);
-            JobCount++;
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter!, fractalImage, JobCount);
-            JobCount++;
 
-            computeJob.StatusUpdateEvent += _consolePage.NewLog;
-            job.StatusUpdateEvent += _consolePage.NewLog;
 
-            
-
-            try
+            if (IsJustPainterChanged) // A value has changed
             {
-                await RenderEngine.BitmapComputeAsync(job, progress, cts.Token);
+                PaintJob paintJob = new PaintJob(ActiveFractal!, SelectedPainter!, ActiveFractalImage!, JobCount);
+
+                try
+                {
+                    RenderEngine.Paint(paintJob, progress, cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+
+                }
             }
-            catch (OperationCanceledException)
+            else
             {
 
+                ActiveFractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame!, SelectedIterator!);
+                ActiveFractalImage = new FractalImage(ActiveFractal.Width, ActiveFractal.Height);
+
+
+                PaintJob = new PaintJob(ActiveFractal, SelectedPainter!, ActiveFractalImage, JobCount);
+
+                FullJob = new FullRenderJob(PaintJob, JobCount);
+
+                try
+                {
+                    await RenderEngine.FullRenderAsync(FullJob, progress, cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+
+                }
             }
 
             // Set the image of the new canvas to the newley rendered fractal painted with the selected painter.
-            DefaultPage.CanvasVM.Image = fractalImage;
+            DefaultPage.CanvasVM.Image = ActiveFractalImage;
 
             #region Timer end
             timer.Stop();
-            TimeSpan ts = timer.Elapsed;
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-
-            ConsolePage.NewLog(new Status($"Overall render duration: {elapsedTime}", NotificationType.RenderDuration));
+            ConsolePage.NewLog(new Status($"Overall render duration: {timer.Elapsed.Milliseconds}ms", NotificationType.RenderDuration));
             #endregion
         }
         public async void CLRenderAsync()
@@ -347,27 +377,42 @@ namespace FractalGeneratorMVVM
             timer.Start();
             #endregion
 
-            FractalImage fractalImage = new FractalImage(ref ActiveFractal!);
-
-            ComputeIterationsJob computeJob = new ComputeIterationsJob(ActiveFractal, JobCount);
-            JobCount++;
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter!, fractalImage, JobCount);
-            JobCount++;
-
-            computeJob.StatusUpdateEvent += _consolePage.NewLog;
-            job.StatusUpdateEvent += _consolePage.NewLog;
-            
-            try
+            if (IsJustPainterChanged) // There is a new painter but everything else is the same
             {
-                await RenderEngine.CLBitmapCompute(job, progress, cts.Token);
+                PaintJob = new PaintJob(ActiveFractal!, SelectedPainter!, ActiveFractalImage!, JobCount);
+
+                try
+                {
+                    await RenderEngine.CLPaintAsync(PaintJob, progress);
+                }
+                catch (OperationCanceledException)
+                {
+
+                }
             }
-            catch (OperationCanceledException)
+            else
             {
 
-            }
-            
 
-            DefaultPage.CanvasVM.Image = fractalImage;
+                ActiveFractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame!, SelectedIterator!);
+                ActiveFractalImage = new FractalImage(ActiveFractal.Width, ActiveFractal.Height);
+
+                PaintJob = new PaintJob(ActiveFractal, SelectedPainter!, ActiveFractalImage, JobCount);
+
+                FullJob = new FullRenderJob(PaintJob, JobCount);
+
+                try
+                {
+                    await RenderEngine.CLFullRenderAsync(FullJob, progress);
+                }
+                catch (OperationCanceledException)
+                {
+
+                }
+            }
+
+
+            DefaultPage.CanvasVM.Image = ActiveFractalImage;
 
             #region Timer end
             timer.Stop();
@@ -389,14 +434,14 @@ namespace FractalGeneratorMVVM
             double newWidth = ActiveFractalFrame.RealWidth / ZoomFactor;
             double newHeight = ActiveFractalFrame.ImaginaryHeight / ZoomFactor;
 
-            FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary, 
+            FractalFrame newFrame = FractalFrame.FractalFrameCentre((float)newWidth, (float)newHeight, (float)centre.Real, (float)centre.Imaginary,
                 "Temporary Frame", SelectedFractalFrame.Iterations, SelectedFractalFrame.Bail);
 
             FakeFractalFrame = newFrame;
 
             PreRender(false);
         }
-        public void HardZoom(bool zoomOut=false)
+        public void HardZoom(bool zoomOut = false)
         {
             if (DefaultPage.CanvasVM.Image == null)
             {
@@ -405,8 +450,8 @@ namespace FractalGeneratorMVVM
 
             int width = DefaultPage.CanvasVM.Image.Width;
             int height = DefaultPage.CanvasVM.Image.Height;
-            Point clickLocation = new Point(width/2, height/2);
-            
+            Point clickLocation = new Point(width / 2, height / 2);
+
 
             Complex centre = ActiveFractalFrame.PxToComplex(clickLocation, width, height);
 
@@ -440,21 +485,18 @@ namespace FractalGeneratorMVVM
         {
             HardZoom(true);
         }
-
         public void ToggleConsoleWindowShow()
         {
-            ConsoleOpen = !ConsoleOpen;
+            
 
-            if (ConsoleOpen == true)
-            {
-                _windowManager.ShowWindowAsync(ConsoleWindow);
-            }
-            else
+            if (ConsoleWindow.IsActive == true)
             {
                 ConsoleWindow.TryCloseAsync();
+            } else
+            {
+                _windowManager.ShowWindowAsync(ConsoleWindow);  
             }
         }
-
         public void CancelRender()
         {
             cts.Cancel();
@@ -462,18 +504,15 @@ namespace FractalGeneratorMVVM
             DefaultPage.StatusBarVM.ProgressBar = 0;
 
         }
-
         private void ReportProgress(object? sender, RenderProgressModel e)
         {
             DefaultPage.StatusBarVM.ProgressBar = e.PercentageComplete;
 
         }
-
         public void ShowMainWindow()
         {
             _windowManager.ShowWindowAsync(_mainWindow);
         }
-
         public void OpenFrac()
         {
 
@@ -484,7 +523,8 @@ namespace FractalGeneratorMVVM
             if (openFile.ShowDialog() == true)
             {
                 text = File.ReadAllText(openFile.FileName);
-            } else
+            }
+            else
             {
                 return;
             }
@@ -582,7 +622,8 @@ namespace FractalGeneratorMVVM
                 bool type = (bpDic["Type"] == "1");
 
                 painter = type == true ? new BasicPainterLight("Untitled", mainColour, inSetColour) : new BasicPainterDark("Untitled", mainColour, inSetColour);
-            } else
+            }
+            else
             {
                 throw new Exception("Cannot find painter definition");
             }
@@ -594,7 +635,6 @@ namespace FractalGeneratorMVVM
             DefaultPage.PainterStackVM.AddPainter(painter);
 
         }
-
         public void SaveFrac()
         {
             if (!NoObjectNull)  // IF one of the key objects is missing, complain.

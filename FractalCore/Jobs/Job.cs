@@ -50,15 +50,14 @@ namespace FractalCore
 
     public class Job
     {
+        public event StatusUpdate? StatusUpdateEvent;
+
         #region Fields
         private Status _status;
         private int _jobNum;
-        private string _jobID = "XH23&2^cS^£";
         #endregion
 
         #region Properties
-        public event StatusUpdate? StatusUpdateEvent;
-
         public Status JobStatus
         {
             get
@@ -70,20 +69,11 @@ namespace FractalCore
                 _status = value;
             }
         }
-
         public int JobNum
         {
             get { return _jobNum; }
             set { _jobNum = value; }
         }
-
-        public string JobID
-        {
-            get { return _jobID; }
-            set { _jobID = value; }
-        }
-
-        
         #endregion
 
         public Job(int num)
