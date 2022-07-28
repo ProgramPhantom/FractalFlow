@@ -6,7 +6,7 @@ Top: 2.1
 Iterations: 100
 Bail: 2
 ## ITERATOR
-FormulaString: z^2+c
+FormulaString: sin(z)^2+c
 ## BASICPAINTER
 InSetColour: #FFFFFFFF
 MainColour: #AAAAAAAA

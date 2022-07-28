@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FractalCore
 {
-    public enum NotificationType { OperationComplete, OperationCancel, Initialization, RenderDuration, Zoom, Misc}
+    public enum NotificationType { OperationComplete, OperationCancel, Initialization, RenderDuration, Zoom, Complile, Misc}
 
     public struct Status
     {
@@ -22,7 +22,7 @@ namespace FractalCore
         {
             get
             {
-                return $"{TimeCreated.ToString("MM/dd/yyyy HH:mm")} {NotificationType.ToString()}";
+                return $"{TimeCreated.ToString("HH:mm")} {NotificationType.ToString()}";
             }
         }
 

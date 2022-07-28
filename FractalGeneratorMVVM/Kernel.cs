@@ -33,6 +33,7 @@ namespace FractalGeneratorMVVM
     public class Kernel : PropertyChangedBase
     {
         CancellationTokenSource cts = new CancellationTokenSource();
+        Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();
 
         #region Feilds
 
@@ -50,9 +51,6 @@ namespace FractalGeneratorMVVM
         private bool _consoleOpen = false;
         private float _zoomDivisor = 2;
 
-        //private List<FractalFrame> fractalFrames;
-        //private List<BasicIterator> basicIterators;
-        //private List<IPainter> painters;
         #endregion
 
         #region Properties
@@ -131,7 +129,6 @@ namespace FractalGeneratorMVVM
             }
         }
         #endregion
-
 
         /// <summary>
         /// Active Fractal is to be null until a render or save
@@ -215,6 +212,7 @@ namespace FractalGeneratorMVVM
             #region Render Button Event
             // Wire up the Render Button in the ToolRibbon to the render here in the shell 😀
             _defaultPage.ToolRibbonVM.FireRenderEvent += PreRender;
+            
             #endregion
 
             #region Cancel Render Event
@@ -266,6 +264,7 @@ namespace FractalGeneratorMVVM
 
         public void PreRender(bool clearZoom=false)
         {
+            
 
             if (!NoObjectNull)  // IF one of the key objects is missing, complain.
             {
@@ -281,6 +280,14 @@ namespace FractalGeneratorMVVM
             // Create the space in memory 
             ActiveFractal = new Fractal(RenderWidth, RenderHeight, ActiveFractalFrame!, SelectedIterator!);
 
+            
+
+
+            cts = new CancellationTokenSource();  // Set up the cancel thing
+            progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
+            progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
+
+
             if (DefaultPage.ToolRibbonVM.GPURender == true)
             {
                 CLRenderAsync();
@@ -290,39 +297,19 @@ namespace FractalGeneratorMVVM
             }
         }
 
-        public void ToggleConsoleWindowShow()
-        {
-            ConsoleOpen = !ConsoleOpen;
-
-            if (ConsoleOpen == true)
-            {
-                _windowManager.ShowWindowAsync(ConsoleWindow);
-            } else
-            {
-                ConsoleWindow.TryCloseAsync();
-            }
-        }
-
+        
         public async void RenderAsync()
         {
             #region Timer start
             Stopwatch timer = new Stopwatch();
             timer.Start();
             #endregion
-
-
-            cts = new CancellationTokenSource();  // Set up the cancel thing
-            // Progress is a metadata thing
-            Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
-            progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
-
-
             
             FractalImage fractalImage = new FractalImage(ref ActiveFractal!);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(ActiveFractal, JobCount);
             JobCount++;
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter, fractalImage, JobCount);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter!, fractalImage, JobCount);
             JobCount++;
 
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
@@ -360,25 +347,15 @@ namespace FractalGeneratorMVVM
             timer.Start();
             #endregion
 
-            
-
-            cts = new CancellationTokenSource();  // Set up the cancel thing
-
-            Progress<RenderProgressModel> progress = new Progress<RenderProgressModel>();  // Set up a progress monitor using the render progress model in Fractal Core
-            progress.ProgressChanged += ReportProgress;  // Call this method when there is a progress update
-
-            
-            FractalImage fractalImage = new FractalImage(ref ActiveFractal);
+            FractalImage fractalImage = new FractalImage(ref ActiveFractal!);
 
             ComputeIterationsJob computeJob = new ComputeIterationsJob(ActiveFractal, JobCount);
             JobCount++;
-            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter, fractalImage, JobCount);
+            RenderBitmapJob job = new RenderBitmapJob(computeJob, SelectedPainter!, fractalImage, JobCount);
             JobCount++;
 
             computeJob.StatusUpdateEvent += _consolePage.NewLog;
             job.StatusUpdateEvent += _consolePage.NewLog;
-
-
             
             try
             {
@@ -394,13 +371,7 @@ namespace FractalGeneratorMVVM
 
             #region Timer end
             timer.Stop();
-            TimeSpan ts = timer.Elapsed;
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-
-            ConsolePage.NewLog(new Status($"Overall render duration: {elapsedTime}", NotificationType.RenderDuration));
+            ConsolePage.NewLog(new Status($"Overall render duration: {timer.Elapsed.Milliseconds}ms", NotificationType.RenderDuration));
             #endregion
         }
 
@@ -468,6 +439,20 @@ namespace FractalGeneratorMVVM
         public void DumbZoomOut()
         {
             HardZoom(true);
+        }
+
+        public void ToggleConsoleWindowShow()
+        {
+            ConsoleOpen = !ConsoleOpen;
+
+            if (ConsoleOpen == true)
+            {
+                _windowManager.ShowWindowAsync(ConsoleWindow);
+            }
+            else
+            {
+                ConsoleWindow.TryCloseAsync();
+            }
         }
 
         public void CancelRender()

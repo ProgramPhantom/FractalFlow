@@ -98,10 +98,17 @@
             </Button>
 
             <!-- Save -->
-            <Button Style="{StaticResource Grow}" Margin="29 4 29 4" Width="36"
+            <Button Style="{StaticResource Grow}" Margin="29 4 0 4" Width="36"
                     Content="{StaticResource Save}"
                     x:Name="SaveFractalClicked"
                     ToolTip="Save">
+            </Button>
+
+            <!-- Save Image -->
+            <Button Style="{StaticResource Grow}" Margin="29 4 29 4" Width="36"
+                    Content="{StaticResource Image}"
+                    x:Name="SaveFractalImageClicked"
+                    ToolTip="Save Image">
             </Button>
 
             <Line X1="0" Y1="11" X2="0" Y2="55" StrokeThickness="1" Stroke="{StaticResource Line1Brush}"/>

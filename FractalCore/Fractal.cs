@@ -18,7 +18,7 @@ namespace FractalCore
         private BasicIterator _iterator;
 
         [XmlIgnore]
-        private uint[,]? _iterationsArray;
+        private uint[,] _iterationsArray;
 
         private int _height;
         private int _width;
@@ -47,7 +47,7 @@ namespace FractalCore
         }
 
         [XmlIgnore]
-        public uint[,]? IterationsArray
+        public uint[,] IterationsArray
         {
             get { return _iterationsArray; }
             set { _iterationsArray = value; }
