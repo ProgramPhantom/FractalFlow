@@ -1,0 +1,4 @@
+var class_fractal_generator_m_v_v_m_1_1_view_models_1_1_win_pages_1_1_add_fractal_frame_window_view_model =
+[
+    [ "AddFractalFrameWindowViewModel", "class_fractal_generator_m_v_v_m_1_1_view_models_1_1_win_pages_1_1_add_fractal_frame_window_view_model.html#a46aac92c876141b79bd222f96a08ed8e", null ]
+];

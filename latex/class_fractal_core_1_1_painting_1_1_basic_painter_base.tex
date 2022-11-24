@@ -1,0 +1,86 @@
+\hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base}{}\doxysection{Fractal\+Core.\+Painting.\+Basic\+Painter\+Base Class Reference}
+\label{class_fractal_core_1_1_painting_1_1_basic_painter_base}\index{FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}}
+Inheritance diagram for Fractal\+Core.\+Painting.\+Basic\+Painter\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_fractal_core_1_1_painting_1_1_basic_painter_base}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base_ac0b15776eb32df4cb87f07db733d4fe0}\label{class_fractal_core_1_1_painting_1_1_basic_painter_base_ac0b15776eb32df4cb87f07db733d4fe0}} 
+{\bfseries Basic\+Painter\+Base} (string name, Color main\+Colour, Color in\+Set\+Colour)
+\item 
+abstract void \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_base_afd1d4b2f4ede8793eb6792e6fca81a0c}{Paint}} (ref Writeable\+Bitmap fractal\+Bitmap, ref \mbox{\hyperlink{class_fractal_core_1_1_fractal}{Fractal}} fractal)
+\begin{DoxyCompactList}\small\item\em This HAS to be here so Basic\+Painter\+View\+Model\+Abstract can reference \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_base}{Basic\+Painter\+Base}}\textquotesingle{}s Painter model \end{DoxyCompactList}\item 
+abstract void \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_base_a5f6b302990279a935ae8a804d166c743}{Set\+Kernel\+Parameters}} (ref Multi\+CL kernel, ref byte\mbox{[}$\,$\mbox{]} pixels, ref uint\mbox{[}$\,$\mbox{]} iterations, uint iterations\+Cap)
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base_a14d5c70a2f1b9cdc769ce49c111d7001}\label{class_fractal_core_1_1_painting_1_1_basic_painter_base_a14d5c70a2f1b9cdc769ce49c111d7001}} 
+Color {\bfseries In\+Set\+Colour}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base_ab555621d8a21edb19ee5f4296c793365}\label{class_fractal_core_1_1_painting_1_1_basic_painter_base_ab555621d8a21edb19ee5f4296c793365}} 
+Color {\bfseries Main\+Colour}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+abstract string \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_base_a9d4476512130ae9e27caa4c2ed6bf948}{Paint\+CLScript}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base_afd1d4b2f4ede8793eb6792e6fca81a0c}\label{class_fractal_core_1_1_painting_1_1_basic_painter_base_afd1d4b2f4ede8793eb6792e6fca81a0c}} 
+\index{FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}!Paint@{Paint}}
+\index{Paint@{Paint}!FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}}
+\doxysubsubsection{\texorpdfstring{Paint()}{Paint()}}
+{\footnotesize\ttfamily abstract void Fractal\+Core.\+Painting.\+Basic\+Painter\+Base.\+Paint (\begin{DoxyParamCaption}\item[{ref Writeable\+Bitmap}]{fractal\+Bitmap,  }\item[{ref \mbox{\hyperlink{class_fractal_core_1_1_fractal}{Fractal}}}]{fractal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+This HAS to be here so Basic\+Painter\+View\+Model\+Abstract can reference \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_base}{Basic\+Painter\+Base}}\textquotesingle{}s Painter model 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fractal\+Bitmap} & \\
+\hline
+{\em fractal} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interface_fractal_core_1_1_painting_1_1_i_painter}{Fractal\+Core.\+Painting.\+IPainter}}.
+
+
+
+Implemented in \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_dark_ac5eb5b89fe7a8664156167e4596057c4}{Fractal\+Core.\+Painting.\+Basic\+Painter\+Dark}}, and \mbox{\hyperlink{class_fractal_core_1_1_painting_1_1_basic_painter_light_a961d511097a8e7d40b09d7bb36b6fda9}{Fractal\+Core.\+Painting.\+Basic\+Painter\+Light}}.
+
+\mbox{\Hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base_a5f6b302990279a935ae8a804d166c743}\label{class_fractal_core_1_1_painting_1_1_basic_painter_base_a5f6b302990279a935ae8a804d166c743}} 
+\index{FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}!SetKernelParameters@{SetKernelParameters}}
+\index{SetKernelParameters@{SetKernelParameters}!FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}}
+\doxysubsubsection{\texorpdfstring{SetKernelParameters()}{SetKernelParameters()}}
+{\footnotesize\ttfamily abstract void Fractal\+Core.\+Painting.\+Basic\+Painter\+Base.\+Set\+Kernel\+Parameters (\begin{DoxyParamCaption}\item[{ref Multi\+CL}]{kernel,  }\item[{ref byte\mbox{[}$\,$\mbox{]}}]{pixels,  }\item[{ref uint\mbox{[}$\,$\mbox{]}}]{iterations,  }\item[{uint}]{iterations\+Cap }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implements \mbox{\hyperlink{interface_fractal_core_1_1_painting_1_1_i_painter}{Fractal\+Core.\+Painting.\+IPainter}}.
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{class_fractal_core_1_1_painting_1_1_basic_painter_base_a9d4476512130ae9e27caa4c2ed6bf948}\label{class_fractal_core_1_1_painting_1_1_basic_painter_base_a9d4476512130ae9e27caa4c2ed6bf948}} 
+\index{FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}!PaintCLScript@{PaintCLScript}}
+\index{PaintCLScript@{PaintCLScript}!FractalCore.Painting.BasicPainterBase@{FractalCore.Painting.BasicPainterBase}}
+\doxysubsubsection{\texorpdfstring{PaintCLScript}{PaintCLScript}}
+{\footnotesize\ttfamily abstract string Fractal\+Core.\+Painting.\+Basic\+Painter\+Base.\+Paint\+CLScript\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Implements \mbox{\hyperlink{interface_fractal_core_1_1_painting_1_1_i_painter}{Fractal\+Core.\+Painting.\+IPainter}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Fractal\+Core/\+Painting/Basic\+Painter\+Base.\+cs\end{DoxyCompactItemize}

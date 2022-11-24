@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace FractalGeneratorMVVM.Views.Controls
 {
@@ -25,6 +26,15 @@ namespace FractalGeneratorMVVM.Views.Controls
             InitializeComponent();
         }
 
+        private void NumbersOnlyValidaiton(object sender, TextCompositionEventArgs e)
+        {
+            Regex numbersOnly = new Regex("[^0-9]+");
+            e.Handled = numbersOnly.IsMatch(e.Text);
+        }
 
+        private void Width_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

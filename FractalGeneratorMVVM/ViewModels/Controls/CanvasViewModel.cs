@@ -11,13 +11,25 @@ using System.Windows.Controls;
 
 namespace FractalGeneratorMVVM.ViewModels.Controls
 {
+    /// <summary>
+    /// Deletgate for event call MouseOverCanvasEvent
+    /// </summary>
     public delegate void MouseOverCanvas(Point Pos, double width, double height);
+    /// <summary>
+    /// Delegate for event call LeftClickedCanvas
+    /// </summary>
     public delegate void ClickedCanvas(Point Pos, double width, double height);
 
     public class CanvasViewModel : Screen
     {
         #region Events
+        /// <summary>
+        /// Event for when the mouse cursor hovers over the canvas
+        /// </summary>
         public event MouseOverCanvas? MouseOverCanvasEvent;  // Event
+        /// <summary>
+        /// Event for when mouse button left click down over canvas
+        /// </summary>
         public event ClickedCanvas? LeftClickedCanvas;  // Event
         #endregion
 
@@ -35,6 +47,11 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Fractal Image object which is displayed on the canvas.
+        /// Xaml reaches down to <see cref="FractalImage"/>'s WriteableBitmap.
+        /// </summary>
         public FractalImage? Image
         {
             get { return _image; }
@@ -48,6 +65,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 NotifyOfPropertyChange(() => Image);
             }
         }
+        /// <summary>
+        /// Scale factor on dimensions of canvas image.
+        /// </summary>
         public float Zoom
         {
             get { return _zoom; }
@@ -57,13 +77,25 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 NotifyOfPropertyChange(() => Zoom);
             }
         }
+        /// <summary>
+        /// Minimum scale factor of canvas image. Used so there is a limit to how much you can zoom out.
+        /// </summary>
         public float MinZoom
         {
             get { return _minScale; }
             set { _minScale = value; }
         }
+        /// <summary>
+        /// Height in pixels of the canvas control
+        /// </summary>
         public int CanvasHeight { get; set; }
+        /// <summary>
+        /// Width in pixels of the canvas control.
+        /// </summary>
         public int CanvasWidth { get; set; }
+        /// <summary>
+        /// Image height in pixels after being scaled by <see cref="Zoom"/>
+        /// </summary>
         public double ImageActualHeight
         {
             get
@@ -71,6 +103,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 return Image.Height * Zoom;
             }
         }
+        /// <summary>
+        /// Image width in pixels after being scaled by <see cref="Zoom"/>
+        /// </summary>
         public double ImageActualWidth
         {
             get
@@ -78,6 +113,9 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 return Image.Width * Zoom;
             }
         }
+        /// <summary>
+        /// The divisor on the dimensions of the image when it is zoomed
+        /// </summary>
         public int ZoomFactor
         {
             get { return _zoomFactor; }
@@ -85,7 +123,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
         }
         public float ZoomQuantity
         {
-            get { return (float)Decimal.Divide(1, _zoomFactor); }
+            get { return (float)Decimal.Divide(1, ZoomFactor); }
         }
 
         public Point? OldDragPoint
@@ -97,11 +135,17 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
 
         #endregion
 
+        #region Constructor
+        /// <summary>
+        /// Default contstructor
+        /// </summary>
         public CanvasViewModel()
         {
             
         }
+        #endregion
 
+        #region Methods
         #region Mouse Position
         public void MouseOver(Image sender)
         {
@@ -202,7 +246,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             LeftClickedCanvas?.Invoke(pos, sender.ActualWidth, sender.ActualHeight);
         }
         #endregion
-
+        #endregion
 
     }
 }

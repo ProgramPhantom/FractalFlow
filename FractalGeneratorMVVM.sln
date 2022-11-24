@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaParser", "..\project
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestSetup", "TestSetup\TestSetup.vdproj", "{DEFCD6DD-F416-438E-8B11-04BE5714E160}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestSetup2", "TestSetup2\TestSetup2.vdproj", "{FE54F6C8-99B2-4565-8C84-2F91FEDF9DF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,8 @@ Global
 		{AFD25582-AF78-4DF6-9A8F-FCE1635F7660}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DEFCD6DD-F416-438E-8B11-04BE5714E160}.Debug|Any CPU.ActiveCfg = Debug
 		{DEFCD6DD-F416-438E-8B11-04BE5714E160}.Release|Any CPU.ActiveCfg = Release
+		{FE54F6C8-99B2-4565-8C84-2F91FEDF9DF8}.Debug|Any CPU.ActiveCfg = Release
+		{FE54F6C8-99B2-4565-8C84-2F91FEDF9DF8}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

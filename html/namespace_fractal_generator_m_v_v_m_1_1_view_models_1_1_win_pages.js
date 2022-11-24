@@ -1,0 +1,5 @@
+var namespace_fractal_generator_m_v_v_m_1_1_view_models_1_1_win_pages =
+[
+    [ "AddFractalFrameWindowViewModel", "class_fractal_generator_m_v_v_m_1_1_view_models_1_1_win_pages_1_1_add_fractal_frame_window_view_model.html", "class_fractal_generator_m_v_v_m_1_1_view_models_1_1_win_pages_1_1_add_fractal_frame_window_view_model" ],
+    [ "AddPainterWindowViewModel", "class_fractal_generator_m_v_v_m_1_1_view_models_1_1_win_pages_1_1_add_painter_window_view_model.html", null ]
+];

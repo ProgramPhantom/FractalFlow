@@ -147,12 +147,13 @@
                 </Grid.RowDefinitions>
 
                 <TextBox Height="20" x:Name="Width"
-                         Style="{StaticResource FormTextBox}">
-
+                         Style="{StaticResource FormTextBox}"
+                         PreviewTextInput="NumbersOnlyValidaiton">
                 </TextBox>
 
                 <TextBox Height="20" x:Name="Height"
-                         Style="{StaticResource FormTextBox}" Grid.Row="1">
+                         Style="{StaticResource FormTextBox}" Grid.Row="1"
+                         PreviewTextInput="NumbersOnlyValidaiton">
 
                 </TextBox>
             </Grid>

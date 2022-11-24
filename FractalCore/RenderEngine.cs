@@ -159,8 +159,6 @@ namespace FractalCore
             Paint(job.PaintJob, progress, cancellationToken);
         }
 
-
-
         public async Task CLPaintAsync(PaintJob job, IProgress<RenderProgressModel> progress)
         {
 

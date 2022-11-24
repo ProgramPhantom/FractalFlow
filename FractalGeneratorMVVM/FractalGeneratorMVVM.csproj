@@ -171,6 +171,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Database\FractalFlowDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\FractalFlowDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Settings1.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings1.Designer.cs</LastGenOutput>

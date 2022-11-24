@@ -53,9 +53,6 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
                 NotifyOfPropertyChange(() => Width);
             }
         }
-
-
-
         public UInt16 Height
         {
             get { return _height; }
@@ -106,6 +103,7 @@ namespace FractalGeneratorMVVM.ViewModels.Controls
             OnSaveFractalImageClicked();
         }
 
+        // Best practice to have event invokers in seperate protected and virtual method apparently
         protected virtual void OnRenderClicked() 
         {
             // Send the word that a render has been ordered!
