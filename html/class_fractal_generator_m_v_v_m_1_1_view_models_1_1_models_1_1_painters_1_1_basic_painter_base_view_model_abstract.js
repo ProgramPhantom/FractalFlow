@@ -1,4 +1,0 @@
-var class_fractal_generator_m_v_v_m_1_1_view_models_1_1_models_1_1_painters_1_1_basic_painter_base_view_model_abstract =
-[
-    [ "PainterModel", "class_fractal_generator_m_v_v_m_1_1_view_models_1_1_models_1_1_painters_1_1_basic_painter_base_view_model_abstract.html#a732402b499d10db2500375893d647e55", null ]
-];
