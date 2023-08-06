@@ -26,7 +26,17 @@ Fractal Flow aims to streamline and accelerate the process of exploring new frac
 
 ![Tan](https://github.com/ProgramPhantom/FractalFlow/assets/49105496/fb5841b4-b460-44b3-abfa-d46057e9bf8b)
 
+### Features
 
-
+- CPU & GPU rendering capabilities
+- Create a custom fractal by specifying a formula
+- Natural math expression achieved through proprietary formula parser
+- Two types of fractal colouring algorithm
+- Specify iterations, bail value and region on the complex plane
+- Save and load proprietary .frac fractal definition file
+- Save fractal image as .png
+- Random colours button
+- Console Window
+- Fractal definition objects saved in SQL database
 
 Started 12th Jan 2022
