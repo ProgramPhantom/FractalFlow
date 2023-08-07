@@ -1,5 +1,5 @@
 # FractalFlow
-WIP
+WIP - This is my A-level (Junior/Senior year equivalent) Computer Science coursework as submitted. REMEBER TO MAKE BRANCH IF WORKING ON FURTHER
 
 Fractal Flow is a next generation application for rendering fractal images over the complex plane, with a focus on generating custom user-defined fractals.
 
